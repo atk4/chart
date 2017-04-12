@@ -1,0 +1,21 @@
+{
+    "name": "atk4/chart",
+    "type": "library",
+    "description": "ChartJS for Agile UI",
+    "keywords": ["agile", "data", "framework", "chart", "chartjs"],
+    "homepage": "http://agiletoolkit.org/",
+    "license": "Commercial",
+    "authors": [
+        {
+            "name": "Romans Malinovskis",
+            "email": "romans@agiletoolkit.org",
+            "homepage": "https://nearly.guru/"
+        }
+    ],
+    "require": {
+        "atk4/ui": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {"atk4\\chart\\":"src/"}
+    }
+}
