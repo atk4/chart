@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "atk4/ui": "^1.0"
+        "atk4/ui": "dev-develop"
     },
     "autoload": {
         "psr-4": {"atk4\\chart\\":"src/"}
