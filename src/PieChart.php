@@ -1,7 +1,9 @@
 <?php
 namespace atk4\chart;
 
-class PieChart extends Chart {
+class PieChart extends Chart
+{
+    /** @var string Type of chart */
     public $type = 'pie';
 
     /**
@@ -11,9 +13,14 @@ class PieChart extends Chart {
      *
      * This component will automatically figure out name of the chart,
      * series titles based on column captions etc.
+     *
+     * @param \atk4\data\Model $model
+     * @param array            $columns
+     *
+     * @return \atk4\data\Model
      */
-    function setModel(\atk4\data\Model $model, $columns = []) {
-
+    public function setModel(\atk4\data\Model $model, $columns = [])
+    {
         if (!$columns) {
             throw new \atk4\core\Exception('Second argument must be specified to Chart::setModel()');
         }
@@ -40,10 +47,8 @@ class PieChart extends Chart {
             ];
         }
 
-
         // Prepopulate data-sets
         foreach ($model as $row) {
-
 
             $this->labels[] = $row[$title_column];
             foreach ($this->dataSets as $key => &$dataset) {
@@ -54,17 +59,31 @@ class PieChart extends Chart {
             }
         }
 
+        return $model;
     }
 
-    function withCurrency($char = '€') {
-
+    /**
+     * Add currency label.
+     *
+     * @param string $char Currency symbol
+     *
+     * @return $this
+     */
+    public function withCurrency($char = '€')
+    {
         $this->options['tooltips'] = [
-            //'enabled'=>true,
-            //'mode'=>'single',
-            'callbacks'=> ['label'=> new \atk4\ui\jsExpression('{}', ['function(item, data, bb) { 
-                var val = data.datasets[item.datasetIndex].data[item.index];
-                return "'.$char.'" +  val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }'])]
+            //'enabled' => true,
+            //'mode' => 'single',
+            'callbacks' => [
+                'label' => new \atk4\ui\jsExpression('{}', [
+                    'function(item, data, bb) {
+                        var val = data.datasets[item.datasetIndex].data[item.index];
+                        return "'.$char.'" +  val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                    }'
+                ]),
+            ],
         ];
+
         return $this;
     }
 }
