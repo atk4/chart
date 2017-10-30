@@ -170,7 +170,7 @@ class Chart extends \atk4\ui\View {
         $this->options['tooltips'] = [
             'enabled'=>true,
             'mode'=>'single',
-            'callbacks'=> ['label'=> new \atk4\ui\jsExpression('{}', ['function(item, data, bb) { return "'.$char.'" +  item.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }'])]
+            'callbacks'=> ['label'=> new \atk4\ui\jsExpression('{}', ['function(item, data, bb) { return "'.$char.'" +  item.'.$axis.'Label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }'])]
         ];
         return $this;
     }
