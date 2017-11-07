@@ -39,8 +39,8 @@ class Chart extends \atk4\ui\View {
         parent::init();
 
         // Not yet supported, so will do manually
-        //$this->app->requireJS('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.js');
-        $this->app->html->template->appendHTML('HEAD', '<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.js"></script>');
+        //$this->app->requireJS('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js');
+        $this->app->html->template->appendHTML('HEAD', '<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>');
     }
 
     /**
@@ -98,6 +98,21 @@ class Chart extends \atk4\ui\View {
     public function getOptions()
     {
         return $this->options;
+    }
+
+    /**
+     * Set options.
+     *
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function setOptions($options)
+    {
+        // Important: use replace not merge here to preserve numeric keys !!!
+        $this->options = array_replace_recursive($this->options, $options);
+
+        return $this;
     }
 
     /**
@@ -162,16 +177,19 @@ class Chart extends \atk4\ui\View {
      * @return $this
      */
     public function withCurrency($char = '€', $axis = 'y') {
-        $this->options['scales'][$axis.'Axes'] =
+        $options['scales'][$axis.'Axes'] =
             [['ticks'=>[
                 'userCallback'=>new \atk4\ui\jsExpression('{}', ['function(value) { return "'.$char.'" + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }'])
             ]]];
 
-        $this->options['tooltips'] = [
+        $options['tooltips'] = [
             'enabled'=>true,
             'mode'=>'single',
-            'callbacks'=> ['label'=> new \atk4\ui\jsExpression('{}', ['function(item, data, bb) { return "'.$char.'" +  item.'.$axis.'Label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }'])]
+            'callbacks'=> ['label'=> new \atk4\ui\jsExpression('{}', ['function(item, data) { return "'.$char.'" +  item.'.$axis.'Label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }'])]
         ];
+
+        $this->setOptions($options);
+
         return $this;
     }
 

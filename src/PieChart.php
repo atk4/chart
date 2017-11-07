@@ -71,7 +71,7 @@ class PieChart extends Chart
      */
     public function withCurrency($char = '€')
     {
-        $this->options['tooltips'] = [
+        $options['tooltips'] = [
             //'enabled' => true,
             //'mode' => 'single',
             'callbacks' => [
@@ -83,6 +83,8 @@ class PieChart extends Chart
                 ]),
             ],
         ];
+        
+        $this->setOptions($options);
 
         return $this;
     }
