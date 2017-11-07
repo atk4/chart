@@ -177,15 +177,16 @@ class Chart extends \atk4\ui\View {
      * @return $this
      */
     public function withCurrency($char = '€', $axis = 'y') {
+        // magic regex adds commas as thousand separators: http://009co.com/?p=598
         $options['scales'][$axis.'Axes'] =
-            [['ticks'=>[
-                'userCallback'=>new \atk4\ui\jsExpression('{}', ['function(value) { return "'.$char.'" + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }'])
+            [['ticks' => [
+                'userCallback' => new \atk4\ui\jsExpression('{}', ['function(value) { return "'.$char.' " + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }'])
             ]]];
 
         $options['tooltips'] = [
-            'enabled'=>true,
-            'mode'=>'single',
-            'callbacks'=> ['label'=> new \atk4\ui\jsExpression('{}', ['function(item, data) { return "'.$char.'" +  item.'.$axis.'Label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); }'])]
+            'enabled'   => true,
+            'mode'      => 'single',
+            'callbacks' => ['label' => new \atk4\ui\jsExpression('{}', ['function(item, data) { return item.'.$axis.'Label ? "'.$char.' " +  item.'.$axis.'Label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "No Data"; }'])]
         ];
 
         $this->setOptions($options);
