@@ -73,12 +73,12 @@ class PieChart extends Chart
     {
         $options['tooltips'] = [
             //'enabled' => true,
-            //'mode' => 'single',
+            //'mode'    => 'single',
             'callbacks' => [
                 'label' => new \atk4\ui\jsExpression('{}', [
                     'function(item, data, bb) {
                         var val = data.datasets[item.datasetIndex].data[item.index];
-                        return "'.$char.'" +  val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                        return "'.$char.'" +  val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     }'
                 ]),
             ],
