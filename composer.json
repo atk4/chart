@@ -4,7 +4,7 @@
     "description": "ChartJS for Agile UI",
     "keywords": ["agile", "data", "framework", "chart", "chartjs"],
     "homepage": "http://agiletoolkit.org/",
-    "license": "Commercial",
+    "license": "MIT",
     "authors": [
         {
             "name": "Romans Malinovskis",
