@@ -180,7 +180,7 @@ class Chart extends \atk4\ui\View {
         // magic regex adds commas as thousand separators: http://009co.com/?p=598
         $options['scales'][$axis.'Axes'] =
             [['ticks' => [
-                'userCallback' => new \atk4\ui\jsExpression('{}', ['function(value) { return "'.$char.' " + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }'])
+                'userCallback' => new \atk4\ui\jsExpression('{}', ['function(value) { value=Math.round(value*1000000)/1000000; return "'.$char.' " + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }'])
             ]]];
 
         $options['tooltips'] = [
