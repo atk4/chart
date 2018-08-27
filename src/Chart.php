@@ -39,8 +39,8 @@ class Chart extends \atk4\ui\View {
         parent::init();
 
         // Not yet supported, so will do manually
-        //$this->app->requireJS('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js');
-        $this->app->html->template->appendHTML('HEAD', '<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>');
+        //$this->app->requireJS('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js');
+        $this->app->html->template->appendHTML('HEAD', '<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>');
     }
 
     /**
