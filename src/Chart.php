@@ -12,6 +12,9 @@ class Chart extends \atk4\ui\View {
     /** @var string Type of chart - bar|pie etc. */
     public $type;
 
+    /** @var bool should we add JS include into application body? Set "false" if you do it manually. */
+    public $js_include = true;
+
     /** @var array We will use these colors in charts */
     public $nice_colors = [
         [ 'rgba(255, 99, 132, 0.2)', 'rgba(255,99,132,1)'],
@@ -40,7 +43,10 @@ class Chart extends \atk4\ui\View {
 
         // Not yet supported, so will do manually
         //$this->app->requireJS('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js');
-        $this->app->html->template->appendHTML('HEAD', '<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>');
+
+        if ($this->js_include) {
+            $this->app->html->template->appendHTML('HEAD', '<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>');
+        }
     }
 
     /**
@@ -217,4 +223,69 @@ class Chart extends \atk4\ui\View {
     {
         return $this->withCurrency($char, 'y');
     }
+
+    /**
+     * Will produce a graph showing summary of a certain model by grouping and aggregating data.
+     *
+     * Example:
+     *
+     *   // Pie or Bar chart
+     *   $chart->summarize($users, ['by'=>'status', 'fx'=>'count']);
+     *
+     * or
+     *
+     *   // Bar chart
+     *   $orders = $clients->ref('Orders');
+     *   $chart->summarize($orders, [
+     *      'by'=>$orders->expr('year([date])'),
+     *      'fields'=>[
+     *        'purchase'=>$orders->expr('sum(if([is_purchase], [amount], 0)'),
+     *        'sale'=>$orders->expr('sum(if([is_purchase], 0, [amount])'),
+     *      ],
+     *   ])->withCurrency('$');
+     *
+     * @param $model
+     * @param array $options
+     */
+    public function summarize($model, $options = []) {
+        // first lets query data
+
+        $fx = $options['fx'] ?? 'count';
+        $fields = ['by'];
+
+        if (isset($options['fields'])) {
+            $qq = $model->action('select');
+
+            // now add fields
+            foreach($options['fields'] as $alias=>$field) {
+
+                if (is_string($field)) {
+                    // sanitization needed!
+                    $field = $m->expr($fx.'(['.$field.'])');
+
+                }
+
+                $qq->field($field, $alias);
+
+                $fields[] = $alias;
+            }
+        } else {
+            
+
+            $qq = $model->action('fx', [$fx, $options['field'] ?? $model->expr('*'), 'alias'=>$fx]);
+            $fields[] = $fx;
+        }
+
+        // next we need to group
+        $qq->field($model->getElement($options['by']), 'by');
+        $qq->group('by');
+        
+
+
+
+        $this->setSource($qq->get(), $fields);
+
+        return $this;
+    }
+
 }

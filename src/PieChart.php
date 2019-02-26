@@ -88,4 +88,5 @@ class PieChart extends Chart
 
         return $this;
     }
+
 }
