@@ -254,14 +254,18 @@ class Chart extends \atk4\ui\View {
         $fields = ['by'];
 
         if (isset($options['fields'])) {
-            $qq = $model->action('select');
+            $qq = $model->action('select', [[]]);
 
             // now add fields
             foreach($options['fields'] as $alias=>$field) {
 
+                if (is_numeric($alias)) {
+                    $alias = $field;
+
+                }
                 if (is_string($field)) {
                     // sanitization needed!
-                    $field = $m->expr($fx.'(['.$field.'])');
+                    $field = $model->expr(($options['fx']??'').'(['.$field.'])');
 
                 }
 
@@ -271,21 +275,26 @@ class Chart extends \atk4\ui\View {
             }
         } else {
 
-            if ($fx == 'count') {
+            if ($options['fx'] ?? null == 'count') {
                 $qq = $model->action('count', ['alias'=>$fx]);
-                
-            } else {
+                $fields[] = 'count';
+
+            } elseif(isset($options['fx'])) {
                 $qq = $model->action('fx', [$fx, $options['field'] ?? $model->expr('*'), 'alias' => $fx]);
+                $fields[] = $fx;
+            } else {
+                $qq = $model->action('select', [[$model->title_field]]);
+                $fields[] = $model->title_field;
             }
-            $fields[] = $fx;
         }
 
         // next we need to group
-        $qq->field($model->getElement($options['by']), 'by');
-        $qq->group('by');
-        
-
-
+        if ($options['by'] ?? null) {
+            $qq->field($model->getElement($options['by']), 'by');
+            $qq->group('by');
+        } else {
+            $qq->field($model->getElement($model->title_field), 'by');
+        }
 
         $this->setSource($qq->get(), $fields);
 
