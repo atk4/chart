@@ -270,9 +270,13 @@ class Chart extends \atk4\ui\View {
                 $fields[] = $alias;
             }
         } else {
-            
 
-            $qq = $model->action('fx', [$fx, $options['field'] ?? $model->expr('*'), 'alias'=>$fx]);
+            if ($fx == 'count') {
+                $qq = $model->action('count', ['alias'=>$fx]);
+                
+            } else {
+                $qq = $model->action('fx', [$fx, $options['field'] ?? $model->expr('*'), 'alias' => $fx]);
+            }
             $fields[] = $fx;
         }
 
