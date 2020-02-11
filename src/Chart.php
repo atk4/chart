@@ -153,7 +153,7 @@ class Chart extends \atk4\ui\View {
             $colors = array_shift($this->nice_colors);
 
             $this->dataSets[$column] = [
-                'label'=>$model->getElement($column)->getCaption(),
+                'label'=>$model->getField($column)->getCaption(),
                 'backgroundColor'=>$colors[0],
                 'borderColor'=>$colors[1],
                 'borderWidth'=>1,
