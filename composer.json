@@ -11,6 +11,8 @@
   ],
   "homepage": "http://agiletoolkit.org/",
   "license": "MIT",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "authors": [
     {
       "name": "Romans Malinovskis",
@@ -30,6 +32,11 @@
   "autoload": {
     "psr-4": {
       "atk4\\chart\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "atk4\\chart\\tests\\": "tests/"
     }
   }
 }
