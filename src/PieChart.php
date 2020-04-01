@@ -39,7 +39,7 @@ class PieChart extends Chart
 
 
             $this->dataSets[$column] = [
-                //'label'=>$model->getElement($column)->getCaption(),
+                //'label'=>$model->getField($column)->getCaption(),
                 'data'=>[],
                 'backgroundColor'=>[], //$colors[0],
                 //'borderColor'=>[], //$colors[1],
