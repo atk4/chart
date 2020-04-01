@@ -244,7 +244,7 @@ class Chart extends View
      *   // Bar chart
      *   $orders = $clients->ref('Orders');
      *   $chart->summarize($orders, [
-     *      'by'=>$orders->expr('year([date])'), // not supported: use field name here only
+     *      'by'=>$orders->expr('year([date])'),
      *      'fields'=>[
      *        'purchase'=>$orders->expr('sum(if([is_purchase], [amount], 0)'),
      *        'sale'=>$orders->expr('sum(if([is_purchase], 0, [amount])'),
