@@ -290,10 +290,10 @@ class Chart extends \atk4\ui\View {
 
         // next we need to group
         if ($options['by'] ?? null) {
-            $qq->field($model->getElement($options['by']), 'by');
+            $qq->field($model->getField($options['by']), 'by');
             $qq->group('by');
         } else {
-            $qq->field($model->getElement($model->title_field), 'by');
+            $qq->field($model->getField($model->title_field), 'by');
         }
 
         $this->setSource($qq->get(), $fields);
