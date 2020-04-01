@@ -22,14 +22,14 @@ $app->initLayout('Centered');
 
 // Lets put your chart into a box:
 $columns = $app->layout->add('Columns');
-$cb = $columns->addColumn(10)->add(new ChartBox(['label'=>['Demo Chart', 'icon'=>'book']]));
+$cb = $columns->addColumn(8)->add(new ChartBox(['label'=>['Demo Bar Chart', 'icon'=>'book']]));
 $chart = $cb->add(new BarChart());
 $chart->setModel($m, ['name', 'sales', 'purchases','profit']);
 $chart->withCurrency('$');
 
 // Tweak our chart to support currencies better
 
-$cb = $columns->addColumn(6)->add(new ChartBox(['label'=>['Demo Chart', 'icon'=>'book']]));
+$cb = $columns->addColumn(8)->add(new ChartBox(['label'=>['Demo Pie Chart', 'icon'=>'book']]));
 $chart = $cb->add(new PieChart());
 $chart->setModel($m, ['name', 'profit']);
 $chart->withCurrency('$');

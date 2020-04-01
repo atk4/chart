@@ -1,11 +1,16 @@
 <?php
 namespace atk4\chart;
 
+use atk4\core\Exception;
+use atk4\data\Model;
+use atk4\ui\jsExpression;
+use atk4\ui\View;
+
 /**
  * Implement basic logic for ChartJS.
  */
-class Chart extends \atk4\ui\View {
-
+class Chart extends View
+{
     /** @var string HTML element type */
     public $element = 'canvas';
 
@@ -54,7 +59,8 @@ class Chart extends \atk4\ui\View {
      */
     public function renderView()
     {
-        $this->js(true, new \atk4\ui\jsExpression('new Chart([], []);', [$this->name, $this->getConfig()]));
+        $this->js(true, new jsExpression('new Chart([], []);', [$this->name, $this->getConfig()]));
+
         parent::renderView();
     }
 
@@ -129,21 +135,21 @@ class Chart extends \atk4\ui\View {
      * This component will automatically figure out name of the chart,
      * series titles based on column captions etc.
      *
-     * @param \atk4\data\Model $model
-     * @param array            $columns
+     * @param Model $model
+     * @param array $columns
      *
-     * @return \atk4\data\Model
+     * @return Model
      */
-    public function setModel(\atk4\data\Model $model, $columns = []) {
-
+    public function setModel(Model $model, array $columns = [])
+    {
         if (!$columns) {
-            throw new \atk4\core\Exception('Second argument must be specified to Chart::setModel()');
+            throw new Exception('Second argument must be specified to Chart::setModel()');
         }
 
         $this->dataSets = [];
 
         // Initialize data-sets
-        foreach ($columns as $key=>$column) {
+        foreach ($columns as $key => $column) {
 
             if ($key == 0) {
                 $title_column = $column;
@@ -153,18 +159,17 @@ class Chart extends \atk4\ui\View {
             $colors = array_shift($this->nice_colors);
 
             $this->dataSets[$column] = [
-                'label'=>$model->getField($column)->getCaption(),
-                'backgroundColor'=>$colors[0],
-                'borderColor'=>$colors[1],
-                'borderWidth'=>1,
-                'data'=>[],
+                'label' => $model->getField($column)->getCaption(),
+                'backgroundColor' => $colors[0],
+                'borderColor' => $colors[1],
+                'borderWidth' => 1,
+                'data' => [],
             ];
         }
 
 
         // Prepopulate data-sets
         foreach ($model as $row) {
-
             $this->labels[] = $row[$title_column];
             foreach ($this->dataSets as $key => &$dataset) {
                 $dataset['data'][] = $row[$key];
@@ -182,17 +187,18 @@ class Chart extends \atk4\ui\View {
      *
      * @return $this
      */
-    public function withCurrency($char = '€', $axis = 'y') {
+    public function withCurrency(string $char = '€', string $axis = 'y')
+    {
         // magic regex adds commas as thousand separators: http://009co.com/?p=598
         $options['scales'][$axis.'Axes'] =
             [['ticks' => [
-                'userCallback' => new \atk4\ui\jsExpression('{}', ['function(value) { value=Math.round(value*1000000)/1000000; return "'.$char.' " + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }'])
+                'userCallback' => new jsExpression('{}', ['function(value) { value=Math.round(value*1000000)/1000000; return "'.$char.' " + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }'])
             ]]];
 
         $options['tooltips'] = [
             'enabled'   => true,
             'mode'      => 'single',
-            'callbacks' => ['label' => new \atk4\ui\jsExpression('{}', ['function(item, data) { return item.'.$axis.'Label ? "'.$char.' " +  item.'.$axis.'Label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "No Data"; }'])]
+            'callbacks' => ['label' => new jsExpression('{}', ['function(item, data) { return item.'.$axis.'Label ? "'.$char.' " +  item.'.$axis.'Label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "No Data"; }'])]
         ];
 
         $this->setOptions($options);
@@ -207,7 +213,7 @@ class Chart extends \atk4\ui\View {
      *
      * @return $this
      */
-    public function withCurrencyX($char = '€')
+    public function withCurrencyX(string $char = '€')
     {
         return $this->withCurrency($char, 'x');
     }
@@ -219,7 +225,7 @@ class Chart extends \atk4\ui\View {
      *
      * @return $this
      */
-    public function withCurrencyY($char = '€')
+    public function withCurrencyY(string $char = '€')
     {
         return $this->withCurrency($char, 'y');
     }
@@ -231,42 +237,40 @@ class Chart extends \atk4\ui\View {
      *
      *   // Pie or Bar chart
      *   $chart->summarize($users, ['by'=>'status', 'fx'=>'count']);
+     *   $chart->summarize($users, ['by'=>'status', 'fx'=>'sum', 'field'=>'total_net']);
      *
      * or
      *
      *   // Bar chart
      *   $orders = $clients->ref('Orders');
      *   $chart->summarize($orders, [
-     *      'by'=>$orders->expr('year([date])'),
+     *      'by'=>$orders->expr('year([date])'), // not supported: use field name here only
      *      'fields'=>[
      *        'purchase'=>$orders->expr('sum(if([is_purchase], [amount], 0)'),
      *        'sale'=>$orders->expr('sum(if([is_purchase], 0, [amount])'),
      *      ],
      *   ])->withCurrency('$');
      *
-     * @param $model
+     * @param Model $model
      * @param array $options
      */
-    public function summarize($model, $options = []) {
-        // first lets query data
-
-        $fx = $options['fx'] ?? 'count';
+    public function summarize(Model $model, array $options = [])
+    {
         $fields = ['by'];
 
+        // first lets query data
         if (isset($options['fields'])) {
             $qq = $model->action('select', [[]]);
 
             // now add fields
-            foreach($options['fields'] as $alias=>$field) {
+            foreach ($options['fields'] as $alias => $field) {
 
                 if (is_numeric($alias)) {
                     $alias = $field;
-
                 }
                 if (is_string($field)) {
                     // sanitization needed!
                     $field = $model->expr(($options['fx']??'').'(['.$field.'])');
-
                 }
 
                 $qq->field($field, $alias);
@@ -275,11 +279,11 @@ class Chart extends \atk4\ui\View {
             }
         } else {
 
-            if ($options['fx'] ?? null == 'count') {
-                $qq = $model->action('count', ['alias'=>$fx]);
-                $fields[] = 'count';
-
-            } elseif(isset($options['fx'])) {
+            $fx = $options['fx'] ?? 'count';
+            if ($fx == 'count') {
+                $qq = $model->action('count', ['alias' => $fx]);
+                $fields[] = $fx;
+            } elseif (isset($options['fx'])) {
                 $qq = $model->action('fx', [$fx, $options['field'] ?? $model->expr('*'), 'alias' => $fx]);
                 $fields[] = $fx;
             } else {
@@ -290,15 +294,19 @@ class Chart extends \atk4\ui\View {
 
         // next we need to group
         if ($options['by'] ?? null) {
-            $qq->field($model->getField($options['by']), 'by');
+            $field = $options['by'];
+            if (is_string($field)) {
+                $field = $model->getField($field);
+            }
+            $qq->field($field, 'by');
             $qq->group('by');
         } else {
             $qq->field($model->getField($model->title_field), 'by');
         }
 
+        // and then set it as chart source
         $this->setSource($qq->get(), $fields);
 
         return $this;
     }
-
 }

@@ -1,6 +1,10 @@
 <?php
 namespace atk4\chart;
 
+use atk4\core\Exception;
+use atk4\data\Model;
+use atk4\ui\jsExpression;
+
 class PieChart extends Chart
 {
     /** @var string Type of chart */
@@ -14,22 +18,22 @@ class PieChart extends Chart
      * This component will automatically figure out name of the chart,
      * series titles based on column captions etc.
      *
-     * @param \atk4\data\Model $model
-     * @param array            $columns
+     * @param Model $model
+     * @param array $columns
      *
-     * @return \atk4\data\Model
+     * @return Model
      */
-    public function setModel(\atk4\data\Model $model, $columns = [])
+    public function setModel(Model $model, array $columns = [])
     {
         if (!$columns) {
-            throw new \atk4\core\Exception('Second argument must be specified to Chart::setModel()');
+            throw new Exception('Second argument must be specified to Chart::setModel()');
         }
 
         $this->dataSets = [];
         $colors = [];
 
         // Initialize data-sets
-        foreach ($columns as $key=>$column) {
+        foreach ($columns as $key => $column) {
             $colors[$column] = $this->nice_colors;
 
             if ($key == 0) {
@@ -37,19 +41,17 @@ class PieChart extends Chart
                 continue; // skipping labels
             }
 
-
             $this->dataSets[$column] = [
-                //'label'=>$model->getField($column)->getCaption(),
-                'data'=>[],
-                'backgroundColor'=>[], //$colors[0],
-                //'borderColor'=>[], //$colors[1],
-                //'borderWidth'=>1,
+                //'label' => $model->getField($column)->getCaption(),
+                'data' => [],
+                'backgroundColor' => [], //$colors[0],
+                //'borderColor' => [], //$colors[1],
+                //'borderWidth' => 1,
             ];
         }
 
         // Prepopulate data-sets
         foreach ($model as $row) {
-
             $this->labels[] = $row[$title_column];
             foreach ($this->dataSets as $key => &$dataset) {
                 $dataset['data'][] = $row[$key];
@@ -66,16 +68,17 @@ class PieChart extends Chart
      * Add currency label.
      *
      * @param string $char Currency symbol
+     * @param string $axis y or x
      *
      * @return $this
      */
-    public function withCurrency($char = '€', $axis='y')
+    public function withCurrency(string $char = '€', string $axis = 'y')
     {
         $options['tooltips'] = [
             //'enabled' => true,
             //'mode'    => 'single',
             'callbacks' => [
-                'label' => new \atk4\ui\jsExpression('{}', [
+                'label' => new jsExpression('{}', [
                     'function(item, data, bb) {
                         var val = data.datasets[item.datasetIndex].data[item.index];
                         return "'.$char.'" +  val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -88,5 +91,4 @@ class PieChart extends Chart
 
         return $this;
     }
-
 }

@@ -2,18 +2,23 @@
 
 namespace atk4\chart;
 
+use atk4\ui\Label;
+use atk4\ui\View;
+
 /**
  * Implements a box that contains a chart
  */
-class ChartBox extends \atk4\ui\View {
+class ChartBox extends View
+{
     public $ui = 'segment';
     public $label = 'Chart Box';
 
 
-    function init() {
-        $this->defaultTemplate = dirname(dirname(__FILE__)).'/template/chartbox.html';
+    public function init()
+    {
+        $this->defaultTemplate = dirname(__DIR__).'/template/chartbox.html';
         parent::init();
 
-        $this->add(new \atk4\ui\Label($this->label), 'Label')->addClass('top attached');
+        $this->add(new Label($this->label), 'Label')->addClass('top attached');
     }
 }
