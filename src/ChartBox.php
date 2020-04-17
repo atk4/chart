@@ -14,7 +14,7 @@ class ChartBox extends View
     public $label = 'Chart Box';
 
 
-    public function init()
+    public function init(): void
     {
         $this->defaultTemplate = dirname(__DIR__).'/template/chartbox.html';
         parent::init();
