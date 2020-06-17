@@ -81,7 +81,7 @@ class PieChart extends Chart
                     'function(item, data, bb) {
                         var val = data.datasets[item.datasetIndex].data[item.index];
                         return "' . $char . '" +  val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    }'
+                    }',
                 ]),
             ],
         ];

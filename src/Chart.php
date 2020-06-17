@@ -252,7 +252,7 @@ class Chart extends View
                 }
                 if (is_string($field)) {
                     // sanitization needed!
-                    $field = $model->expr(($options['fx']??'') . '([' . $field . '])');
+                    $field = $model->expr(($options['fx'] ?? '') . '([' . $field . '])');
                 }
 
                 $qq->field($field, $alias);

@@ -13,10 +13,10 @@ use atk4\ui\App;
 use atk4\ui\Columns;
 
 $p = ['t' => [
-    ['name' => 'January', 'sales' => 20000, 'purchases' => 10000,],
-    ['name' => 'February', 'sales' => 23000, 'purchases' => 12000,],
-    ['name' => 'March', 'sales' => 16000, 'purchases' => 11000,],
-    ['name' => 'April', 'sales' => 14000, 'purchases' => 13000,],
+    ['name' => 'January', 'sales' => 20000, 'purchases' => 10000],
+    ['name' => 'February', 'sales' => 23000, 'purchases' => 12000],
+    ['name' => 'March', 'sales' => 16000, 'purchases' => 11000],
+    ['name' => 'April', 'sales' => 14000, 'purchases' => 13000],
 ]];
 $m = new Model(new Array_($p), 't');
 $m->addFields(['name', 'sales', 'purchases', 'profit']);
@@ -28,7 +28,7 @@ $app->initLayout(\atk4\ui\Layout\Centered::class);
 $columns = $app->layout->add(Columns::class);
 $cb = $columns->addColumn(8)->add(new ChartBox(['label' => ['Demo Bar Chart', 'icon' => 'book']]));
 $chart = $cb->add(new BarChart());
-$chart->setModel($m, ['name', 'sales', 'purchases','profit']);
+$chart->setModel($m, ['name', 'sales', 'purchases', 'profit']);
 $chart->withCurrency('$');
 
 // Tweak our chart to support currencies better
