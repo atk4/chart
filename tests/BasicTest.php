@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace atk4\ui\tests;
 
-class BasicTest extends \atk4\core\PHPUnit_AgileTestCase
+use atk4\core\AtkPhpunit;
+
+class BasicTest extends AtkPhpunit\TestCase
 {
     /**
      * Test constructor.
@@ -11,5 +15,4 @@ class BasicTest extends \atk4\core\PHPUnit_AgileTestCase
     {
         $this->assertEquals('foo', 'foo');
     }
-
 }
