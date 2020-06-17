@@ -9,10 +9,8 @@
     "chart",
     "chartjs"
   ],
-  "homepage": "http://agiletoolkit.org/",
+  "homepage": "https://github.com/atk4/chart",
   "license": "MIT",
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "authors": [
     {
       "name": "Romans Malinovskis",
@@ -20,6 +18,11 @@
       "homepage": "https://nearly.guru/"
     }
   ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "sort-packages": true
+  },
   "require": {
     "atk4/ui": "dev-develop"
   },
@@ -27,7 +30,9 @@
     "atk4/ui": "^2.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "<6"
+    "friendsofphp/php-cs-fixer": "^2.16",
+    "phpunit/phpcov": "*",
+    "phpunit/phpunit": "*"
   },
   "autoload": {
     "psr-4": {

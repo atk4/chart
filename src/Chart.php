@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace atk4\chart;
 
 use atk4\core\Exception;
@@ -66,10 +69,8 @@ class Chart extends View
 
     /**
      * Builds configuration for a chart.
-     *
-     * @return array
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         return [
             'type' => $this->type,
@@ -84,30 +85,24 @@ class Chart extends View
 
     /**
      * Return labels.
-     *
-     * @return array
      */
-    public function getLabels()
+    public function getLabels(): array
     {
         return $this->labels;
     }
 
     /**
      * Return datasets.
-     *
-     * @return array
      */
-    public function getDataSets()
+    public function getDataSets(): array
     {
         return array_values($this->dataSets);
     }
 
     /**
      * Return options.
-     *
-     * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
@@ -115,11 +110,9 @@ class Chart extends View
     /**
      * Set options.
      *
-     * @param array $options
-     *
      * @return $this
      */
-    public function setOptions($options)
+    public function setOptions(array $options)
     {
         // Important: use replace not merge here to preserve numeric keys !!!
         $this->options = array_replace_recursive($this->options, $options);
@@ -134,13 +127,8 @@ class Chart extends View
      *
      * This component will automatically figure out name of the chart,
      * series titles based on column captions etc.
-     *
-     * @param Model $model
-     * @param array $columns
-     *
-     * @return Model
      */
-    public function setModel(Model $model, array $columns = [])
+    public function setModel(Model $model, array $columns = []): Model
     {
         if (!$columns) {
             throw new Exception('Second argument must be specified to Chart::setModel()');
@@ -170,9 +158,9 @@ class Chart extends View
 
         // Prepopulate data-sets
         foreach ($model as $row) {
-            $this->labels[] = $row[$title_column];
+            $this->labels[] = $row->get($title_column);
             foreach ($this->dataSets as $key => &$dataset) {
-                $dataset['data'][] = $row[$key];
+                $dataset['data'][] = $row->get($key);
             }
         }
 
@@ -250,9 +238,6 @@ class Chart extends View
      *        'sale'=>$orders->expr('sum(if([is_purchase], 0, [amount])'),
      *      ],
      *   ])->withCurrency('$');
-     *
-     * @param Model $model
-     * @param array $options
      */
     public function summarize(Model $model, array $options = [])
     {

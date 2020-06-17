@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace atk4\chart;
 
 use atk4\core\Exception;
@@ -17,13 +20,8 @@ class PieChart extends Chart
      *
      * This component will automatically figure out name of the chart,
      * series titles based on column captions etc.
-     *
-     * @param Model $model
-     * @param array $columns
-     *
-     * @return Model
      */
-    public function setModel(Model $model, array $columns = [])
+    public function setModel(Model $model, array $columns = []): Model
     {
         if (!$columns) {
             throw new Exception('Second argument must be specified to Chart::setModel()');
@@ -52,9 +50,9 @@ class PieChart extends Chart
 
         // Prepopulate data-sets
         foreach ($model as $row) {
-            $this->labels[] = $row[$title_column];
+            $this->labels[] = $row->get($title_column);
             foreach ($this->dataSets as $key => &$dataset) {
-                $dataset['data'][] = $row[$key];
+                $dataset['data'][] = $row->get($key);
                 $color = array_shift($colors[$key]);
                 $dataset['backgroundColor'][] = $color[0];
                 $dataset['borderColor'][] = $color[1];
