@@ -16,7 +16,7 @@ class PieChart extends Chart
     /**
      * Specify data source for this chart. The column must contain
      * the textual column first followed by sumber of data columns:
-     * setModel($month_report, ['month', 'total_sales', 'total_purchases']);
+     * setModel($month_report, ['month', 'total_sales', 'total_purchases']);.
      *
      * This component will automatically figure out name of the chart,
      * series titles based on column captions etc.
@@ -36,6 +36,7 @@ class PieChart extends Chart
 
             if ($key == 0) {
                 $title_column = $column;
+
                 continue; // skipping labels
             }
 
@@ -79,12 +80,12 @@ class PieChart extends Chart
                 'label' => new jsExpression('{}', [
                     'function(item, data, bb) {
                         var val = data.datasets[item.datasetIndex].data[item.index];
-                        return "'.$char.'" +  val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        return "' . $char . '" +  val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     }'
                 ]),
             ],
         ];
-        
+
         $this->setOptions($options);
 
         return $this;

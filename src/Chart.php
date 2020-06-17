@@ -25,12 +25,12 @@ class Chart extends View
 
     /** @var array We will use these colors in charts */
     public $nice_colors = [
-        [ 'rgba(255, 99, 132, 0.2)', 'rgba(255,99,132,1)'],
-        [ 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 1)'],
-        [ 'rgba(255, 206, 86, 0.2)', 'rgba(255, 206, 86, 1)'],
-        [ 'rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 1)'],
-        [ 'rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 1)'],
-        [ 'rgba(255, 159, 64, 0.2)', 'rgba(255, 159, 64, 1)']
+        ['rgba(255, 99, 132, 0.2)', 'rgba(255,99,132,1)'],
+        ['rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 1)'],
+        ['rgba(255, 206, 86, 0.2)', 'rgba(255, 206, 86, 1)'],
+        ['rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 1)'],
+        ['rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 1)'],
+        ['rgba(255, 159, 64, 0.2)', 'rgba(255, 159, 64, 1)'],
     ];
 
     /** @var array Options for chart.js widget */
@@ -80,7 +80,6 @@ class Chart extends View
             ],
             'options' => $this->getOptions(),
         ];
-
     }
 
     /**
@@ -123,7 +122,7 @@ class Chart extends View
     /**
      * Specify data source for this chart. The column must contain
      * the textual column first followed by sumber of data columns:
-     * setModel($month_report, ['month', 'total_sales', 'total_purchases']);
+     * setModel($month_report, ['month', 'total_sales', 'total_purchases']);.
      *
      * This component will automatically figure out name of the chart,
      * series titles based on column captions etc.
@@ -138,9 +137,9 @@ class Chart extends View
 
         // Initialize data-sets
         foreach ($columns as $key => $column) {
-
             if ($key == 0) {
                 $title_column = $column;
+
                 continue; // skipping labels
             }
 
@@ -154,7 +153,6 @@ class Chart extends View
                 'data' => [],
             ];
         }
-
 
         // Prepopulate data-sets
         foreach ($model as $row) {
@@ -178,15 +176,15 @@ class Chart extends View
     public function withCurrency(string $char = '€', string $axis = 'y')
     {
         // magic regex adds commas as thousand separators: http://009co.com/?p=598
-        $options['scales'][$axis.'Axes'] =
+        $options['scales'][$axis . 'Axes'] =
             [['ticks' => [
-                'userCallback' => new jsExpression('{}', ['function(value) { value=Math.round(value*1000000)/1000000; return "'.$char.' " + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }'])
+                'userCallback' => new jsExpression('{}', ['function(value) { value=Math.round(value*1000000)/1000000; return "' . $char . ' " + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }']),
             ]]];
 
         $options['tooltips'] = [
-            'enabled'   => true,
-            'mode'      => 'single',
-            'callbacks' => ['label' => new jsExpression('{}', ['function(item, data) { return item.'.$axis.'Label ? "'.$char.' " +  item.'.$axis.'Label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "No Data"; }'])]
+            'enabled' => true,
+            'mode' => 'single',
+            'callbacks' => ['label' => new jsExpression('{}', ['function(item, data) { return item.' . $axis . 'Label ? "' . $char . ' " +  item.' . $axis . 'Label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "No Data"; }'])],
         ];
 
         $this->setOptions($options);
@@ -249,13 +247,12 @@ class Chart extends View
 
             // now add fields
             foreach ($options['fields'] as $alias => $field) {
-
                 if (is_numeric($alias)) {
                     $alias = $field;
                 }
                 if (is_string($field)) {
                     // sanitization needed!
-                    $field = $model->expr(($options['fx']??'').'(['.$field.'])');
+                    $field = $model->expr(($options['fx']??'') . '([' . $field . '])');
                 }
 
                 $qq->field($field, $alias);
@@ -263,7 +260,6 @@ class Chart extends View
                 $fields[] = $alias;
             }
         } else {
-
             $fx = $options['fx'] ?? 'count';
             if ($fx == 'count') {
                 $qq = $model->action('count', ['alias' => $fx]);
