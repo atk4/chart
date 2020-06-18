@@ -34,7 +34,7 @@ class PieChart extends Chart
         foreach ($columns as $key => $column) {
             $colors[$column] = $this->nice_colors;
 
-            if ($key == 0) {
+            if ($key === 0) {
                 $title_column = $column;
 
                 continue; // skipping labels

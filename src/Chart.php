@@ -137,7 +137,7 @@ class Chart extends View
 
         // Initialize data-sets
         foreach ($columns as $key => $column) {
-            if ($key == 0) {
+            if ($key === 0) {
                 $title_column = $column;
 
                 continue; // skipping labels
@@ -261,7 +261,7 @@ class Chart extends View
             }
         } else {
             $fx = $options['fx'] ?? 'count';
-            if ($fx == 'count') {
+            if ($fx === 'count') {
                 $qq = $model->action('count', ['alias' => $fx]);
                 $fields[] = $fx;
             } elseif (isset($options['fx'])) {

@@ -13,6 +13,6 @@ class BasicTest extends AtkPhpunit\TestCase
      */
     public function testTesting()
     {
-        $this->assertEquals('foo', 'foo');
+        $this->assertSame('foo', 'foo');
     }
 }
