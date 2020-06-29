@@ -22,18 +22,19 @@ $m = new Model(new Array_($p), 't');
 $m->addFields(['name', 'sales', 'purchases', 'profit']);
 $m->onHook($m::HOOK_AFTER_LOAD, function ($m) { $m->set('profit', $m->get('sales') - $m->get('purchases')); });
 $app = new App('Chart Demo');
-$app->initLayout(\atk4\ui\Layout\Centered::class);
+$app->initLayout([\atk4\ui\Layout\Centered::class]);
+
+// split in columns
+$columns = Columns::addTo($app->layout);
 
 // Lets put your chart into a box:
-$columns = $app->layout->add(Columns::class);
-$cb = $columns->addColumn(8)->add(new ChartBox(['label' => ['Demo Bar Chart', 'icon' => 'book']]));
-$chart = $cb->add(new BarChart());
+$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Demo Bar Chart', 'icon' => 'book']]);
+$chart = BarChart::addTo($cb);
 $chart->setModel($m, ['name', 'sales', 'purchases', 'profit']);
 $chart->withCurrency('$');
 
 // Tweak our chart to support currencies better
-
-$cb = $columns->addColumn(8)->add(new ChartBox(['label' => ['Demo Pie Chart', 'icon' => 'book']]));
-$chart = $cb->add(new PieChart());
+$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Demo Pie Chart', 'icon' => 'book']]);
+$chart = PieChart::addTo($cb);
 $chart->setModel($m, ['name', 'profit']);
 $chart->withCurrency('$');
