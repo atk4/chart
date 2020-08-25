@@ -60,7 +60,7 @@ class Chart extends View
     /**
      * Renders chart view.
      */
-    public function renderView()
+    public function renderView(): void
     {
         $this->js(true, new jsExpression('new Chart([], []);', [$this->name, $this->getConfig()]));
 
