@@ -15,7 +15,7 @@ class ChartBox extends View
     public $ui = 'segment';
     public $label = 'Chart Box';
 
-    public function init(): void
+    protected function init(): void
     {
         $this->defaultTemplate = dirname(__DIR__) . '/template/chartbox.html';
         parent::init();

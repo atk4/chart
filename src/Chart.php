@@ -45,7 +45,7 @@ class Chart extends View
     /**
      * Initialization.
      */
-    public function init(): void
+    protected function init(): void
     {
         parent::init();
 
