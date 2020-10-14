@@ -24,9 +24,6 @@
     "sort-packages": true
   },
   "require": {
-    "atk4/ui": "dev-develop"
-  },
-  "require-release": {
     "atk4/ui": "~2.3.0"
   },
   "require-dev": {
