@@ -49,11 +49,8 @@ class Chart extends View
     {
         parent::init();
 
-        // Not yet supported, so will do manually
-        //$this->getApp()->requireJS('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js');
-
         if ($this->js_include) {
-            $this->getApp()->html->template->appendHTML('HEAD', '<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>');
+            $this->getApp()->requireJS('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js');
         }
     }
 
