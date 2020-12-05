@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace atk4\chart;
+namespace Atk4\Chart;
 
-use atk4\core\Exception;
-use atk4\data\Model;
-use atk4\ui\jsExpression;
+use Atk4\Core\Exception;
+use Atk4\Data\Model;
+use Atk4\Ui\JsExpression;
 
 class PieChart extends Chart
 {
@@ -77,7 +77,7 @@ class PieChart extends Chart
             //'enabled' => true,
             //'mode'    => 'single',
             'callbacks' => [
-                'label' => new jsExpression('{}', [
+                'label' => new JsExpression('{}', [
                     'function(item, data, bb) {
                         var val = data.datasets[item.datasetIndex].data[item.index];
                         return "' . $char . '" +  val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

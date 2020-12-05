@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace atk4\chart;
+namespace Atk4\Chart;
 
-use atk4\core\Exception;
-use atk4\data\Model;
-use atk4\ui\jsExpression;
-use atk4\ui\View;
+use Atk4\Core\Exception;
+use Atk4\Data\Model;
+use Atk4\Ui\JsExpression;
+use Atk4\Ui\View;
 
 /**
  * Implement basic logic for ChartJS.
@@ -59,7 +59,7 @@ class Chart extends View
      */
     public function renderView(): void
     {
-        $this->js(true, new jsExpression('new Chart([], []);', [$this->name, $this->getConfig()]));
+        $this->js(true, new JsExpression('new Chart([], []);', [$this->name, $this->getConfig()]));
 
         parent::renderView();
     }
@@ -175,13 +175,13 @@ class Chart extends View
         // magic regex adds commas as thousand separators: http://009co.com/?p=598
         $options['scales'][$axis . 'Axes'] =
             [['ticks' => [
-                'userCallback' => new jsExpression('{}', ['function(value) { value=Math.round(value*1000000)/1000000; return "' . $char . ' " + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }']),
+                'userCallback' => new JsExpression('{}', ['function(value) { value=Math.round(value*1000000)/1000000; return "' . $char . ' " + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }']),
             ]]];
 
         $options['tooltips'] = [
             'enabled' => true,
             'mode' => 'single',
-            'callbacks' => ['label' => new jsExpression('{}', ['function(item, data) { return item.' . $axis . 'Label ? "' . $char . ' " +  item.' . $axis . 'Label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "No Data"; }'])],
+            'callbacks' => ['label' => new JsExpression('{}', ['function(item, data) { return item.' . $axis . 'Label ? "' . $char . ' " +  item.' . $axis . 'Label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "No Data"; }'])],
         ];
 
         $this->setOptions($options);
