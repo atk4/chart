@@ -36,12 +36,12 @@
   },
   "autoload": {
     "psr-4": {
-      "atk4\\chart\\": "src/"
+      "Atk4\\Chart\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "atk4\\chart\\tests\\": "tests/"
+      "Atk4\\Chart\\Tests\\": "tests/"
     }
   }
 }

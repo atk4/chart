@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace atk4\ui\tests;
+namespace Atk4\Chart\Tests;
 
-use atk4\core\AtkPhpunit;
+use Atk4\Core\AtkPhpunit;
 
 class BasicTest extends AtkPhpunit\TestCase
 {
@@ -13,6 +13,6 @@ class BasicTest extends AtkPhpunit\TestCase
      */
     public function testTesting()
     {
-        $this->assertSame('foo', 'foo');
+        $this->assertTrue(true);
     }
 }

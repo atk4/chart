@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 require '../vendor/autoload.php';
 
-use atk4\chart\BarChart;
-use atk4\chart\ChartBox;
-use atk4\chart\PieChart;
-use atk4\data\Model;
-use atk4\data\Persistence\Array_;
-use atk4\ui\App;
-use atk4\ui\Columns;
+use Atk4\Chart\BarChart;
+use Atk4\Chart\ChartBox;
+use Atk4\Chart\PieChart;
+use Atk4\Data\Model;
+use Atk4\Data\Persistence\Array_;
+use Atk4\Ui\App;
+use Atk4\Ui\Columns;
+use Atk4\Ui\Layout;
 
 $p = ['t' => [
     ['name' => 'January', 'sales' => 20000, 'purchases' => 10000],
@@ -22,7 +23,7 @@ $m = new Model(new Array_($p), 't');
 $m->addFields(['name', 'sales', 'purchases', 'profit']);
 $m->onHook($m::HOOK_AFTER_LOAD, function ($m) { $m->set('profit', $m->get('sales') - $m->get('purchases')); });
 $app = new App('Chart Demo');
-$app->initLayout([\atk4\ui\Layout\Centered::class]);
+$app->initLayout([Layout\Centered::class]);
 
 // split in columns
 $columns = Columns::addTo($app->layout);

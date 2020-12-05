@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace atk4\chart;
+namespace Atk4\Chart;
 
 class BarChart extends Chart
 {

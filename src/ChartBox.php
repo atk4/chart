@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace atk4\chart;
+namespace Atk4\Chart;
 
-use atk4\ui\Label;
-use atk4\ui\View;
+use Atk4\Ui\Label;
+use Atk4\Ui\View;
 
 /**
  * Implements a box that contains a chart.
