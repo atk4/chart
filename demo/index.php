@@ -13,14 +13,23 @@ use Atk4\Ui\App;
 use Atk4\Ui\Columns;
 use Atk4\Ui\Layout;
 
-$p = ['t' => [
+$t = [ 
     ['name' => 'January', 'sales' => 20000, 'purchases' => 10000],
     ['name' => 'February', 'sales' => 23000, 'purchases' => 12000],
     ['name' => 'March', 'sales' => 16000, 'purchases' => 11000],
+<<<<<<< .merge_file_d8pOta
     ['name' => 'April', 'sales' => 14000, 'purchases' => 13000],
 ]];
 $m = new Model(new Array_($p), $p['t']);
+=======
+    ['name' => 'April', 'sales' => 14000, 'purchases' => 13000]];
+
+$m = new \Atk4\Data\Model(new \Atk4\Data\Persistence\Array_($t));
+$m->getField('id')->required=false; // Bug in Array_ persistence assigning id=0 to first record.
+
+>>>>>>> .merge_file_BtKYbp
 $m->addFields(['name', 'sales', 'purchases', 'profit']);
+
 $m->onHook($m::HOOK_AFTER_LOAD, function ($m) { $m->set('profit', $m->get('sales') - $m->get('purchases')); });
 $app = new App('Chart Demo');
 $app->initLayout([Layout\Centered::class]);
