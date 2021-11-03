@@ -19,7 +19,7 @@ $p = ['t' => [
     ['name' => 'March', 'sales' => 16000, 'purchases' => 11000],
     ['name' => 'April', 'sales' => 14000, 'purchases' => 13000],
 ]];
-$m = new Model(new Array_($p), 't');
+$m = new Model(new Array_($p), $p['t']);
 $m->addFields(['name', 'sales', 'purchases', 'profit']);
 $m->onHook($m::HOOK_AFTER_LOAD, function ($m) { $m->set('profit', $m->get('sales') - $m->get('purchases')); });
 $app = new App('Chart Demo');
