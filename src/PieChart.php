@@ -21,7 +21,7 @@ class PieChart extends Chart
      * This component will automatically figure out name of the chart,
      * series titles based on column captions etc.
      */
-    public function setModel(Model $model, array $columns = []): Model
+    public function setModel(Model $model, array $columns = []): void
     {
         if (!$columns) {
             throw new Exception('Second argument must be specified to Chart::setModel()');
@@ -60,7 +60,6 @@ class PieChart extends Chart
             }
         }
 
-        return $model;
     }
 
     /**
