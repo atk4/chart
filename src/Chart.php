@@ -36,6 +36,9 @@ class Chart extends View
 
     /** @var array Options for chart.js widget */
     public $options = [];
+    
+    /** @var array Set stack id for each column, leave empty if no stacks */
+    public $stacks = [];
 
     /** @var array Labels for axis. Fills with setModel(). */
     protected $labels;
@@ -125,13 +128,14 @@ class Chart extends View
      * This component will automatically figure out name of the chart,
      * series titles based on column captions etc.
      */
-    public function setModel(Model $model, array $columns = []): void
+    public function setModel(Model $model, array $columns = [], array $stacks = []): void
     {
         if (!$columns) {
             throw new Exception('Second argument must be specified to Chart::setModel()');
         }
 
         $this->dataSets = [];
+        $this->stacks = $stacks;
 
         // Initialize data-sets
         foreach ($columns as $key => $column) {
@@ -142,14 +146,20 @@ class Chart extends View
             }
 
             $colors = array_shift($this->nice_colors);
+            $stack = array_shift($this->stacks);
 
             $this->dataSets[$column] = [
                 'label' => $model->getField($column)->getCaption(),
                 'backgroundColor' => $colors[0],
                 'borderColor' => $colors[1],
                 'borderWidth' => 1,
+                'stack' => $stack,
                 'data' => [],
             ];
+            
+            if ($stacks != []) {
+                $this->setOptions(['scales' => ['yAxes' => [0 => ['stacked' => true]], 'xAxes' => [0 => ['stacked' => true]]]]);
+            }
         }
 
         // Prepopulate data-sets
