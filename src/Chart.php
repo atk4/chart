@@ -127,6 +127,11 @@ class Chart extends View
      *
      * This component will automatically figure out name of the chart,
      * series titles based on column captions etc.
+     * 
+     * Example for bar chart with two side-by side bars per category, and one of them stacked:
+     * 
+     * $chart->setModel($model, ['month', 'turnover_month_shoes', 'turnover_month_shirts', 'turnover_month_trousers', 'turnover_month_total_last_year'], [0,0,0,1]);
+     * 
      */
     public function setModel(Model $model, array $columns = [], array $stacks = []): void
     {
