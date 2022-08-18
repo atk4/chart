@@ -8,7 +8,7 @@ use Atk4\Chart\BarChart;
 use Atk4\Chart\ChartBox;
 use Atk4\Chart\PieChart;
 use Atk4\Data\Model;
-use Atk4\Data\Persistence\Array_;
+use Atk4\Data\Persistence;
 use Atk4\Ui\App;
 use Atk4\Ui\Columns;
 use Atk4\Ui\Layout;
@@ -20,7 +20,7 @@ $t = [
     4 => ['name' => 'April', 'sales' => 14000, 'purchases' => 13000]
 ];
 
-$m = new \Atk4\Data\Model(new \Atk4\Data\Persistence\Array_($t));
+$m = new Model(new Persistence\Array_($t));
 $m->addFields(['name', 'sales', 'purchases', 'profit']);
 $m->onHook($m::HOOK_AFTER_LOAD, function ($m) { $m->set('profit', $m->get('sales') - $m->get('purchases')); });
 $app = new App(['title' => 'Chart Demo']);
