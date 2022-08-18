@@ -13,6 +13,8 @@ use Atk4\Ui\View;
 class ChartBox extends View
 {
     public $ui = 'segment';
+
+    /** @var string */
     public $label = 'Chart Box';
 
     protected function init(): void
@@ -20,6 +22,6 @@ class ChartBox extends View
         $this->defaultTemplate = dirname(__DIR__) . '/template/chartbox.html';
         parent::init();
 
-        $this->add(new Label($this->label), 'Label')->addClass('top attached');
+        Label::addTo($this, [$this->label], ['Label'])->addClass('top attached');
     }
 }
