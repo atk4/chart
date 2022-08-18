@@ -27,10 +27,10 @@ class PieChart extends Chart
             throw new Exception('Second argument must be specified to Chart::setModel()');
         }
 
-        $this->dataSets = [];
+        $this->datasets = [];
         $colors = [];
 
-        // Initialize data-sets
+        // initialize data-sets
         foreach ($columns as $key => $column) {
             $colors[$column] = $this->nice_colors;
 
@@ -40,7 +40,7 @@ class PieChart extends Chart
                 continue; // skipping labels
             }
 
-            $this->dataSets[$column] = [
+            $this->datasets[$column] = [
                 // 'label' => $model->getField($column)->getCaption(),
                 'data' => [],
                 'backgroundColor' => [], // $colors[0],
@@ -49,10 +49,10 @@ class PieChart extends Chart
             ];
         }
 
-        // Prepopulate data-sets
+        // prepopulate data-sets
         foreach ($model as $row) {
             $this->labels[] = $row->get($titleColumn); // @phpstan-ignore-line
-            foreach ($this->dataSets as $key => &$dataset) {
+            foreach ($this->datasets as $key => &$dataset) {
                 $dataset['data'][] = $row->get($key);
                 $color = array_shift($colors[$key]);
                 $dataset['backgroundColor'][] = $color[0];

@@ -9,9 +9,6 @@ use Atk4\Data\Model;
 use Atk4\Ui\JsExpression;
 use Atk4\Ui\View;
 
-/**
- * Implement basic logic for ChartJS.
- */
 class Chart extends View
 {
     /** @var string HTML element type */
@@ -40,7 +37,7 @@ class Chart extends View
     protected $labels;
 
     /** @var array Datasets. Fills with setModel(). */
-    protected $dataSets;
+    protected $datasets;
 
     protected function init(): void
     {
@@ -51,9 +48,6 @@ class Chart extends View
         }
     }
 
-    /**
-     * Renders chart view.
-     */
     public function renderView(): void
     {
         $this->js(true, new JsExpression('new Chart([], []);', [$this->name, $this->getConfig()]));
@@ -61,53 +55,39 @@ class Chart extends View
         parent::renderView();
     }
 
-    /**
-     * Builds configuration for a chart.
-     */
     public function getConfig(): array
     {
         return [
             'type' => $this->type,
             'data' => [
                 'labels' => $this->getLabels(),
-                'datasets' => $this->getDataSets(),
+                'datasets' => $this->getDatasets(),
             ],
             'options' => $this->getOptions(),
         ];
     }
 
-    /**
-     * Return labels.
-     */
     public function getLabels(): array
     {
         return $this->labels;
     }
 
-    /**
-     * Return datasets.
-     */
-    public function getDataSets(): array
+    public function getDatasets(): array
     {
-        return array_values($this->dataSets);
+        return array_values($this->datasets);
     }
 
-    /**
-     * Return options.
-     */
     public function getOptions(): array
     {
         return $this->options;
     }
 
     /**
-     * Set options.
-     *
      * @return $this
      */
     public function setOptions(array $options)
     {
-        // Important: use replace not merge here to preserve numeric keys !!!
+        // IMPORTANT: use replace not merge here to preserve numeric keys !!!
         $this->options = array_replace_recursive($this->options, $options);
 
         return $this;
@@ -127,9 +107,9 @@ class Chart extends View
             throw new Exception('Second argument must be specified to Chart::setModel()');
         }
 
-        $this->dataSets = [];
+        $this->datasets = [];
 
-        // Initialize data-sets
+        // initialize data-sets
         foreach ($columns as $key => $column) {
             if ($key === 0) {
                 $titleColumn = $column;
@@ -139,7 +119,7 @@ class Chart extends View
 
             $colors = array_shift($this->nice_colors);
 
-            $this->dataSets[$column] = [
+            $this->datasets[$column] = [
                 'label' => $model->getField($column)->getCaption(),
                 'backgroundColor' => $colors[0],
                 'borderColor' => $colors[1],
@@ -148,10 +128,10 @@ class Chart extends View
             ];
         }
 
-        // Prepopulate data-sets
+        // prepopulate data-sets
         foreach ($model as $row) {
             $this->labels[] = $row->get($titleColumn); // @phpstan-ignore-line
-            foreach ($this->dataSets as $key => &$dataset) {
+            foreach ($this->datasets as $key => &$dataset) {
                 $dataset['data'][] = $row->get($key);
             }
         }

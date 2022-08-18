@@ -24,20 +24,22 @@ $t = [
 
 $m = new Model(new Persistence\Array_($t));
 $m->addFields(['name', 'sales', 'purchases', 'profit']);
-$m->onHook($m::HOOK_AFTER_LOAD, function ($m) { $m->set('profit', $m->get('sales') - $m->get('purchases')); });
+$m->onHook($m::HOOK_AFTER_LOAD, function ($m) {
+    $m->set('profit', $m->get('sales') - $m->get('purchases'));
+});
 $app = new App(['title' => 'Chart Demo']);
 $app->initLayout([Layout\Centered::class]);
 
 // split in columns
 $columns = Columns::addTo($app->layout);
 
-// Lets put your chart into a box:
+// lets put your chart into a box
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Demo Bar Chart', 'icon' => 'book']]);
 $chart = BarChart::addTo($cb);
 $chart->setModel($m, ['name', 'sales', 'purchases', 'profit']);
 $chart->withCurrency('$');
 
-// Tweak our chart to support currencies better
+// tweak our chart to support currencies better
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Demo Pie Chart', 'icon' => 'book']]);
 $chart = PieChart::addTo($cb);
 $chart->setModel($m, ['name', 'profit']);
