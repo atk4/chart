@@ -42,15 +42,12 @@ class Chart extends View
     /** @var array Datasets. Fills with setModel(). */
     protected $dataSets;
 
-    /**
-     * Initialization.
-     */
     protected function init(): void
     {
         parent::init();
 
         if ($this->js_include) {
-            $this->getApp()->requireJS('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js');
+            $this->getApp()->requireJs('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js');
         }
     }
 
@@ -135,7 +132,7 @@ class Chart extends View
         // Initialize data-sets
         foreach ($columns as $key => $column) {
             if ($key === 0) {
-                $title_column = $column;
+                $titleColumn = $column;
 
                 continue; // skipping labels
             }
@@ -153,7 +150,7 @@ class Chart extends View
 
         // Prepopulate data-sets
         foreach ($model as $row) {
-            $this->labels[] = $row->get($title_column);
+            $this->labels[] = $row->get($titleColumn); // @phpstan-ignore-line
             foreach ($this->dataSets as $key => &$dataset) {
                 $dataset['data'][] = $row->get($key);
             }
@@ -218,20 +215,22 @@ class Chart extends View
      * Example:
      *
      *   // Pie or Bar chart
-     *   $chart->summarize($users, ['by'=>'status', 'fx'=>'count']);
-     *   $chart->summarize($users, ['by'=>'status', 'fx'=>'sum', 'field'=>'total_net']);
+     *   $chart->summarize($users, ['by' => 'status', 'fx' => 'count']);
+     *   $chart->summarize($users, ['by' => 'status', 'fx' => 'sum', 'field' => 'total_net']);
      *
      * or
      *
      *   // Bar chart
      *   $orders = $clients->ref('Orders');
      *   $chart->summarize($orders, [
-     *      'by'=>$orders->expr('year([date])'),
-     *      'fields'=>[
-     *        'purchase'=>$orders->expr('sum(if([is_purchase], [amount], 0)'),
-     *        'sale'=>$orders->expr('sum(if([is_purchase], 0, [amount])'),
-     *      ],
+     *       'by'=>$orders->expr('year([date])'),
+     *       'fields'=>[
+     *            'purchase' => $orders->expr('sum(if([is_purchase], [amount], 0)'),
+     *           'sale' => $orders->expr('sum(if([is_purchase], 0, [amount])'),
+     *       ],
      *   ])->withCurrency('$');
+     *
+     * @return $this
      */
     public function summarize(Model $model, array $options = [])
     {
