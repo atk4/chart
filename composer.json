@@ -2,6 +2,7 @@
     "name": "atk4/chart",
     "type": "library",
     "description": "ChartJS for Agile UI",
+    "license": "MIT",
     "keywords": [
         "agile",
         "data",
@@ -9,8 +10,7 @@
         "chart",
         "chartjs"
     ],
-    "homepage": "https://github.com/atk4/chart",
-    "license": "MIT",
+    "version": "dev-develop",
     "authors": [
         {
             "name": "Romans Malinovskis",
@@ -18,22 +18,26 @@
             "homepage": "https://nearly.guru/"
         }
     ],
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "config": {
-        "sort-packages": true
-    },
+    "homepage": "https://github.com/atk4/chart",
     "require": {
+        "php": ">=7.4 <8.2",
         "atk4/ui": "dev-develop"
     },
     "require-release": {
+        "php": ">=7.4 <8.2",
         "atk4/ui": "^4.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.16",
-        "phpunit/phpcov": "*",
-        "phpunit/phpunit": "*"
+        "ergebnis/composer-normalize": "^2.13",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "johnkary/phpunit-speedtrap": "^3.3",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan": "^1.0",
+        "phpstan/phpstan-deprecation-rules": "^1.0",
+        "phpunit/phpunit": "^9.5.5"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Atk4\\Chart\\": "src/"
@@ -43,5 +47,12 @@
         "psr-4": {
             "Atk4\\Chart\\Tests\\": "tests/"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": true
+        },
+        "sort-packages": true
     }
 }
