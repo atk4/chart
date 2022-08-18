@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require '../vendor/autoload.php';
+namespace Atk4\Chart\Demos;
 
 use Atk4\Chart\BarChart;
 use Atk4\Chart\ChartBox;
@@ -12,6 +12,8 @@ use Atk4\Data\Persistence;
 use Atk4\Ui\App;
 use Atk4\Ui\Columns;
 use Atk4\Ui\Layout;
+
+require '../vendor/autoload.php';
 
 $t = [
     1 => ['name' => 'January', 'sales' => 20000, 'purchases' => 10000],
