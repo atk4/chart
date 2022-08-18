@@ -78,6 +78,7 @@ class PieChart extends Chart
                 'label' => new JsExpression('{}', [
                     'function(item, data, bb) {
                         var val = data.datasets[item.datasetIndex].data[item.index];
+
                         return "' . $char . '" +  val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     }',
                 ]),
