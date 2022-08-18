@@ -264,8 +264,8 @@ class Chart extends View
                 $qq = $model->action('fx', [$fx, $options['field'] ?? $model->expr('*'), 'alias' => $fx]);
                 $fields[] = $fx;
             } else {
-                $qq = $model->action('select', [[$model->title_field]]);
-                $fields[] = $model->title_field;
+                $qq = $model->action('select', [[$model->titleField]]);
+                $fields[] = $model->titleField;
             }
         }
 
@@ -278,7 +278,7 @@ class Chart extends View
             $qq->field($field, 'by');
             $qq->group('by');
         } else {
-            $qq->field($model->getField($model->title_field), 'by');
+            $qq->field($model->getField($model->titleField), 'by');
         }
 
         // and then set it as chart source
