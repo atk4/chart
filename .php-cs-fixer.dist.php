@@ -8,12 +8,13 @@ $finder = PhpCsFixer\Finder::create()
         'vendor',
     ]);
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@PhpCsFixer' => true,
-        '@PhpCsFixer:risky' =>true,
-        '@PHP71Migration:risky' => true,
+        '@PhpCsFixer:risky' => true,
+        '@PHP74Migration:risky' => true,
+        '@PHP74Migration' => true,
 
         // required by PSR-12
         'concat_space' => [
@@ -21,6 +22,11 @@ return PhpCsFixer\Config::create()
         ],
 
         // disable some too strict rules
+        'phpdoc_types' => [
+            // keep enabled, but without "alias" group to not fix
+            // "Callback" to "callback" in phpdoc
+            'groups' => ['simple', 'meta'],
+        ],
         'phpdoc_types_order' => [
             'null_adjustment' => 'always_last',
             'sort_algorithm' => 'none',
@@ -30,11 +36,12 @@ return PhpCsFixer\Config::create()
             'equal' => false,
             'identical' => false,
         ],
+        'native_constant_invocation' => true,
         'native_function_invocation' => false,
-        'non_printable_character' => [
-            'use_escape_sequences_in_strings' => true,
-        ],
         'void_return' => false,
+        'blank_line_before_statement' => [
+            'statements' => ['break', 'continue', 'declare', 'return', 'throw', 'exit'],
+        ],
         'combine_consecutive_issets' => false,
         'combine_consecutive_unsets' => false,
         'multiline_whitespace_before_semicolons' => false,
@@ -54,6 +61,10 @@ return PhpCsFixer\Config::create()
         'nullable_type_declaration_for_default_null_value' => [
             'use_nullable_type_declaration' => false,
         ],
+
+        // fn => without curly brackets is less readable,
+        // also prevent bounding of unwanted variables for GC
+        'use_arrow_functions' => false,
     ])
     ->setFinder($finder)
-    ->setCacheFile(__DIR__ . '/.php_cs.cache');
+    ->setCacheFile(sys_get_temp_dir() . '/php-cs-fixer.' . md5(__DIR__) . '.cache');

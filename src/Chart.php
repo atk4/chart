@@ -9,9 +9,6 @@ use Atk4\Data\Model;
 use Atk4\Ui\JsExpression;
 use Atk4\Ui\View;
 
-/**
- * Implement basic logic for ChartJS.
- */
 class Chart extends View
 {
     /** @var string HTML element type */
@@ -40,23 +37,17 @@ class Chart extends View
     protected $labels;
 
     /** @var array Datasets. Fills with setModel(). */
-    protected $dataSets;
+    protected $datasets;
 
-    /**
-     * Initialization.
-     */
     protected function init(): void
     {
         parent::init();
 
         if ($this->js_include) {
-            $this->getApp()->requireJS('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js');
+            $this->getApp()->requireJs('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js');
         }
     }
 
-    /**
-     * Renders chart view.
-     */
     public function renderView(): void
     {
         $this->js(true, new JsExpression('new Chart([], []);', [$this->name, $this->getConfig()]));
@@ -64,53 +55,39 @@ class Chart extends View
         parent::renderView();
     }
 
-    /**
-     * Builds configuration for a chart.
-     */
     public function getConfig(): array
     {
         return [
             'type' => $this->type,
             'data' => [
                 'labels' => $this->getLabels(),
-                'datasets' => $this->getDataSets(),
+                'datasets' => $this->getDatasets(),
             ],
             'options' => $this->getOptions(),
         ];
     }
 
-    /**
-     * Return labels.
-     */
     public function getLabels(): array
     {
         return $this->labels;
     }
 
-    /**
-     * Return datasets.
-     */
-    public function getDataSets(): array
+    public function getDatasets(): array
     {
-        return array_values($this->dataSets);
+        return array_values($this->datasets);
     }
 
-    /**
-     * Return options.
-     */
     public function getOptions(): array
     {
         return $this->options;
     }
 
     /**
-     * Set options.
-     *
      * @return $this
      */
     public function setOptions(array $options)
     {
-        // Important: use replace not merge here to preserve numeric keys !!!
+        // IMPORTANT: use replace not merge here to preserve numeric keys !!!
         $this->options = array_replace_recursive($this->options, $options);
 
         return $this;
@@ -124,25 +101,25 @@ class Chart extends View
      * This component will automatically figure out name of the chart,
      * series titles based on column captions etc.
      */
-    public function setModel(Model $model, array $columns = []): Model
+    public function setModel(Model $model, array $columns = []): void
     {
         if (!$columns) {
             throw new Exception('Second argument must be specified to Chart::setModel()');
         }
 
-        $this->dataSets = [];
+        $this->datasets = [];
 
-        // Initialize data-sets
+        // initialize data-sets
         foreach ($columns as $key => $column) {
             if ($key === 0) {
-                $title_column = $column;
+                $titleColumn = $column;
 
                 continue; // skipping labels
             }
 
             $colors = array_shift($this->nice_colors);
 
-            $this->dataSets[$column] = [
+            $this->datasets[$column] = [
                 'label' => $model->getField($column)->getCaption(),
                 'backgroundColor' => $colors[0],
                 'borderColor' => $colors[1],
@@ -151,15 +128,13 @@ class Chart extends View
             ];
         }
 
-        // Prepopulate data-sets
+        // prepopulate data-sets
         foreach ($model as $row) {
-            $this->labels[] = $row->get($title_column);
-            foreach ($this->dataSets as $key => &$dataset) {
+            $this->labels[] = $row->get($titleColumn); // @phpstan-ignore-line
+            foreach ($this->datasets as $key => &$dataset) {
                 $dataset['data'][] = $row->get($key);
             }
         }
-
-        return $model;
     }
 
     /**
@@ -219,20 +194,22 @@ class Chart extends View
      * Example:
      *
      *   // Pie or Bar chart
-     *   $chart->summarize($users, ['by'=>'status', 'fx'=>'count']);
-     *   $chart->summarize($users, ['by'=>'status', 'fx'=>'sum', 'field'=>'total_net']);
+     *   $chart->summarize($users, ['by' => 'status', 'fx' => 'count']);
+     *   $chart->summarize($users, ['by' => 'status', 'fx' => 'sum', 'field' => 'total_net']);
      *
      * or
      *
      *   // Bar chart
      *   $orders = $clients->ref('Orders');
      *   $chart->summarize($orders, [
-     *      'by'=>$orders->expr('year([date])'),
-     *      'fields'=>[
-     *        'purchase'=>$orders->expr('sum(if([is_purchase], [amount], 0)'),
-     *        'sale'=>$orders->expr('sum(if([is_purchase], 0, [amount])'),
-     *      ],
+     *       'by'=>$orders->expr('year([date])'),
+     *       'fields'=>[
+     *            'purchase' => $orders->expr('sum(if([is_purchase], [amount], 0)'),
+     *           'sale' => $orders->expr('sum(if([is_purchase], 0, [amount])'),
+     *       ],
      *   ])->withCurrency('$');
+     *
+     * @return $this
      */
     public function summarize(Model $model, array $options = [])
     {
@@ -265,8 +242,8 @@ class Chart extends View
                 $qq = $model->action('fx', [$fx, $options['field'] ?? $model->expr('*'), 'alias' => $fx]);
                 $fields[] = $fx;
             } else {
-                $qq = $model->action('select', [[$model->title_field]]);
-                $fields[] = $model->title_field;
+                $qq = $model->action('select', [[$model->titleField]]);
+                $fields[] = $model->titleField;
             }
         }
 
@@ -279,11 +256,11 @@ class Chart extends View
             $qq->field($field, 'by');
             $qq->group('by');
         } else {
-            $qq->field($model->getField($model->title_field), 'by');
+            $qq->field($model->getField($model->titleField), 'by');
         }
 
         // and then set it as chart source
-        $this->setSource($qq->get(), $fields);
+        $this->setSource($qq->getRows(), $fields);
 
         return $this;
     }

@@ -1,47 +1,58 @@
 {
-  "name": "atk4/chart",
-  "type": "library",
-  "description": "ChartJS for Agile UI",
-  "keywords": [
-    "agile",
-    "data",
-    "framework",
-    "chart",
-    "chartjs"
-  ],
-  "homepage": "https://github.com/atk4/chart",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Romans Malinovskis",
-      "email": "romans@agiletoolkit.org",
-      "homepage": "https://nearly.guru/"
+    "name": "atk4/chart",
+    "description": "ChartJS for Agile UI",
+    "license": "MIT",
+    "type": "library",
+    "keywords": [
+        "agile",
+        "data",
+        "framework",
+        "chart",
+        "chartjs"
+    ],
+    "version": "dev-develop",
+    "authors": [
+        {
+            "name": "Romans Malinovskis",
+            "email": "romans@agiletoolkit.org",
+            "homepage": "https://nearly.guru/"
+        }
+    ],
+    "homepage": "https://github.com/atk4/chart",
+    "require": {
+        "php": ">=7.4 <8.2",
+        "atk4/ui": "dev-develop"
+    },
+    "require-release": {
+        "php": ">=7.4 <8.2",
+        "atk4/ui": "~4.0.0"
+    },
+    "require-dev": {
+        "ergebnis/composer-normalize": "^2.13",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "johnkary/phpunit-speedtrap": "^3.3",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan": "^1.0",
+        "phpstan/phpstan-deprecation-rules": "^1.0",
+        "phpunit/phpunit": "^9.5.5"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Atk4\\Chart\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Atk4\\Chart\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": true
+        },
+        "sort-packages": true
     }
-  ],
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "config": {
-    "sort-packages": true
-  },
-  "require": {
-    "atk4/ui": "dev-develop"
-  },
-  "require-release": {
-    "atk4/ui": "~2.3.0"
-  },
-  "require-dev": {
-    "friendsofphp/php-cs-fixer": "^2.16",
-    "phpunit/phpcov": "*",
-    "phpunit/phpunit": "*"
-  },
-  "autoload": {
-    "psr-4": {
-      "Atk4\\Chart\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Atk4\\Chart\\Tests\\": "tests/"
-    }
-  }
 }
