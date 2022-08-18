@@ -281,7 +281,7 @@ class Chart extends View
         }
 
         // and then set it as chart source
-        $this->setSource($qq->get(), $fields);
+        $this->setSource($qq->getRows(), $fields);
 
         return $this;
     }
