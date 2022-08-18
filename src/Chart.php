@@ -155,7 +155,6 @@ class Chart extends View
                 $dataset['data'][] = $row->get($key);
             }
         }
-
     }
 
     /**
