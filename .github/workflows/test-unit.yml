@@ -54,7 +54,6 @@ jobs:
       - name: "Run tests: SQLite (only for Phpunit)"
         if: startsWith(matrix.type, 'Phpunit')
         run: |
-          php demos/_demo-data/create-db.php
           echo "not implemented" || vendor/bin/phpunit --exclude-group none --no-coverage -v
 
       - name: Check Coding Style (only for CodingStyle)
