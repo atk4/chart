@@ -13,16 +13,16 @@ use Atk4\Ui\App;
 use Atk4\Ui\Columns;
 use Atk4\Ui\Layout;
 
-$p = ['t' => [
-    ['name' => 'January', 'sales' => 20000, 'purchases' => 10000],
-    ['name' => 'February', 'sales' => 23000, 'purchases' => 12000],
-    ['name' => 'March', 'sales' => 16000, 'purchases' => 11000],
-    ['name' => 'April', 'sales' => 14000, 'purchases' => 13000],
-]];
-$m = new Model(new Array_($p), 't');
+$t = [
+    1 => ['name' => 'January', 'sales' => 20000, 'purchases' => 10000],
+    2 => ['id' => 2, 'name' => 'February', 'sales' => 23000, 'purchases' => 12000],
+    3 => ['id' => 3,'name' => 'March', 'sales' => 16000, 'purchases' => 11000],
+    4 => ['id' => 4,'name' => 'April', 'sales' => 14000, 'purchases' => 13000]];
+
+$m = new \Atk4\Data\Model(new \Atk4\Data\Persistence\Array_($t));
 $m->addFields(['name', 'sales', 'purchases', 'profit']);
 $m->onHook($m::HOOK_AFTER_LOAD, function ($m) { $m->set('profit', $m->get('sales') - $m->get('purchases')); });
-$app = new App('Chart Demo');
+$app = new App(['title' => 'Chart Demo']);
 $app->initLayout([Layout\Centered::class]);
 
 // split in columns
