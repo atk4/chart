@@ -32,7 +32,7 @@ class PieChart extends Chart
 
         // initialize data-sets
         foreach ($columns as $key => $column) {
-            $colors[$column] = $this->nice_colors;
+            $colors[$column] = $this->niceColors;
 
             if ($key === 0) {
                 $titleColumn = $column;
@@ -50,10 +50,10 @@ class PieChart extends Chart
         }
 
         // prepopulate data-sets
-        foreach ($model as $row) {
-            $this->labels[] = $row->get($titleColumn); // @phpstan-ignore-line
+        foreach ($model as $entity) {
+            $this->labels[] = $entity->get($titleColumn); // @phpstan-ignore-line
             foreach ($this->datasets as $key => &$dataset) {
-                $dataset['data'][] = $row->get($key);
+                $dataset['data'][] = $entity->get($key);
                 $color = array_shift($colors[$key]);
                 $dataset['backgroundColor'][] = $color[0];
                 $dataset['borderColor'][] = $color[1];

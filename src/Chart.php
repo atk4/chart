@@ -18,10 +18,10 @@ class Chart extends View
     public $type;
 
     /** @var bool should we add JS include into application body? Set "false" if you do it manually. */
-    public $js_include = true;
+    public $jsInclude = true;
 
     /** @var array We will use these colors in charts */
-    public $nice_colors = [
+    public $niceColors = [
         ['rgba(255, 99, 132, 0.2)', 'rgba(255,99,132,1)'],
         ['rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 1)'],
         ['rgba(255, 206, 86, 0.2)', 'rgba(255, 206, 86, 1)'],
@@ -43,7 +43,7 @@ class Chart extends View
     {
         parent::init();
 
-        if ($this->js_include) {
+        if ($this->jsInclude) {
             $this->getApp()->requireJs('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js');
         }
     }
@@ -117,7 +117,7 @@ class Chart extends View
                 continue; // skipping labels
             }
 
-            $colors = array_shift($this->nice_colors);
+            $colors = array_shift($this->niceColors);
 
             $this->datasets[$column] = [
                 'label' => $model->getField($column)->getCaption(),
@@ -129,10 +129,10 @@ class Chart extends View
         }
 
         // prepopulate data-sets
-        foreach ($model as $row) {
-            $this->labels[] = $row->get($titleColumn); // @phpstan-ignore-line
+        foreach ($model as $entity) {
+            $this->labels[] = $entity->get($titleColumn); // @phpstan-ignore-line
             foreach ($this->datasets as $key => &$dataset) {
-                $dataset['data'][] = $row->get($key);
+                $dataset['data'][] = $entity->get($key);
             }
         }
     }
