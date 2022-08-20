@@ -20,6 +20,7 @@ class ChartBox extends View
     protected function init(): void
     {
         $this->defaultTemplate = dirname(__DIR__) . '/template/chartbox.html';
+
         parent::init();
 
         Label::addTo($this, [$this->label], ['Label'])->addClass('top attached');
