@@ -28,10 +28,14 @@ class Chart extends View
         ['rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 1)'],
         ['rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 1)'],
         ['rgba(255, 159, 64, 0.2)', 'rgba(255, 159, 64, 1)'],
+        ['rgba(20, 20, 20, 0.2)', 'rgba(20, 20, 20, 1)'],
     ];
 
     /** @var array<string, mixed> Options for chart.js widget */
     public $options = [];
+
+    /** @var array Set stack id for each column, leave empty if no stacks */
+    public $stacks = [];
 
     /** @var array<int, string> Labels for axis. Fills with setModel(). */
     protected $labels;
@@ -115,15 +119,20 @@ class Chart extends View
      * This component will automatically figure out name of the chart,
      * series titles based on column captions etc.
      *
+     * Example for bar chart with two side-by side bars per category, and one of them stacked:
+     *
+     * $chart->setModel($model, ['month', 'turnover_month_shoes', 'turnover_month_shirts', 'turnover_month_trousers', 'turnover_month_total_last_year'], [0, 0, 0,1]);
+     *
      * @param array<int, string> $columns
      */
-    public function setModel(Model $model, array $columns = []): void
+    public function setModel(Model $model, array $columns = [], array $stacks = []): void
     {
         if ($columns === []) {
             throw new Exception('Second argument must be specified to Chart::setModel()');
         }
 
         $this->datasets = [];
+        $this->stacks = $stacks;
 
         // initialize data-sets
         foreach ($columns as $key => $column) {
@@ -134,14 +143,20 @@ class Chart extends View
             }
 
             $colors = array_shift($this->niceColors);
+            $stack = array_shift($this->stacks);
 
             $this->datasets[$column] = [
                 'label' => $model->getField($column)->getCaption(),
                 'backgroundColor' => $colors[0],
                 'borderColor' => $colors[1],
                 'borderWidth' => 1,
+                'stack' => $stack,
                 'data' => [],
             ];
+        }
+
+        if ($stacks !== []) {
+            $this->setOptions(['scales' => ['yAxes' => [0 => ['stacked' => true]], 'xAxes' => [0 => ['stacked' => true]]]]);
         }
 
         // prepopulate data-sets
