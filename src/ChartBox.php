@@ -8,7 +8,7 @@ use Atk4\Ui\Label;
 use Atk4\Ui\View;
 
 /**
- * Implements a box that contains a chart.
+ * Box that contains a chart.
  */
 class ChartBox extends View
 {
