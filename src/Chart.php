@@ -20,7 +20,7 @@ class Chart extends View
     /** @var bool should we add JS include into application body? Set "false" if you do it manually. */
     public $jsInclude = true;
 
-    /** @var array We will use these colors in charts */
+    /** @var array<int, array{string, string}> We will use these colors in charts */
     public $niceColors = [
         ['rgba(255, 99, 132, 0.2)', 'rgba(255,99,132,1)'],
         ['rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 1)'],
@@ -30,13 +30,13 @@ class Chart extends View
         ['rgba(255, 159, 64, 0.2)', 'rgba(255, 159, 64, 1)'],
     ];
 
-    /** @var array Options for chart.js widget */
+    /** @var array<string, mixed> Options for chart.js widget */
     public $options = [];
 
-    /** @var array Labels for axis. Fills with setModel(). */
+    /** @var array<int, string> Labels for axis. Fills with setModel(). */
     protected $labels;
 
-    /** @var array Datasets. Fills with setModel(). */
+    /** @var array<string, array<string, mixed>> Datasets. Fills with setModel(). */
     protected $datasets;
 
     protected function init(): void
@@ -55,6 +55,9 @@ class Chart extends View
         parent::renderView();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getConfig(): array
     {
         return [
@@ -67,22 +70,33 @@ class Chart extends View
         ];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function getLabels(): array
     {
         return $this->labels;
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function getDatasets(): array
     {
         return array_values($this->datasets);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getOptions(): array
     {
         return $this->options;
     }
 
     /**
+     * @param array<string, mixed> $options
+     *
      * @return $this
      */
     public function setOptions(array $options)
@@ -100,10 +114,12 @@ class Chart extends View
      *
      * This component will automatically figure out name of the chart,
      * series titles based on column captions etc.
+     *
+     * @param array<int, string> $columns
      */
     public function setModel(Model $model, array $columns = []): void
     {
-        if (!$columns) {
+        if ($columns === []) {
             throw new Exception('Second argument must be specified to Chart::setModel()');
         }
 
@@ -209,6 +225,8 @@ class Chart extends View
      *           'sale' => $orders->expr('sum(if([is_purchase], 0, [amount])'),
      *       ],
      *   ])->withCurrency('$');
+     *
+     * @param array<string, mixed> $options
      *
      * @return $this
      */
