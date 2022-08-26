@@ -71,6 +71,7 @@ class PieChart extends Chart
      */
     public function withCurrency(string $char = '€', string $axis = 'y')
     {
+        $options = [];
         $options['tooltips'] = [
             // 'enabled' => true,
             // 'mode'  => 'single',

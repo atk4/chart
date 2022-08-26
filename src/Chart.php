@@ -148,6 +148,7 @@ class Chart extends View
     public function withCurrency(string $char = '€', string $axis = 'y')
     {
         // magic regex adds commas as thousand separators: http://009co.com/?p=598
+        $options = [];
         $options['scales'][$axis . 'Axes'] =
             [['ticks' => [
                 'userCallback' => new JsExpression('{}', ['function(value) { value=Math.round(value*1000000)/1000000; return "' . $char . ' " + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }']),
