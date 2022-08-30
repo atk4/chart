@@ -34,7 +34,7 @@ class Chart extends View
     /** @var array<string, mixed> Options for chart.js widget */
     public $options = [];
 
-    /** @var array Set stack id for each column, leave empty if no stacks */
+    /** @var array<int, mixed> Set stack id for each column, leave empty if no stacks */
     public $stacks = [];
 
     /** @var array<int, string> Labels for axis. Fills with setModel(). */
@@ -139,7 +139,7 @@ class Chart extends View
             if ($key === 0) {
                 $titleColumn = $column;
 
-                continue; // skipping labels
+                continue; // skipping label column
             }
 
             $colors = array_shift($this->niceColors);
@@ -150,9 +150,12 @@ class Chart extends View
                 'backgroundColor' => $colors[0],
                 'borderColor' => $colors[1],
                 'borderWidth' => 1,
-                'stack' => $stack,
                 'data' => [],
             ];
+
+            if ($stack !== null) {
+                $this->datasets[$column]['stack'] = $stack;
+            }
         }
 
         if ($stacks !== []) {

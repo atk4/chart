@@ -30,7 +30,7 @@ $m->onHook($m::HOOK_AFTER_LOAD, function ($m) {
 $app = new App(['title' => 'Chart Demo']);
 $app->initLayout([Layout\Centered::class]);
 
-// split in columns
+// split in columns - basic charts
 $columns = Columns::addTo($app->layout);
 
 // lets put your chart into a box
@@ -43,4 +43,17 @@ $chart->withCurrency('$');
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Demo Pie Chart', 'icon' => 'book']]);
 $chart = PieChart::addTo($cb);
 $chart->setModel($m, ['name', 'profit']);
+$chart->withCurrency('$');
+
+// split in columns - stacked charts
+$columns = Columns::addTo($app->layout);
+
+$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Demo Bar Chart Stacked', 'icon' => 'book']]);
+$chart = BarChart::addTo($cb);
+$chart->setModel($m, ['name', 'sales', 'purchases', 'profit'], [2, 'A', 2]); // 2=sales+profit, A=purchases
+$chart->withCurrency('$');
+
+$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Demo Bar Chart Stacked', 'icon' => 'book']]);
+$chart = BarChart::addTo($cb);
+$chart->setModel($m, ['name', 'sales', 'purchases', 'profit'], [1, 1, 1]); // 1=sales+purchases+profit
 $chart->withCurrency('$');
