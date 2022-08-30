@@ -129,7 +129,7 @@ class Chart extends View
      *  );
      *
      * @param array<int, string> $columns
-     * @param array<int, mixed> $stacks
+     * @param array<int, mixed>  $stacks
      */
     public function setModel(Model $model, array $columns = [], array $stacks = []): void
     {
