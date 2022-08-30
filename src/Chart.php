@@ -38,9 +38,6 @@ class Chart extends View
     /** @var array<string, mixed> Options for chart.js widget */
     public $options = [];
 
-    /** @var array<int, mixed> Set stack id for each column, leave empty if no stacks */
-    public $stacks = [];
-
     /** @var array<int, string> Labels for axis. Fills with setModel(). */
     protected $labels;
 
@@ -125,7 +122,11 @@ class Chart extends View
      *
      * Example for bar chart with two side-by side bars per category, and one of them stacked:
      *
-     * $chart->setModel($model, ['month', 'turnover_month_shoes', 'turnover_month_shirts', 'turnover_month_trousers', 'turnover_month_total_last_year'], [0, 0, 0,1]);
+     * $chart->setModel(
+     *      $model,
+     *      ['month', 'turnover_month_shoes', 'turnover_month_shirts', 'turnover_month_trousers', 'turnover_month_total_last_year'],
+     *      [1, 1, 1, 2] // 1 => shoes+shirts+trousers, 2 => total last year
+     *  );
      *
      * @param array<int, string> $columns
      */
@@ -136,7 +137,6 @@ class Chart extends View
         }
 
         $this->datasets = [];
-        $this->stacks = $stacks;
 
         // initialize data-sets
         foreach ($columns as $key => $column) {
@@ -147,7 +147,7 @@ class Chart extends View
             }
 
             $colors = array_shift($this->niceColors);
-            $stack = array_shift($this->stacks);
+            $stack = array_shift($stacks);
 
             $this->datasets[$column] = [
                 'label' => $model->getField($column)->getCaption(),
