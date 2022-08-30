@@ -9,6 +9,10 @@ use Atk4\Data\Model;
 use Atk4\Ui\JsExpression;
 use Atk4\Ui\View;
 
+/**
+ * ChartJS 2.7.x documentation https://www.chartjs.org/docs/2.7.3/
+ * ChartJS 3.9.1 documentation https://www.chartjs.org/docs/3.9.1/
+ */
 class Chart extends View
 {
     /** @var string HTML element type */

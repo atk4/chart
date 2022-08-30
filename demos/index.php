@@ -6,6 +6,7 @@ namespace Atk4\Chart\Demos;
 
 use Atk4\Chart\BarChart;
 use Atk4\Chart\ChartBox;
+use Atk4\Chart\LineChart;
 use Atk4\Chart\PieChart;
 use Atk4\Data\Model;
 use Atk4\Data\Persistence;
@@ -18,7 +19,7 @@ require '../vendor/autoload.php';
 $t = [
     1 => ['name' => 'January', 'sales' => 20000, 'purchases' => 10000],
     2 => ['name' => 'February', 'sales' => 23000, 'purchases' => 12000],
-    3 => ['name' => 'March', 'sales' => 16000, 'purchases' => 11000],
+    3 => ['name' => 'March', 'sales' => 16000, 'purchases' => 25000],
     4 => ['name' => 'April', 'sales' => 14000, 'purchases' => 13000],
 ];
 
@@ -34,26 +35,39 @@ $app->initLayout([Layout\Centered::class]);
 $columns = Columns::addTo($app->layout);
 
 // lets put your chart into a box
-$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Demo Bar Chart', 'icon' => 'book']]);
+$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Bar Chart', 'icon' => 'book']]);
 $chart = BarChart::addTo($cb);
 $chart->setModel($m, ['name', 'sales', 'purchases', 'profit']);
-$chart->withCurrency('$');
+$chart->withCurrency('$'); // tweak our chart to support currencies better
 
-// tweak our chart to support currencies better
-$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Demo Pie Chart', 'icon' => 'book']]);
-$chart = PieChart::addTo($cb);
-$chart->setModel($m, ['name', 'profit']);
+$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Bar Chart Horizontal', 'icon' => 'book']]);
+$chart = BarChart::addTo($cb);
+$chart->setHorizontal();
+$chart->setModel($m, ['name', 'sales', 'purchases', 'profit']);
 $chart->withCurrency('$');
 
 // split in columns - stacked charts
 $columns = Columns::addTo($app->layout);
 
-$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Demo Bar Chart Stacked', 'icon' => 'book']]);
+$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Bar Chart Stacked', 'icon' => 'book']]);
 $chart = BarChart::addTo($cb);
-$chart->setModel($m, ['name', 'sales', 'purchases', 'profit'], [2, 'A', 2]); // 2=sales+profit, A=purchases
+$chart->setModel($m, ['name', 'sales', 'purchases', 'profit'], ['Stack 1', 'Stack 2', 'Stack 1']); // Stack 1 => sales + profit, Stack 2 => purchases
 $chart->withCurrency('$');
 
-$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Demo Bar Chart Stacked', 'icon' => 'book']]);
+$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Bar Chart Stacked', 'icon' => 'book']]);
 $chart = BarChart::addTo($cb);
-$chart->setModel($m, ['name', 'sales', 'purchases', 'profit'], [1, 1, 1]); // 1=sales+purchases+profit
+$chart->setModel($m, ['name', 'sales', 'purchases', 'profit'], [1, 1, 1]); // 1 => sales + purchases + profit
+$chart->withCurrency('$');
+
+// split in columns - more charts
+$columns = Columns::addTo($app->layout);
+
+$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Pie Chart', 'icon' => 'book']]);
+$chart = PieChart::addTo($cb);
+$chart->setModel($m, ['name', 'purchases']);
+$chart->withCurrency('$');
+
+$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Line Chart', 'icon' => 'book']]);
+$chart = LineChart::addTo($cb);
+$chart->setModel($m, ['name', 'profit']);
 $chart->withCurrency('$');
