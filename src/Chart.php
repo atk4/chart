@@ -24,7 +24,7 @@ class Chart extends View
     /** @var bool should we add JS include into application body? Set "false" if you do it manually. */
     public $jsInclude = true;
 
-    /** @var array<int, array{string, string}> We will use these colors in charts */
+    /** @var array<int, array<string, string>> We will use these colors in charts */
     public $niceColors = [
         ['rgba(255, 99, 132, 0.2)', 'rgba(255,99,132,1)'],
         ['rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 1)'],
@@ -38,7 +38,7 @@ class Chart extends View
     /** @var array<string, mixed> Options for chart.js widget */
     public $options = [];
 
-    /** @var array<string, array{mixed, mixed}> Options for each data column for chart.js widget */
+    /** @var array<string, array<mixed, mixed>> Options for each data column for chart.js widget */
     public $column_options = [];
 
     /** @var array<int, string> Labels for axis. Fills with setModel(). */
@@ -103,7 +103,7 @@ class Chart extends View
     }
 
     /**
-     * @param array<string, array{string, mixed}> $datasets
+     * @param array<string, array<string, mixed>> $datasets
      *
      * @return $this
      */
@@ -136,7 +136,7 @@ class Chart extends View
     }
 
     /**
-     * @param array<string, array{mixed, mixed}> $options column_name => array of options
+     * @param array<string, array<mixed, mixed>> $options column_name => array of options
      *
      * @return $this
      */
