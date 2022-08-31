@@ -7,12 +7,9 @@ namespace Atk4\Chart\Demos;
 use Atk4\Chart\BarChart;
 use Atk4\Chart\Chart;
 use Atk4\Chart\ChartBox;
-<<<<<<< Updated upstream
-=======
 use Atk4\Chart\ChartType;
 use Atk4\Chart\DoughnutChart;
 use Atk4\Chart\LineChart;
->>>>>>> Stashed changes
 use Atk4\Chart\PieChart;
 use Atk4\Data\Model;
 use Atk4\Data\Persistence;
@@ -24,17 +21,10 @@ require '../vendor/autoload.php';
 
 // setup example data model
 $t = [
-<<<<<<< Updated upstream
-    1 => ['name' => 'January', 'sales' => 20000, 'purchases' => 10000],
-    2 => ['name' => 'February', 'sales' => 23000, 'purchases' => 12000],
-    3 => ['name' => 'March', 'sales' => 16000, 'purchases' => 11000],
-    4 => ['name' => 'April', 'sales' => 14000, 'purchases' => 13000],
-=======
     1 => ['name' => 'January', 'sales_cash' => 6000, 'sales_bank' => 14000, 'purchases' => 10000],
     2 => ['name' => 'February', 'sales_cash' => 5000, 'sales_bank' => 18000, 'purchases' => 12000],
     3 => ['name' => 'March', 'sales_cash' => 4000, 'sales_bank' => 12000, 'purchases' => 22000],
     4 => ['name' => 'April', 'sales_cash' => 7500, 'sales_bank' => 6500, 'purchases' => 13000],
->>>>>>> Stashed changes
 ];
 
 $m = new Model(new Persistence\Array_($t));
@@ -48,25 +38,13 @@ $m->onHook($m::HOOK_AFTER_LOAD, function ($m) {
 $app = new App(['title' => 'Chart Demo']);
 $app->initLayout([Layout\Centered::class]);
 
-<<<<<<< Updated upstream
-// split in columns
-=======
 // split in columns - Bar Chart
->>>>>>> Stashed changes
 $columns = Columns::addTo($app->layout);
 
 // lets put your chart into a box
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Demo Bar Chart', 'icon' => 'book']]);
 $chart = BarChart::addTo($cb);
 $chart->setModel($m, ['name', 'sales', 'purchases', 'profit']);
-<<<<<<< Updated upstream
-$chart->withCurrency('$');
-
-// tweak our chart to support currencies better
-$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Demo Pie Chart', 'icon' => 'book']]);
-$chart = PieChart::addTo($cb);
-$chart->setModel($m, ['name', 'profit']);
-=======
 $chart->withCurrency('$'); // tweak our chart to support currencies better
 
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Bar Chart Stacked', 'icon' => 'book']]);
@@ -155,7 +133,6 @@ $chart->withCurrency('$');
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Doughnut Chart', 'icon' => 'book']]);
 $chart = DoughnutChart::addTo($cb);
 $chart->setModel($m, ['name', 'purchases']);
->>>>>>> Stashed changes
 $chart->withCurrency('$');
 
 // split in columns - More charts

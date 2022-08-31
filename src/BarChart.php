@@ -10,9 +10,6 @@ use Atk4\Chart\StackedTrait;
 
 class BarChart extends Chart
 {
-<<<<<<< Updated upstream
-    public $type = 'bar';
-=======
     use DirectionTrait;
     use StackedTrait;
 
@@ -29,5 +26,4 @@ class BarChart extends Chart
 
         parent::__construct($label);
     }
->>>>>>> Stashed changes
 }
