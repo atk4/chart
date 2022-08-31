@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Atk4\Chart;
 
-use Atk4\Ui\App;
-
 /**
  * Adds stacked chart functionality.
  */

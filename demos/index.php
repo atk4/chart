@@ -148,10 +148,6 @@ $chart = Chart::addTo($cb, ['type' => ChartType::TYPE_POLAR_AREA]);
 $chart->setModel($m, ['name', 'sales', 'purchases', 'profit']);
 $chart->withCurrency('$');
 
-
-
-
-
 // setup example data model
 $t = [
     1 => ['name' => 'January', 'x' => 30, 'y' => 50, 'r' => 5],
@@ -181,7 +177,7 @@ $chart->setDatasets([
             0 => ['x' => 30, 'y' => 50, 'r' => 10],
             1 => ['x' => -10, 'y' => 20, 'r' => 50],
             2 => ['x' => 20, 'y' => 30, 'r' => 30],
-        ]
+        ],
     ],
     [
         'label' => 'Pollution',
@@ -191,18 +187,12 @@ $chart->setDatasets([
             0 => ['x' => 15, 'y' => 30, 'r' => 5],
             1 => ['x' => 10, 'y' => 10, 'r' => 20],
             2 => ['x' => 25, 'y' => 40, 'r' => 10],
-        ]
+        ],
     ],
 ]);
 
-
-//$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Scatter Chart', 'icon' => 'book']]);
-//$chart = Chart::addTo($cb, ['type' => ChartType::TYPE_SCATTER]);
-//$chart->setModel($m, ['name', 'x', 'y', 'z']);
-
-
-
-
-
-
-
+//
+// $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Scatter Chart', 'icon' => 'book']]);
+// $chart = Chart::addTo($cb, ['type' => ChartType::TYPE_SCATTER]);
+// $chart->setModel($m, ['name', 'x', 'y', 'z']);
+//
