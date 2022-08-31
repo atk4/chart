@@ -9,12 +9,19 @@ use Atk4\Data\Model;
 use Atk4\Ui\JsExpression;
 use Atk4\Ui\View;
 
+<<<<<<< Updated upstream
+=======
+/**
+ * ChartJS 3.9.1 documentation https://www.chartjs.org/docs/3.9.1/
+ * Chart examples https://www.chartjs.org/docs/latest/samples/information.html.
+ */
+>>>>>>> Stashed changes
 class Chart extends View
 {
     /** @var string HTML element type */
     public $element = 'canvas';
 
-    /** @var string Type of chart - bar|pie etc. */
+    /** @var string Type of chart - bar|pie etc. See ChartType class */
     public $type;
 
     /** @var bool should we add JS include into application body? Set "false" if you do it manually. */
@@ -33,6 +40,9 @@ class Chart extends View
     /** @var array<string, mixed> Options for chart.js widget */
     public $options = [];
 
+    /** @var array<string, array{mixed, mixed}> Options for each data column for chart.js widget */
+    public $column_options = [];
+
     /** @var array<int, string> Labels for axis. Fills with setModel(). */
     protected $labels;
 
@@ -44,7 +54,7 @@ class Chart extends View
         parent::init();
 
         if ($this->jsInclude) {
-            $this->getApp()->requireJs('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js');
+            $this->getApp()->requireJs('https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js');
         }
     }
 
@@ -60,6 +70,14 @@ class Chart extends View
      */
     public function getConfig(): array
     {
+        if ($this->type === null) {
+            throw new Exception('Chart type should be set');
+        }
+
+        foreach ($this->column_options as $column => $options) {
+            $this->datasets[$column] = array_merge($this->datasets[$column], $options);
+        }
+
         return [
             'type' => $this->type,
             'data' => [
@@ -87,6 +105,18 @@ class Chart extends View
     }
 
     /**
+     * @param array<int, array{string, mixed}> $datasets
+     *
+     * @return $this
+     */
+    public function setDatasets(array $datasets)
+    {
+        $this->datasets = $datasets;
+
+        return $this;
+    }
+
+    /**
      * @return array<string, mixed>
      */
     public function getOptions(): array
@@ -103,6 +133,19 @@ class Chart extends View
     {
         // IMPORTANT: use replace not merge here to preserve numeric keys !!!
         $this->options = array_replace_recursive($this->options, $options);
+
+        return $this;
+    }
+
+    /**
+     * @param array<string, array{mixed, mixed}> $options column_name => array of options
+     *
+     * @return $this
+     */
+    public function setColumnOptions(array $options)
+    {
+        // IMPORTANT: use replace not merge here to preserve numeric keys !!!
+        $this->column_options = array_replace_recursive($this->column_options, $options);
 
         return $this;
     }

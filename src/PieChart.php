@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Atk4\Chart;
 
+use Atk4\Chart\ChartType;
 use Atk4\Core\Exception;
 use Atk4\Data\Model;
 use Atk4\Ui\JsExpression;
@@ -11,7 +12,7 @@ use Atk4\Ui\JsExpression;
 class PieChart extends Chart
 {
     /** @var string Type of chart */
-    public $type = 'pie';
+    public $type = ChartType::TYPE_PIE;
 
     public function setModel(Model $model, array $columns = []): void
     {
@@ -58,7 +59,6 @@ class PieChart extends Chart
                 'label' => new JsExpression('{}', [
                     'function(item, data, bb) {
                         var val = data.datasets[item.datasetIndex].data[item.index];
-
                         return "' . $char . '" +  val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     }',
                 ]),
