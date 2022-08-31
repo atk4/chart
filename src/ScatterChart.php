@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Atk4\Chart;
 
-//use Atk4\Ui\JsExpression;
+// use Atk4\Ui\JsExpression;
 
 class ScatterChart extends Chart
 {
