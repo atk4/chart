@@ -24,7 +24,7 @@ class Chart extends View
     /** @var bool should we add JS include into application body? Set "false" if you do it manually. */
     public $jsInclude = true;
 
-    /** @var array<int, array<string, string>> We will use these colors in charts */
+    /** @var array<int, array<int, string>> We will use these colors in charts */
     public $niceColors = [
         ['rgba(255, 99, 132, 0.2)', 'rgba(255,99,132,1)'],
         ['rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 1)'],
@@ -44,7 +44,7 @@ class Chart extends View
     /** @var array<int, string> Labels for axis. Fills with setModel(). */
     protected $labels;
 
-    /** @var array<string, array<string, mixed>> Datasets. Fills with setModel(). */
+    /** @var array<mixed, array<string, mixed>> Datasets. Fills with setModel(). */
     protected $datasets;
 
     protected function init(): void
@@ -103,7 +103,7 @@ class Chart extends View
     }
 
     /**
-     * @param array<string, array<string, mixed>> $datasets
+     * @param array<mixed, array<string, mixed>> $datasets
      *
      * @return $this
      */
