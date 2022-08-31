@@ -52,8 +52,8 @@ class ScatterChart extends Chart
     /**
      * Add titles on axis.
      *
-     * @param ?string X axis title
-     * @param ?string Y axis title
+     * @param ?string $xTitle X axis title
+     * @param ?string $yTitle Y axis title
      */
     public function withAxisTitles(string $xTitle = null, string $yTitle = null): void
     {
