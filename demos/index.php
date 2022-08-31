@@ -154,24 +154,29 @@ $chart->withCurrency('$');
 
 // setup example data model
 $t = [
-    1 => ['name' => 'January', 'x' => 30, 'y' => 50, 'r' => 5],
-    2 => ['name' => 'February', 'x' => -10, 'y' => 20, 'r' => 15],
-    3 => ['name' => 'March', 'x' => 20, 'y' => 30, 'r' => 10],
+    1 => ['name' => 'Sahara', 'trees' => 100, 'cars' => 200, 'pollution' => 4],
+    2 => ['name' => 'London', 'trees' => 500, 'cars' => 3100, 'pollution' => 50],
+    3 => ['name' => 'Riga', 'trees' => 300, 'cars' => 700, 'pollution' => 13],
+    4 => ['name' => 'Paris', 'trees' => 450, 'cars' => 2800, 'pollution' => 35],
+    5 => ['name' => 'Mars', 'trees' => 350, 'cars' => 2500, 'pollution' => 20],
 ];
 
-$m = new Model(new Persistence\Array_($t));
-$m->addFields(['name', 'x', 'y', 'r']);
+$m = new Model(new Persistence\Array_($t), ['caption' => 'Pollution']);
+$m->addFields(['name', 'trees', 'cars', 'pollution']);
 
-$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Bubble Chart', 'icon' => 'book']]);
+$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Scatter Chart', 'icon' => 'book']]);
+$chart = ScatterChart::addTo($cb);
+$chart->setModel($m, ['name', 'trees', 'cars', 'pollution']);
+$chart->withAxisTitles();
+
+$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Bubble Chart - dataset from model', 'icon' => 'book']]);
 $chart = BubbleChart::addTo($cb);
-$chart->setModel($m, ['name', 'x', 'y', 'r']);
-/*
-$chart->datasets['data'] = [
-    0 => ['x' => 30, 'y' => 50, 'r' => 1],
-    1 => ['x' => -10, 'y' => 20, 'r' => 5],
-    2 => ['x' => 20, 'y' => 30, 'r' => 3],
-];
-*/
+$chart->setModel($m, ['name', 'trees', 'cars', 'pollution']);
+$chart->withAxisTitles();
+
+// custom bubble chart without model but with multiple manually set datasets
+$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Bubble Chart - multiple datasets', 'icon' => 'book']]);
+$chart = BubbleChart::addTo($cb);
 $chart->setDatasets([
     [
         'label' => 'Population',
@@ -194,9 +199,4 @@ $chart->setDatasets([
         ],
     ],
 ]);
-
-//
-// $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Scatter Chart', 'icon' => 'book']]);
-// $chart = ScatterChart::addTo($cb);
-// $chart->setModel($m, ['name', 'x', 'y', 'z']);
-//
+$chart->withAxisTitles();

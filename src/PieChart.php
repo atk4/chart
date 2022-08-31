@@ -49,14 +49,22 @@ class PieChart extends Chart
     public function withCurrency(string $char = '€', string $axis = 'y')
     {
         $options = [
-            'tooltips' => [
-                'callbacks' => [
-                    'label' => new JsExpression('{}', [
-                        'function(item, data, bb) {
-                            var val = data.datasets[item.datasetIndex].data[item.index];
-                            return "' . $char . '" +  val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                        }',
-                    ]),
+            'plugins' => [
+                'tooltip' => [
+                    'enabled' => true,
+                    'mode' => 'point',
+                    'callbacks' => [
+                        'label' => new JsExpression('{}', [
+                            'function(context) {
+                                let label = context.label || "";
+                                let value = context.parsed;
+                                if (label) {
+                                    label += ": ";
+                                }
+                                return label + (value ? "' . $char . ' " +  value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "No Data");
+                            }',
+                        ]),
+                    ],
                 ],
             ],
         ];

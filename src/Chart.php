@@ -89,9 +89,9 @@ class Chart extends View
     }
 
     /**
-     * @return array<int, string>
+     * @return ?array<int, string>
      */
-    protected function getLabels(): array
+    protected function getLabels(): ?array
     {
         return $this->labels;
     }
@@ -230,28 +230,33 @@ class Chart extends View
         // magic regex adds commas as thousand separators: http://009co.com/?p=598
         $options = [
             'scales' => [
-                $axis . 'Axes' => [
-                    [
-                        'ticks' => [
-                            'userCallback' => new JsExpression('{}', [
-                                'function(value) {
-                                    value = Math.round(value*1000000)/1000000;
-                                    return "' . $char . ' " + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                                }',
-                            ]),
-                        ],
+                $axis => [
+                    'ticks' => [
+                        'callback' => new JsExpression('{}', [
+                            'function(value, index, ticks) {
+                                value = Math.round(value*1000000)/1000000;
+                                return "' . $char . ' " + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            }',
+                        ]),
                     ],
                 ],
             ],
-            'tooltips' => [
-                'enabled' => true,
-                'mode' => 'single',
-                'callbacks' => [
-                    'label' => new JsExpression('{}', [
-                        'function(item, data) {
-                            return item.' . $axis . 'Label ? "' . $char . ' " +  item.' . $axis . 'Label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "No Data";
-                        }',
-                    ]),
+            'plugins' => [
+                'tooltip' => [
+                    'enabled' => true,
+                    'mode' => 'point',
+                    'callbacks' => [
+                        'label' => new JsExpression('{}', [
+                            'function(context) {
+                                let label = context.dataset.label || "";
+                                let value = context.parsed.y;
+                                if (label) {
+                                    label += ": ";
+                                }
+                                return label + (value ? "' . $char . ' " +  value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "No Data");
+                            }',
+                        ]),
+                    ],
                 ],
             ],
         ];
