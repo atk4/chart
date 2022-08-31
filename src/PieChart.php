@@ -14,7 +14,7 @@ class PieChart extends Chart
     /** @var string Type of chart */
     public $type = ChartType::TYPE_PIE;
 
-    public function setModel(Model $model, array $columns = []): void
+    public function setModel(Model $model, array $columns = [], array $stacks = []): void
     {
         if ($columns === []) {
             throw new Exception('Second argument must be specified to Chart::setModel()');

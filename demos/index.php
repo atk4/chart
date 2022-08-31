@@ -42,7 +42,7 @@ $app->initLayout([Layout\Centered::class]);
 $columns = Columns::addTo($app->layout);
 
 // lets put your chart into a box
-$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Demo Bar Chart', 'icon' => 'book']]);
+$cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Bar Chart', 'icon' => 'book']]);
 $chart = BarChart::addTo($cb);
 $chart->setModel($m, ['name', 'sales', 'purchases', 'profit']);
 $chart->withCurrency('$'); // tweak our chart to support currencies better
