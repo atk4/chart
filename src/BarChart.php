@@ -12,7 +12,7 @@ class BarChart extends Chart
     public $type = ChartType::TYPE_BAR;
 
     /**
-     * @param array|string $label
+     * @param array<mixed,mixed>|string $label
      */
     public function __construct($label = [])
     {

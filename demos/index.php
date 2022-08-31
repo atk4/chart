@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace Atk4\Chart\Demos;
 
 use Atk4\Chart\BarChart;
+use Atk4\Chart\BubbleChart;
 use Atk4\Chart\Chart;
 use Atk4\Chart\ChartBox;
 use Atk4\Chart\ChartType;
 use Atk4\Chart\DoughnutChart;
 use Atk4\Chart\LineChart;
 use Atk4\Chart\PieChart;
+use Atk4\Chart\PolarAreaChart;
+use Atk4\Chart\RadarChart;
+use Atk4\Chart\ScatterChart;
 use Atk4\Data\Model;
 use Atk4\Data\Persistence;
 use Atk4\Ui\App;
@@ -139,12 +143,12 @@ $chart->withCurrency('$');
 $columns = Columns::addTo($app->layout);
 
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Radar Chart', 'icon' => 'book']]);
-$chart = Chart::addTo($cb, ['type' => ChartType::TYPE_RADAR]);
+$chart = RadarChart::addTo($cb);
 $chart->setModel($m, ['name', 'sales', 'purchases', 'profit']);
 $chart->withCurrency('$');
 
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Polar Area Chart', 'icon' => 'book']]);
-$chart = Chart::addTo($cb, ['type' => ChartType::TYPE_POLAR_AREA]);
+$chart = PolarAreaChart::addTo($cb);
 $chart->setModel($m, ['name', 'sales', 'purchases', 'profit']);
 $chart->withCurrency('$');
 
@@ -159,7 +163,7 @@ $m = new Model(new Persistence\Array_($t));
 $m->addFields(['name', 'x', 'y', 'r']);
 
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Bubble Chart', 'icon' => 'book']]);
-$chart = Chart::addTo($cb, ['type' => ChartType::TYPE_BUBBLE]);
+$chart = BubbleChart::addTo($cb);
 $chart->setModel($m, ['name', 'x', 'y', 'r']);
 /*
 $chart->datasets['data'] = [
@@ -193,6 +197,6 @@ $chart->setDatasets([
 
 //
 // $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Scatter Chart', 'icon' => 'book']]);
-// $chart = Chart::addTo($cb, ['type' => ChartType::TYPE_SCATTER]);
+// $chart = ScatterChart::addTo($cb);
 // $chart->setModel($m, ['name', 'x', 'y', 'z']);
 //
