@@ -9,6 +9,10 @@ use Atk4\Data\Model;
 use Atk4\Ui\JsExpression;
 use Atk4\Ui\View;
 
+/**
+ * ChartJS 2.7.x documentation https://www.chartjs.org/docs/2.7.3/
+ * ChartJS 3.9.1 documentation https://www.chartjs.org/docs/3.9.1/.
+ */
 class Chart extends View
 {
     /** @var string HTML element type */
@@ -28,6 +32,7 @@ class Chart extends View
         ['rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 1)'],
         ['rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 1)'],
         ['rgba(255, 159, 64, 0.2)', 'rgba(255, 159, 64, 1)'],
+        ['rgba(20, 20, 20, 0.2)', 'rgba(20, 20, 20, 1)'],
     ];
 
     /** @var array<string, mixed> Options for chart.js widget */
@@ -115,9 +120,18 @@ class Chart extends View
      * This component will automatically figure out name of the chart,
      * series titles based on column captions etc.
      *
+     * Example for bar chart with two side-by side bars per category, and one of them stacked:
+     *
+     * $chart->setModel(
+     *      $model,
+     *      ['month', 'turnover_month_shoes', 'turnover_month_shirts', 'turnover_month_trousers', 'turnover_month_total_last_year'],
+     *      [1, 1, 1, 2] // 1 => shoes+shirts+trousers, 2 => total last year
+     *  );
+     *
      * @param array<int, string> $columns
+     * @param array<int, mixed>  $stacks
      */
-    public function setModel(Model $model, array $columns = []): void
+    public function setModel(Model $model, array $columns = [], array $stacks = []): void
     {
         if ($columns === []) {
             throw new Exception('Second argument must be specified to Chart::setModel()');
@@ -130,10 +144,11 @@ class Chart extends View
             if ($key === 0) {
                 $titleColumn = $column;
 
-                continue; // skipping labels
+                continue; // skipping label column
             }
 
             $colors = array_shift($this->niceColors);
+            $stack = array_shift($stacks);
 
             $this->datasets[$column] = [
                 'label' => $model->getField($column)->getCaption(),
@@ -142,6 +157,14 @@ class Chart extends View
                 'borderWidth' => 1,
                 'data' => [],
             ];
+
+            if ($stack !== null) {
+                $this->datasets[$column]['stack'] = $stack;
+            }
+        }
+
+        if ($stacks !== []) {
+            $this->setOptions(['scales' => ['yAxes' => [0 => ['stacked' => true]], 'xAxes' => [0 => ['stacked' => true]]]]);
         }
 
         // prepopulate data-sets
