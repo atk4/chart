@@ -13,17 +13,13 @@ class PieChart extends Chart
     /** @var string Type of chart */
     public $type = ChartType::TYPE_PIE;
 
-    public function setModel(Model $model, array $columns = []): void
+    public function prepareDatasets(): void
     {
-        if ($columns === []) {
-            throw new Exception('Second argument must be specified to Chart::setModel()');
-        }
-
-        $this->datasets = [];
+        $datasets = [];
         $colors = [];
 
         // initialize data-sets
-        foreach ($columns as $key => $column) {
+        foreach ($this->columns as $key => $column) {
             if ($key === 0) {
                 $titleColumn = $column;
 
@@ -32,22 +28,24 @@ class PieChart extends Chart
 
             $colors[$column] = $this->niceColors;
 
-            $this->datasets[$column] = [
+            $datasets[$column] = [
                 'data' => [],
                 'backgroundColor' => [],
             ];
         }
 
         // prepopulate data-sets
-        foreach ($model as $entity) {
+        foreach ($this->model as $entity) {
             $this->labels[] = $entity->get($titleColumn); // @phpstan-ignore-line
-            foreach ($this->datasets as $key => &$dataset) {
+            foreach ($datasets as $key => &$dataset) {
                 $dataset['data'][] = $entity->get($key);
                 $color = array_shift($colors[$key]);
                 $dataset['backgroundColor'][] = $color[0];
                 $dataset['borderColor'][] = $color[1];
             }
         }
+
+        $this->setDatasets($datasets);
     }
 
     public function withCurrency(string $char = '€', string $axis = 'y')

@@ -24,6 +24,9 @@ class Chart extends View
     /** @var bool should we add JS include into application body? Set "false" if you do it manually. */
     public $jsInclude = true;
 
+    /** @var string CDN URL */
+    protected $cdnUrl = 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js';
+
     /** @var array<int, array<int, string>> We will use these colors in charts */
     public $niceColors = [
         ['rgba(255, 99, 132, 0.2)', 'rgba(255,99,132,1)'],
@@ -41,6 +44,9 @@ class Chart extends View
     /** @var array<string, array<mixed, mixed>> Options for each data column for chart.js widget */
     public $column_options = [];
 
+    /** @var array<int, string> Columns (data model fields) used in chart */
+    protected $columns;
+
     /** @var array<int, string> Labels for axis. Fills with setModel(). */
     protected $labels;
 
@@ -52,7 +58,7 @@ class Chart extends View
         parent::init();
 
         if ($this->jsInclude) {
-            $this->getApp()->requireJs('https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js');
+            $this->getApp()->requireJs($this->cdnUrl);
         }
     }
 
@@ -66,14 +72,10 @@ class Chart extends View
     /**
      * @return array<string, mixed>
      */
-    public function getConfig(): array
+    protected function getConfig(): array
     {
         if ($this->type === null) {
             throw new Exception('Chart type should be set');
-        }
-
-        foreach ($this->column_options as $column => $options) {
-            $this->datasets[$column] = array_merge_recursive($this->datasets[$column], $options);
         }
 
         return [
@@ -89,7 +91,7 @@ class Chart extends View
     /**
      * @return array<int, string>
      */
-    public function getLabels(): array
+    protected function getLabels(): array
     {
         return $this->labels;
     }
@@ -97,8 +99,12 @@ class Chart extends View
     /**
      * @return array<int, array<string, mixed>>
      */
-    public function getDatasets(): array
+    protected function getDatasets(): array
     {
+        foreach ($this->column_options as $column => $options) {
+            $this->datasets[$column] = array_merge_recursive($this->datasets[$column], $options);
+        }
+
         return array_values($this->datasets);
     }
 
@@ -117,7 +123,7 @@ class Chart extends View
     /**
      * @return array<string, mixed>
      */
-    public function getOptions(): array
+    protected function getOptions(): array
     {
         return $this->options;
     }
@@ -150,7 +156,7 @@ class Chart extends View
 
     /**
      * Specify data source for this chart. The column must contain
-     * the textual column first followed by sumber of data columns:
+     * the textual column first followed by number of data columns:
      * setModel($month_report, ['month', 'total_sales', 'total_purchases']);.
      *
      * This component will automatically figure out name of the chart,
@@ -163,11 +169,26 @@ class Chart extends View
         if ($columns === []) {
             throw new Exception('Second argument must be specified to Chart::setModel()');
         }
+        $this->columns = $columns;
 
-        $this->datasets = [];
+        parent::setModel($model);
+
+        $this->prepareDatasets();
+    }
+
+    /**
+     * Fills dataset with data from data model.
+     */
+    protected function prepareDatasets(): void
+    {
+        if ($this->model === null || $this->columns === null) {
+            return;
+        }
+
+        $datasets = [];
 
         // initialize data-sets
-        foreach ($columns as $key => $column) {
+        foreach ($this->columns as $key => $column) {
             if ($key === 0) {
                 $titleColumn = $column;
 
@@ -176,8 +197,8 @@ class Chart extends View
 
             $colors = array_shift($this->niceColors);
 
-            $this->datasets[$column] = [
-                'label' => $model->getField($column)->getCaption(),
+            $datasets[$column] = [
+                'label' => $this->model->getField($column)->getCaption(),
                 'backgroundColor' => $colors[0],
                 'borderColor' => $colors[1],
                 'borderWidth' => 1,
@@ -186,12 +207,14 @@ class Chart extends View
         }
 
         // prepopulate data-sets
-        foreach ($model as $entity) {
+        foreach ($this->model as $entity) {
             $this->labels[] = $entity->get($titleColumn); // @phpstan-ignore-line
-            foreach ($this->datasets as $key => &$dataset) {
+            foreach ($datasets as $key => &$dataset) {
                 $dataset['data'][] = $entity->get($key);
             }
         }
+
+        $this->setDatasets($datasets);
     }
 
     /**
