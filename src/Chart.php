@@ -73,7 +73,7 @@ class Chart extends View
         }
 
         foreach ($this->column_options as $column => $options) {
-            $this->datasets[$column] = array_merge($this->datasets[$column], $options);
+            $this->datasets[$column] = array_merge_recursive($this->datasets[$column], $options);
         }
 
         return [
@@ -103,7 +103,7 @@ class Chart extends View
     }
 
     /**
-     * @param array<int, array{string, mixed}> $datasets
+     * @param array<string, array{string, mixed}> $datasets
      *
      * @return $this
      */
@@ -205,16 +205,32 @@ class Chart extends View
     public function withCurrency(string $char = '€', string $axis = 'y')
     {
         // magic regex adds commas as thousand separators: http://009co.com/?p=598
-        $options = [];
-        $options['scales'][$axis . 'Axes'] =
-            [['ticks' => [
-                'userCallback' => new JsExpression('{}', ['function(value) { value=Math.round(value*1000000)/1000000; return "' . $char . ' " + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }']),
-            ]]];
-
-        $options['tooltips'] = [
-            'enabled' => true,
-            'mode' => 'single',
-            'callbacks' => ['label' => new JsExpression('{}', ['function(item, data) { return item.' . $axis . 'Label ? "' . $char . ' " +  item.' . $axis . 'Label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "No Data"; }'])],
+        $options = [
+            'scales' => [
+                $axis . 'Axes' => [
+                    [
+                        'ticks' => [
+                            'userCallback' => new JsExpression('{}', [
+                                'function(value) {
+                                    value = Math.round(value*1000000)/1000000;
+                                    return "' . $char . ' " + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                }',
+                            ]),
+                        ],
+                    ],
+                ],
+            ],
+            'tooltips' => [
+                'enabled' => true,
+                'mode' => 'single',
+                'callbacks' => [
+                    'label' => new JsExpression('{}', [
+                        'function(item, data) {
+                            return item.' . $axis . 'Label ? "' . $char . ' " +  item.' . $axis . 'Label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "No Data";
+                        }',
+                    ]),
+                ],
+            ],
         ];
 
         $this->setOptions($options);

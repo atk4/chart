@@ -25,13 +25,13 @@ class PieChart extends Chart
 
         // initialize data-sets
         foreach ($columns as $key => $column) {
-            $colors[$column] = $this->niceColors;
-
             if ($key === 0) {
                 $titleColumn = $column;
 
-                continue; // skipping labels
+                continue; // skipping label column
             }
+
+            $colors[$column] = $this->niceColors;
 
             $this->datasets[$column] = [
                 'data' => [],
@@ -53,15 +53,16 @@ class PieChart extends Chart
 
     public function withCurrency(string $char = '€', string $axis = 'y')
     {
-        $options = [];
-        $options['tooltips'] = [
-            'callbacks' => [
-                'label' => new JsExpression('{}', [
-                    'function(item, data, bb) {
-                        var val = data.datasets[item.datasetIndex].data[item.index];
-                        return "' . $char . '" +  val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    }',
-                ]),
+        $options = [
+            'tooltips' => [
+                'callbacks' => [
+                    'label' => new JsExpression('{}', [
+                        'function(item, data, bb) {
+                            var val = data.datasets[item.datasetIndex].data[item.index];
+                            return "' . $char . '" +  val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        }',
+                    ]),
+                ],
             ],
         ];
 
