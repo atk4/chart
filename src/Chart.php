@@ -156,18 +156,9 @@ class Chart extends View
      * This component will automatically figure out name of the chart,
      * series titles based on column captions etc.
      *
-     * Example for bar chart with two side-by side bars per category, and one of them stacked:
-     *
-     * $chart->setModel(
-     *      $model,
-     *      ['month', 'turnover_month_shoes', 'turnover_month_shirts', 'turnover_month_trousers', 'turnover_month_total_last_year'],
-     *      [1, 1, 1, 2] // 1 => shoes+shirts+trousers, 2 => total last year
-     *  );
-     *
      * @param array<int, string> $columns
-     * @param array<int, mixed>  $stacks
      */
-    public function setModel(Model $model, array $columns = [], array $stacks = []): void
+    public function setModel(Model $model, array $columns = []): void
     {
         if ($columns === []) {
             throw new Exception('Second argument must be specified to Chart::setModel()');
@@ -184,7 +175,6 @@ class Chart extends View
             }
 
             $colors = array_shift($this->niceColors);
-            $stack = array_shift($stacks);
 
             $this->datasets[$column] = [
                 'label' => $model->getField($column)->getCaption(),
@@ -193,14 +183,6 @@ class Chart extends View
                 'borderWidth' => 1,
                 'data' => [],
             ];
-
-            if ($stack !== null) {
-                $this->datasets[$column]['stack'] = $stack;
-            }
-        }
-
-        if ($stacks !== []) {
-            $this->setOptions(['scales' => ['yAxes' => [0 => ['stacked' => true]], 'xAxes' => [0 => ['stacked' => true]]]]);
         }
 
         // prepopulate data-sets
