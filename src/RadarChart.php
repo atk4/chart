@@ -6,5 +6,5 @@ namespace Atk4\Chart;
 
 class RadarChart extends Chart
 {
-    public $type = ChartType::TYPE_RADAR;
+    public string $type = ChartType::TYPE_RADAR;
 }

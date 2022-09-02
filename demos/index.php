@@ -49,7 +49,7 @@ $columns = Columns::addTo($app->layout);
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Bar Chart', 'icon' => 'book']]);
 $chart = BarChart::addTo($cb);
 $chart->setModel($m, ['name', 'sales', 'purchases', 'profit']);
-$chart->withCurrency('$'); // tweak our chart to support currencies better
+$chart->setCurrencyLabel('$'); // tweak our chart to support currencies better
 
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Bar Chart Stacked', 'icon' => 'book']]);
 $chart = BarChart::addTo($cb);
@@ -58,7 +58,7 @@ $chart->setStacks([
     'Stack 1' => ['sales_cash', 'sales_bank'],
     'Stack 2' => ['purchases'],
 ]);
-$chart->withCurrency('$');
+$chart->setCurrencyLabel('$');
 
 // split in columns - Bar Chart horizontal
 $columns = Columns::addTo($app->layout);
@@ -67,7 +67,7 @@ $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Bar Chart Horizontal
 $chart = BarChart::addTo($cb);
 $chart->setHorizontal();
 $chart->setModel($m, ['name', 'sales', 'purchases', 'profit']);
-$chart->withCurrency('$');
+$chart->setCurrencyLabel('$');
 
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Bar Chart Horizontal', 'icon' => 'book']]);
 $chart = BarChart::addTo($cb);
@@ -77,7 +77,7 @@ $chart->setStacks([
     'Stack 1' => ['sales_cash', 'sales_bank'],
     'Stack 2' => ['purchases'],
 ]);
-$chart->withCurrency('$');
+$chart->setCurrencyLabel('$');
 
 // split in columns - Line Chart
 $columns = Columns::addTo($app->layout);
@@ -85,7 +85,7 @@ $columns = Columns::addTo($app->layout);
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Line Chart', 'icon' => 'book']]);
 $chart = LineChart::addTo($cb);
 $chart->setModel($m, ['name', 'sales', 'purchases', 'profit']);
-$chart->withCurrency('$');
+$chart->setCurrencyLabel('$');
 
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Line Chart Stacked', 'icon' => 'book']]);
 $chart = LineChart::addTo($cb);
@@ -94,7 +94,7 @@ $chart->setStacks([
     'Stack 1' => ['sales_cash', 'sales_bank'],
     'Stack 2' => ['purchases'],
 ]);
-$chart->withCurrency('$');
+$chart->setCurrencyLabel('$');
 
 // split in columns - Line Chart Vertical and filled
 $columns = Columns::addTo($app->layout);
@@ -105,13 +105,13 @@ $chart->setModel($m, ['name', 'sales', 'purchases', 'profit']);
 $chart->setColumnOptions([
     'profit' => ['fill' => true],
 ]);
-$chart->withCurrency('$');
+$chart->setCurrencyLabel('$');
 
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Line Chart Vertical', 'icon' => 'book']]);
 $chart = LineChart::addTo($cb);
 $chart->setModel($m, ['name', 'sales', 'purchases', 'profit']);
 $chart->setVertical();
-$chart->withCurrency('$');
+$chart->setCurrencyLabel('$');
 
 // split in columns - Line + Bar Chart
 $columns = Columns::addTo($app->layout);
@@ -124,7 +124,7 @@ $chart->setColumnOptions([
     'sales' => ['type' => ChartType::TYPE_BAR],
     'purchases' => ['type' => ChartType::TYPE_BAR],
 ]);
-$chart->withCurrency('$');
+$chart->setCurrencyLabel('$');
 
 // split in columns - Pie Chart
 $columns = Columns::addTo($app->layout);
@@ -132,12 +132,12 @@ $columns = Columns::addTo($app->layout);
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Pie Chart', 'icon' => 'book']]);
 $chart = PieChart::addTo($cb);
 $chart->setModel($m, ['name', 'purchases']);
-$chart->withCurrency('$');
+$chart->setCurrencyLabel('$');
 
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Doughnut Chart', 'icon' => 'book']]);
 $chart = DoughnutChart::addTo($cb);
 $chart->setModel($m, ['name', 'purchases']);
-$chart->withCurrency('$');
+$chart->setCurrencyLabel('$');
 
 // split in columns - More charts
 $columns = Columns::addTo($app->layout);
@@ -145,12 +145,12 @@ $columns = Columns::addTo($app->layout);
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Radar Chart', 'icon' => 'book']]);
 $chart = RadarChart::addTo($cb);
 $chart->setModel($m, ['name', 'sales', 'purchases', 'profit']);
-$chart->withCurrency('$');
+$chart->setCurrencyLabel('$');
 
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Polar Area Chart', 'icon' => 'book']]);
 $chart = PolarAreaChart::addTo($cb);
 $chart->setModel($m, ['name', 'sales', 'purchases', 'profit']);
-$chart->withCurrency('$');
+$chart->setCurrencyLabel('$');
 
 // setup example data model
 $t = [
@@ -167,12 +167,12 @@ $m->addFields(['name', 'trees', 'cars', 'pollution']);
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Scatter Chart', 'icon' => 'book']]);
 $chart = ScatterChart::addTo($cb);
 $chart->setModel($m, ['name', 'trees', 'cars', 'pollution']);
-$chart->withAxisTitles();
+$chart->setAxisTitles();
 
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Bubble Chart - dataset from model', 'icon' => 'book']]);
 $chart = BubbleChart::addTo($cb);
 $chart->setModel($m, ['name', 'trees', 'cars', 'pollution']);
-$chart->withAxisTitles();
+$chart->setAxisTitles();
 
 // custom bubble chart without model but with multiple manually set datasets
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Bubble Chart - multiple datasets', 'icon' => 'book']]);
@@ -199,4 +199,4 @@ $chart->setDatasets([
         ],
     ],
 ]);
-$chart->withAxisTitles();
+$chart->setAxisTitles();

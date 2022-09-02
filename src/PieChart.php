@@ -8,8 +8,7 @@ use Atk4\Ui\JsExpression;
 
 class PieChart extends Chart
 {
-    /** @var string Type of chart */
-    public $type = ChartType::TYPE_PIE;
+    public string $type = ChartType::TYPE_PIE;
 
     public function prepareDatasets(): void
     {
@@ -46,7 +45,7 @@ class PieChart extends Chart
         $this->setDatasets($datasets);
     }
 
-    public function withCurrency(string $char = '€', string $axis = 'y')
+    public function setCurrencyLabel(string $char = '€', string $axis = 'y')
     {
         $options = [
             'plugins' => [

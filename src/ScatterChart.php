@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Atk4\Chart;
 
-// use Atk4\Ui\JsExpression;
+use Atk4\Ui\JsExpression;
 
 class ScatterChart extends Chart
 {
-    public $type = ChartType::TYPE_SCATTER;
+    public string $type = ChartType::TYPE_SCATTER;
 
     /** @var string X field name */
     protected $xField;
@@ -52,10 +52,10 @@ class ScatterChart extends Chart
     /**
      * Add titles on axis.
      *
-     * @param ?string $xTitle X axis title
-     * @param ?string $yTitle Y axis title
+     * @param string|null $xTitle X axis title
+     * @param string|null $yTitle Y axis title
      */
-    public function withAxisTitles(string $xTitle = null, string $yTitle = null): void
+    public function setAxisTitles(string $xTitle = null, string $yTitle = null): void
     {
         $options = [
             'scales' => [

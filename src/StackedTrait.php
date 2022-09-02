@@ -9,7 +9,7 @@ namespace Atk4\Chart;
  */
 trait StackedTrait
 {
-    /** @var array<mixed, array<string>> Array of stacks config - stack name => array of columns in stack */
+    /** @var array<mixed, array<string>> Stacks config - stack name => array of column names in stack */
     protected $stacks = [];
 
     /**

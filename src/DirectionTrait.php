@@ -12,7 +12,7 @@ trait DirectionTrait
     /** @var string */
     protected $horizontalAxis = 'x';
 
-    /** @var string Vertical axis */
+    /** @var string */
     protected $verticalAxis = 'y';
 
     /**

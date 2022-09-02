@@ -6,5 +6,5 @@ namespace Atk4\Chart;
 
 class PolarAreaChart extends Chart
 {
-    public $type = ChartType::TYPE_POLAR_AREA;
+    public string $type = ChartType::TYPE_POLAR_AREA;
 }

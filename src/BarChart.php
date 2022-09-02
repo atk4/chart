@@ -9,7 +9,7 @@ class BarChart extends Chart
     use DirectionTrait;
     use StackedTrait;
 
-    public $type = ChartType::TYPE_BAR;
+    public string $type = ChartType::TYPE_BAR;
 
     /**
      * @param array<mixed,mixed>|string $label

@@ -19,7 +19,7 @@ class Chart extends View
     public $element = 'canvas';
 
     /** @var string Type of chart - bar|pie etc. See ChartType class */
-    public $type;
+    public string $type;
 
     /** @var bool should we add JS include into application body? Set "false" if you do it manually. */
     public $jsInclude = true;
@@ -74,10 +74,6 @@ class Chart extends View
      */
     protected function getConfig(): array
     {
-        if ($this->type === null) {
-            throw new Exception('Chart type should be set');
-        }
-
         return [
             'type' => $this->type,
             'data' => [
@@ -89,7 +85,7 @@ class Chart extends View
     }
 
     /**
-     * @return ?array<int, string>
+     * @return array<int, string>|null
      */
     protected function getLabels(): ?array
     {
@@ -225,7 +221,7 @@ class Chart extends View
      *
      * @return $this
      */
-    public function withCurrency(string $char = '€', string $axis = 'y')
+    public function setCurrencyLabel(string $char = '€', string $axis = 'y')
     {
         // magic regex adds commas as thousand separators: http://009co.com/?p=598
         $options = [
@@ -273,9 +269,9 @@ class Chart extends View
      *
      * @return $this
      */
-    public function withCurrencyX(string $char = '€')
+    public function setCurrencyLabelX(string $char = '€')
     {
-        return $this->withCurrency($char, 'x');
+        return $this->setCurrencyLabel($char, 'x');
     }
 
     /**
@@ -285,9 +281,9 @@ class Chart extends View
      *
      * @return $this
      */
-    public function withCurrencyY(string $char = '€')
+    public function setCurrencyLabelY(string $char = '€')
     {
-        return $this->withCurrency($char, 'y');
+        return $this->setCurrencyLabel($char, 'y');
     }
 
     /**
@@ -309,7 +305,7 @@ class Chart extends View
      *            'purchase' => $orders->expr('sum(if([is_purchase], [amount], 0)'),
      *           'sale' => $orders->expr('sum(if([is_purchase], 0, [amount])'),
      *       ],
-     *   ])->withCurrency('$');
+     *   ])->setCurrencyLabel('$');
      *
      * @param array<string, mixed> $options
      *

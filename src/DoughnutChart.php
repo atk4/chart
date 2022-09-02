@@ -6,6 +6,5 @@ namespace Atk4\Chart;
 
 class DoughnutChart extends PieChart
 {
-    /** @var string Type of chart */
-    public $type = ChartType::TYPE_DOUGHNUT;
+    public string $type = ChartType::TYPE_DOUGHNUT;
 }
