@@ -9,7 +9,7 @@ namespace Atk4\Chart;
  */
 trait DirectionTrait
 {
-    /** @var string Horizontal axis */
+    /** @var string */
     protected $horizontalAxis = 'x';
 
     /** @var string Vertical axis */
