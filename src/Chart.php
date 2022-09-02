@@ -24,7 +24,7 @@ class Chart extends View
     /** @var bool should we add JS include into application body? Set "false" if you do it manually. */
     public $jsInclude = true;
 
-    /** @var string CDN URL */
+    /** @var string */
     protected $cdnUrl = 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js';
 
     /** @var array<int, array<int, string>> We will use these colors in charts */
