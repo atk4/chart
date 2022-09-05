@@ -24,25 +24,14 @@ class Chart extends View
     /** @var bool should we add JS include into application body? Set "false" if you do it manually. */
     public $jsInclude = true;
 
-    /** @var string */
-    protected $cdnUrl = 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js';
-
-    /** @var array<int, array<int, string>> We will use these colors in charts */
-    public $niceColors = [
-        ['rgba(255, 99, 132, 0.2)', 'rgba(255,99,132,1)'],
-        ['rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 1)'],
-        ['rgba(255, 206, 86, 0.2)', 'rgba(255, 206, 86, 1)'],
-        ['rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 1)'],
-        ['rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 1)'],
-        ['rgba(255, 159, 64, 0.2)', 'rgba(255, 159, 64, 1)'],
-        ['rgba(20, 20, 20, 0.2)', 'rgba(20, 20, 20, 1)'],
-    ];
-
     /** @var array<string, mixed> Options for chart.js widget */
     public $options = [];
 
     /** @var array<string, array<mixed, mixed>> Options for each data column for chart.js widget */
     public $column_options = [];
+
+    /** @var string */
+    protected $cdnUrl = 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js';
 
     /** @var array<int, string> Columns (data model fields) used in chart */
     protected $columns;
@@ -53,9 +42,14 @@ class Chart extends View
     /** @var array<mixed, array<string, mixed>> Datasets. Fills with setModel(). */
     protected $datasets;
 
+    /** @var Color */
+    protected $color;
+
     protected function init(): void
     {
         parent::init();
+
+        $this->color = new Color();
 
         if ($this->jsInclude) {
             $this->getApp()->requireJs($this->cdnUrl);
@@ -191,7 +185,7 @@ class Chart extends View
                 continue; // skipping label column
             }
 
-            $colors = array_shift($this->niceColors);
+            $colors = $this->color->getColors();
 
             $datasets[$column] = [
                 'label' => $this->model->getField($column)->getCaption(),
@@ -205,8 +199,8 @@ class Chart extends View
         // prepopulate data-sets
         foreach ($this->model as $entity) {
             $this->labels[] = $entity->get($titleColumn); // @phpstan-ignore-line
-            foreach ($datasets as $key => &$dataset) {
-                $dataset['data'][] = $entity->get($key);
+            foreach ($datasets as $column => &$dataset) {
+                $dataset['data'][] = $entity->get($column);
             }
         }
 
@@ -245,7 +239,8 @@ class Chart extends View
                         'label' => new JsExpression('{}', [
                             'function(context) {
                                 let label = context.dataset.label || "";
-                                let value = context.parsed.y;
+                                //let value = context.parsed.y; // or x (horizontal) or r (radar) etc
+                                let value = context.formattedValue.replace(/,/, "");
                                 if (label) {
                                     label += ": ";
                                 }

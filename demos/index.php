@@ -9,6 +9,7 @@ use Atk4\Chart\BubbleChart;
 use Atk4\Chart\Chart;
 use Atk4\Chart\ChartBox;
 use Atk4\Chart\ChartType;
+use Atk4\Chart\Color;
 use Atk4\Chart\DoughnutChart;
 use Atk4\Chart\LineChart;
 use Atk4\Chart\PieChart;
@@ -23,12 +24,14 @@ use Atk4\Ui\Layout;
 
 require '../vendor/autoload.php';
 
+
 // setup example data model
 $t = [
     1 => ['name' => 'January', 'sales_cash' => 6000, 'sales_bank' => 14000, 'purchases' => 10000],
     2 => ['name' => 'February', 'sales_cash' => 5000, 'sales_bank' => 18000, 'purchases' => 12000],
     3 => ['name' => 'March', 'sales_cash' => 4000, 'sales_bank' => 12000, 'purchases' => 22000],
     4 => ['name' => 'April', 'sales_cash' => 7500, 'sales_bank' => 6500, 'purchases' => 13000],
+    5 => ['name' => 'May', 'sales_cash' => 3000, 'sales_bank' => 8500, 'purchases' => 9000],
 ];
 
 $m = new Model(new Persistence\Array_($t));
@@ -131,15 +134,15 @@ $columns = Columns::addTo($app->layout);
 
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Pie Chart', 'icon' => 'book']]);
 $chart = PieChart::addTo($cb);
-$chart->setModel($m, ['name', 'purchases']);
+$chart->setModel($m, ['name', 'sales', 'purchases']);
 $chart->setCurrencyLabel('$');
 
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Doughnut Chart', 'icon' => 'book']]);
 $chart = DoughnutChart::addTo($cb);
-$chart->setModel($m, ['name', 'purchases']);
+$chart->setModel($m, ['name', 'sales', 'purchases']);
 $chart->setCurrencyLabel('$');
 
-// split in columns - More charts
+// split in columns - Radar and Polar Area charts
 $columns = Columns::addTo($app->layout);
 
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Radar Chart', 'icon' => 'book']]);
@@ -149,7 +152,7 @@ $chart->setCurrencyLabel('$');
 
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Polar Area Chart', 'icon' => 'book']]);
 $chart = PolarAreaChart::addTo($cb);
-$chart->setModel($m, ['name', 'sales', 'purchases', 'profit']);
+$chart->setModel($m, ['name', 'sales_cash', 'sales']);
 $chart->setCurrencyLabel('$');
 
 // setup example data model
@@ -164,6 +167,7 @@ $t = [
 $m = new Model(new Persistence\Array_($t), ['caption' => 'Pollution']);
 $m->addFields(['name', 'trees', 'cars', 'pollution']);
 
+// Scatter and Bubble charts
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Scatter Chart', 'icon' => 'book']]);
 $chart = ScatterChart::addTo($cb);
 $chart->setModel($m, ['name', 'trees', 'cars', 'pollution']);
@@ -177,11 +181,12 @@ $chart->setAxisTitles();
 // custom bubble chart without model but with multiple manually set datasets
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Bubble Chart - multiple datasets', 'icon' => 'book']]);
 $chart = BubbleChart::addTo($cb);
+$color = new Color();
 $chart->setDatasets([
     [
         'label' => 'Population',
-        'backgroundColor' => $chart->niceColors[0][0],
-        'borderColor' => $chart->niceColors[0][1],
+        'backgroundColor' => $color->getColorsByIndex(0)[0],
+        'borderColor' => $color->getColorsByIndex(0)[1],
         'data' => [
             0 => ['x' => 30, 'y' => 50, 'r' => 10],
             1 => ['x' => 10, 'y' => 20, 'r' => 50],
@@ -190,8 +195,8 @@ $chart->setDatasets([
     ],
     [
         'label' => 'Pollution',
-        'backgroundColor' => $chart->niceColors[1][0],
-        'borderColor' => $chart->niceColors[1][1],
+        'backgroundColor' => $color->getColorsByIndex(1)[0],
+        'borderColor' => $color->getColorsByIndex(1)[1],
         'data' => [
             0 => ['x' => 15, 'y' => 30, 'r' => 5],
             1 => ['x' => 10, 'y' => 10, 'r' => 20],

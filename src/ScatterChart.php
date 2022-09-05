@@ -23,23 +23,24 @@ class ScatterChart extends Chart
     {
         $columns = $this->columns;
 
-        $label = array_shift($columns) ?? null;
+        $titleColumn = array_shift($columns) ?? null;
         $this->xField = array_shift($columns) ?? 'x';
         $this->yField = array_shift($columns) ?? 'y';
         $this->rField = array_shift($columns) ?? 'r';
 
         // initialize data-set
+        $colors = $this->color->getColors();
         $dataset = [
             'label' => $this->model->getModelCaption(),
-            'backgroundColor' => $this->niceColors[0][0],
-            'borderColor' => $this->niceColors[0][1],
+            'backgroundColor' => $colors[0],
+            'borderColor' => $colors[1],
             'data' => [],
         ];
 
         // prepopulate data-sets
         foreach ($this->model as $entity) {
             $dataset['data'][] = [
-                // 'label' => $label, // maybe some day this will be implemented in chartjs to add label to bubble
+                // 'label' => $entity->get($titleColumn), // maybe some day this will be implemented in chartjs to add label to bubble
                 'x' => $entity->get($this->xField),
                 'y' => $entity->get($this->yField),
                 'r' => $entity->get($this->rField),

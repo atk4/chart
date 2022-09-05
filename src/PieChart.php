@@ -23,20 +23,26 @@ class PieChart extends Chart
                 continue; // skipping label column
             }
 
-            $colors[$column] = $this->niceColors;
+            $colors[$column] = new Color();
 
             $datasets[$column] = [
                 'data' => [],
+                'label' => $this->model->getField($column)->getCaption(),
                 'backgroundColor' => [],
+                'borderColor' => [],
+                'borderWidth' => 1,
+                'hoverOffset' => 8,
+                'borderAlign' => 'inner',
+
             ];
         }
 
         // prepopulate data-sets
         foreach ($this->model as $entity) {
             $this->labels[] = $entity->get($titleColumn); // @phpstan-ignore-line
-            foreach ($datasets as $key => &$dataset) {
-                $dataset['data'][] = $entity->get($key);
-                $color = array_shift($colors[$key]);
+            foreach ($datasets as $column => &$dataset) {
+                $dataset['data'][] = $entity->get($column);
+                $color = $colors[$column]->getColors();
                 $dataset['backgroundColor'][] = $color[0];
                 $dataset['borderColor'][] = $color[1];
             }
@@ -55,8 +61,9 @@ class PieChart extends Chart
                     'callbacks' => [
                         'label' => new JsExpression('{}', [
                             'function(context) {
-                                let label = context.label || "";
-                                let value = context.parsed;
+                                let label = context.dataset.label || "";
+                                //let value = context.parsed; // y or x (horizontal) or r (radar) etc
+                                let value = context.formattedValue.replace(/,/, "");
                                 if (label) {
                                     label += ": ";
                                 }
