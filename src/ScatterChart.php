@@ -29,7 +29,7 @@ class ScatterChart extends Chart
         $this->rField = array_shift($columns) ?? 'r';
 
         // initialize data-set
-        $colors = $this->color->getColors();
+        $colors = $this->color->getNextColorPair();
         $dataset = [
             'label' => $this->model->getModelCaption(),
             'backgroundColor' => $colors[0],

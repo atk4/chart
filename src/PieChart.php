@@ -41,7 +41,7 @@ class PieChart extends Chart
             $this->labels[] = $entity->get($titleColumn); // @phpstan-ignore-line
             foreach ($datasets as $column => &$dataset) {
                 $dataset['data'][] = $entity->get($column);
-                $color = $colors[$column]->getColors();
+                $color = $colors[$column]->getNextColorPair();
                 $dataset['backgroundColor'][] = $color[0];
                 $dataset['borderColor'][] = $color[1];
             }

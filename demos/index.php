@@ -184,8 +184,8 @@ $color = new Color();
 $chart->setDatasets([
     [
         'label' => 'Population',
-        'backgroundColor' => $color->getColorsByIndex(0)[0],
-        'borderColor' => $color->getColorsByIndex(0)[1],
+        'backgroundColor' => $color->getColorPairByIndex(0)[0],
+        'borderColor' => $color->getColorPairByIndex(0)[1],
         'data' => [
             0 => ['x' => 30, 'y' => 50, 'r' => 10],
             1 => ['x' => 10, 'y' => 20, 'r' => 50],
@@ -194,8 +194,8 @@ $chart->setDatasets([
     ],
     [
         'label' => 'Pollution',
-        'backgroundColor' => $color->getColorsByIndex(1)[0],
-        'borderColor' => $color->getColorsByIndex(1)[1],
+        'backgroundColor' => $color->getColorPairByIndex(1)[0],
+        'borderColor' => $color->getColorPairByIndex(1)[1],
         'data' => [
             0 => ['x' => 15, 'y' => 30, 'r' => 5],
             1 => ['x' => 10, 'y' => 10, 'r' => 20],

@@ -18,7 +18,7 @@ class Color
      *
      * @const array<int, array<int, string>>
      */
-    public const COLORS = [
+    protected const COLORS = [
         ['rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 1)'],
         ['rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 1)'],
         ['rgba(255, 206, 86, 0.2)', 'rgba(255, 206, 86, 1)'],
@@ -36,7 +36,7 @@ class Color
      *
      * @return array<int, string>
      */
-    public function getColorsByIndex(int $i): array
+    public function getColorPairByIndex(int $i): array
     {
         return self::COLORS[$i % count(self::COLORS)];
     }
@@ -46,9 +46,9 @@ class Color
      *
      * @return array<int, string>
      */
-    public function getColors(): array
+    public function getNextColorPair(): array
     {
-        return $this->getColorsByIndex($this->idx++);
+        return $this->getColorPairByIndex($this->idx++);
     }
 
     /**
@@ -56,7 +56,7 @@ class Color
      *
      * @return array<int, array<int, string>>
      */
-    public function getAllColors(): array
+    public function getAllColorPairs(): array
     {
         return self::COLORS;
     }

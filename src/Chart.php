@@ -185,7 +185,7 @@ class Chart extends View
                 continue; // skipping label column
             }
 
-            $colors = $this->color->getColors();
+            $colors = $this->color->getNextColorPair();
 
             $datasets[$column] = [
                 'label' => $this->model->getField($column)->getCaption(),
