@@ -24,7 +24,6 @@ use Atk4\Ui\Layout;
 
 require '../vendor/autoload.php';
 
-
 // setup example data model
 $t = [
     1 => ['name' => 'January', 'sales_cash' => 6000, 'sales_bank' => 14000, 'purchases' => 10000],

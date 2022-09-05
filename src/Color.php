@@ -33,6 +33,8 @@ class Color
 
     /**
      * Return color by index.
+     *
+     * @return array<int, string>
      */
     public function getColorsByIndex(int $i): array
     {
@@ -41,6 +43,8 @@ class Color
 
     /**
      * Return next color.
+     *
+     * @return array<int, string>
      */
     public function getColors(): array
     {
@@ -49,6 +53,8 @@ class Color
 
     /**
      * Return all possible colors.
+     *
+     * @return array<int, array<int, string>>
      */
     public function getAllColors(): array
     {

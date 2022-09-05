@@ -33,7 +33,6 @@ class PieChart extends Chart
                 'borderWidth' => 1,
                 'hoverOffset' => 8,
                 'borderAlign' => 'inner',
-
             ];
         }
 
