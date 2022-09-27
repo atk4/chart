@@ -28,7 +28,7 @@ class Chart extends View
     public $options = [];
 
     /** @var array<string, array<mixed, mixed>> Options for each data column for chart.js widget */
-    public $column_options = [];
+    public $columnOptions = [];
 
     /** @var string */
     protected $cdnUrl = 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js';
@@ -91,7 +91,7 @@ class Chart extends View
      */
     protected function getDatasets(): array
     {
-        foreach ($this->column_options as $column => $options) {
+        foreach ($this->columnOptions as $column => $options) {
             $this->datasets[$column] = array_merge_recursive($this->datasets[$column], $options);
         }
 
@@ -139,7 +139,7 @@ class Chart extends View
     public function setColumnOptions(array $options)
     {
         // IMPORTANT: use replace not merge here to preserve numeric keys !!!
-        $this->column_options = array_replace_recursive($this->column_options, $options);
+        $this->columnOptions = array_replace_recursive($this->columnOptions, $options);
 
         return $this;
     }
