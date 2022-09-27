@@ -39,11 +39,11 @@ class PieChart extends Chart
         // prepopulate data-sets
         foreach ($this->model as $entity) {
             $this->labels[] = $entity->get($titleColumn); // @phpstan-ignore-line
-            foreach ($datasets as $column => &$dataset) {
-                $dataset['data'][] = $entity->get($column);
+            foreach ($datasets as $column => $dataset) {
+                $datasets[$column]['data'][] = $entity->get($column);
                 $color = $colors[$column]->getNextColorPair();
-                $dataset['backgroundColor'][] = $color[0];
-                $dataset['borderColor'][] = $color[1];
+                $datasets[$column]['backgroundColor'][] = $color[0];
+                $datasets[$column]['borderColor'][] = $color[1];
             }
         }
 
