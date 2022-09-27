@@ -215,17 +215,15 @@ class Chart extends View
      *
      * @return $this
      */
-    public function setCurrencyLabel(string $char = '€', string $axis = 'y')
+    public function setCurrencyLabel(string $char = '€', string $axis = 'y', int $digits = 2)
     {
-        // magic regex adds commas as thousand separators: http://009co.com/?p=598
         $options = [
             'scales' => [
                 $axis => [
                     'ticks' => [
                         'callback' => new JsExpression('{}', [
                             'function(value, index, ticks) {
-                                value = Math.round(value*1000000)/1000000;
-                                return "' . $char . ' " + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                return "' . $char . ' " + Number(value).toLocaleString(undefined, {minimumFractionDigits: ' . $digits . ', maximumFractionDigits: ' . $digits . '});
                             }',
                         ]),
                     ],
@@ -244,7 +242,7 @@ class Chart extends View
                                 if (label) {
                                     label += ": ";
                                 }
-                                return label + (value ? "' . $char . ' " +  value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "No Data");
+                                return label + (value ? "' . $char . ' " +  Number(value).toLocaleString(undefined, {minimumFractionDigits: ' . $digits . ', maximumFractionDigits: ' . $digits . '}) : "No Data");
                             }',
                         ]),
                     ],
@@ -264,9 +262,9 @@ class Chart extends View
      *
      * @return $this
      */
-    public function setCurrencyLabelX(string $char = '€')
+    public function setCurrencyLabelX(string $char = '€', int $digits = 2)
     {
-        return $this->setCurrencyLabel($char, 'x');
+        return $this->setCurrencyLabel($char, 'x', $digits);
     }
 
     /**
@@ -276,8 +274,8 @@ class Chart extends View
      *
      * @return $this
      */
-    public function setCurrencyLabelY(string $char = '€')
+    public function setCurrencyLabelY(string $char = '€', int $digits = 2)
     {
-        return $this->setCurrencyLabel($char, 'y');
+        return $this->setCurrencyLabel($char, 'y', $digits);
     }
 }

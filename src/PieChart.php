@@ -50,7 +50,7 @@ class PieChart extends Chart
         $this->setDatasets($datasets);
     }
 
-    public function setCurrencyLabel(string $char = '€', string $axis = 'y')
+    public function setCurrencyLabel(string $char = '€', string $axis = 'y', int $digits = 2)
     {
         $options = [
             'plugins' => [
@@ -66,7 +66,7 @@ class PieChart extends Chart
                                 if (label) {
                                     label += ": ";
                                 }
-                                return label + (value ? "' . $char . ' " +  value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "No Data");
+                                return label + (value ? "' . $char . ' " + Number(value).toLocaleString(undefined, {minimumFractionDigits: ' . $digits . ', maximumFractionDigits: ' . $digits . '}) : "No Data");
                             }',
                         ]),
                     ],

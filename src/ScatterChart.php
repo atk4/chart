@@ -87,7 +87,7 @@ class ScatterChart extends Chart
                                 if (label) {
                                     label += ": ";
                                 }
-                                return label + (value ? value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "No Data");
+                                return label + (value ? Number(value).toLocaleString(undefined, {minimumFractionDigits: ' . $digits . ', maximumFractionDigits: ' . $digits . '}) : "No Data");
                             }',
                         ]),
                     ],
