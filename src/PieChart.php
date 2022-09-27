@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Atk4\Chart;
 
 use Atk4\Ui\JsExpression;
+use Atk4\Ui\JsFunction;
 
 class PieChart extends Chart
 {
@@ -58,8 +59,8 @@ class PieChart extends Chart
                     'enabled' => true,
                     'mode' => 'point',
                     'callbacks' => [
-                        'label' => new JsExpression('{}', [
-                            'function(context) {
+                        'label' => new JsFunction(['context'], [
+                            new JsExpression('
                                 let label = context.dataset.label || "";
                                 //let value = context.parsed; // y or x (horizontal) or r (radar) etc
                                 let value = context.formattedValue.replace(/,/, "");
@@ -67,7 +68,7 @@ class PieChart extends Chart
                                     label += ": ";
                                 }
                                 return label + (value ? "' . $char . ' " + Number(value).toLocaleString(undefined, {minimumFractionDigits: ' . $digits . ', maximumFractionDigits: ' . $digits . '}) : "No Data");
-                            }',
+                            '),
                         ]),
                     ],
                 ],

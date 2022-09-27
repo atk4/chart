@@ -7,6 +7,7 @@ namespace Atk4\Chart;
 use Atk4\Core\Exception;
 use Atk4\Data\Model;
 use Atk4\Ui\JsExpression;
+use Atk4\Ui\JsFunction;
 use Atk4\Ui\View;
 
 /**
@@ -221,10 +222,8 @@ class Chart extends View
             'scales' => [
                 $axis => [
                     'ticks' => [
-                        'callback' => new JsExpression('{}', [
-                            'function(value, index, ticks) {
-                                return "' . $char . ' " + Number(value).toLocaleString(undefined, {minimumFractionDigits: ' . $digits . ', maximumFractionDigits: ' . $digits . '});
-                            }',
+                        'callback' => new JsFunction(['value', 'index', 'ticks'], [
+                            new JsExpression('return "' . $char . ' " + Number(value).toLocaleString(undefined, {minimumFractionDigits: ' . $digits . ', maximumFractionDigits: ' . $digits . '})'),
                         ]),
                     ],
                 ],
@@ -234,8 +233,8 @@ class Chart extends View
                     'enabled' => true,
                     'mode' => 'point',
                     'callbacks' => [
-                        'label' => new JsExpression('{}', [
-                            'function(context) {
+                        'label' => new JsFunction(['context'], [
+                            new JsExpression('
                                 let label = context.dataset.label || "";
                                 //let value = context.parsed.y; // or x (horizontal) or r (radar) etc
                                 let value = context.formattedValue.replace(/,/, "");
@@ -243,7 +242,7 @@ class Chart extends View
                                     label += ": ";
                                 }
                                 return label + (value ? "' . $char . ' " +  Number(value).toLocaleString(undefined, {minimumFractionDigits: ' . $digits . ', maximumFractionDigits: ' . $digits . '}) : "No Data");
-                            }',
+                            '),
                         ]),
                     ],
                 ],

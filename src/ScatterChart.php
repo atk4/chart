@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Atk4\Chart;
 
 use Atk4\Ui\JsExpression;
+use Atk4\Ui\JsFunction;
 
 class ScatterChart extends Chart
 {
@@ -79,16 +80,15 @@ class ScatterChart extends Chart
                     'enabled' => true,
                     'mode' => 'point',
                     'callbacks' => [
-                        'label' => new JsExpression('{}', [
-                            'function(context) {
+                        'label' => new JsFunction(['context'], [
+                            new JsExpression('
                                 let label = context.dataset.label || "";
                                 let value = context.parsed.y;
-
                                 if (label) {
                                     label += ": ";
                                 }
                                 return label + (value ? Number(value).toLocaleString(undefined, {minimumFractionDigits: ' . $digits . ', maximumFractionDigits: ' . $digits . '}) : "No Data");
-                            }',
+                            '),
                         ]),
                     ],
                 ],
