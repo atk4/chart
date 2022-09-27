@@ -9,7 +9,7 @@ use Atk4\Ui\JsFunction;
 
 class PieChart extends Chart
 {
-    public string $type = ChartType::TYPE_PIE;
+    public string $type = Chart::TYPE_PIE;
 
     public function prepareDatasets(): void
     {

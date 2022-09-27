@@ -9,7 +9,7 @@ use Atk4\Ui\JsFunction;
 
 class ScatterChart extends Chart
 {
-    public string $type = ChartType::TYPE_SCATTER;
+    public string $type = Chart::TYPE_SCATTER;
 
     /** @var string X field name */
     protected $xField;

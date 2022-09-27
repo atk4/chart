@@ -8,7 +8,6 @@ use Atk4\Chart\BarChart;
 use Atk4\Chart\BubbleChart;
 use Atk4\Chart\Chart;
 use Atk4\Chart\ChartBox;
-use Atk4\Chart\ChartType;
 use Atk4\Chart\Color;
 use Atk4\Chart\DoughnutChart;
 use Atk4\Chart\LineChart;
@@ -122,9 +121,9 @@ $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Bar + Line Chart', '
 $chart = LineChart::addTo($cb);
 $chart->setModel($m, ['name', 'profit', 'sales', 'purchases']);
 $chart->setColumnOptions([
-    'profit' => ['type' => ChartType::TYPE_LINE],
-    'sales' => ['type' => ChartType::TYPE_BAR],
-    'purchases' => ['type' => ChartType::TYPE_BAR],
+    'profit' => ['type' => Chart::TYPE_LINE],
+    'sales' => ['type' => Chart::TYPE_BAR],
+    'purchases' => ['type' => Chart::TYPE_BAR],
 ]);
 $chart->setCurrencyLabel('$');
 
