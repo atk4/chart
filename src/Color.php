@@ -28,8 +28,8 @@ class Color
         ['rgba(20, 20, 20, 0.2)', 'rgba(20, 20, 20, 1)'],
     ];
 
-    /** @var int private Current color index */
-    private $idx = 0;
+    /** @var int */
+    private $currentColorIndex = -1;
 
     /**
      * Return color by index.
@@ -48,7 +48,7 @@ class Color
      */
     public function getNextColorPair(): array
     {
-        return $this->getColorPairByIndex($this->idx++);
+        return $this->getColorPairByIndex(++$this->currentColorIndex);
     }
 
     /**
