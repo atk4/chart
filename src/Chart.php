@@ -199,8 +199,8 @@ class Chart extends View
         // prepopulate data-sets
         foreach ($this->model as $entity) {
             $this->labels[] = $entity->get($titleColumn); // @phpstan-ignore-line
-            foreach ($datasets as $column => &$dataset) {
-                $dataset['data'][] = $entity->get($column);
+            foreach ($datasets as $column => $dataset) {
+                $datasets[$column]['data'][] = $entity->get($column);
             }
         }
 
