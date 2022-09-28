@@ -25,16 +25,16 @@ require '../vendor/autoload.php';
 
 // setup example data model
 $t = [
-    1 => ['name' => 'January', 'sales_cash' => 6000, 'sales_bank' => 14000, 'purchases' => 10000],
-    2 => ['name' => 'February', 'sales_cash' => 5000, 'sales_bank' => 18000, 'purchases' => 12000],
-    3 => ['name' => 'March', 'sales_cash' => 4000, 'sales_bank' => 12000, 'purchases' => 22000],
-    4 => ['name' => 'April', 'sales_cash' => 7500, 'sales_bank' => 6500, 'purchases' => 13000],
-    5 => ['name' => 'May', 'sales_cash' => 3000, 'sales_bank' => 8500, 'purchases' => 9000],
+    1 => ['name' => 'January', 'sales_cash' => 6_000, 'sales_bank' => 14_000, 'purchases' => 10_000],
+    2 => ['name' => 'February', 'sales_cash' => 5_000, 'sales_bank' => 18_000, 'purchases' => 12_000],
+    3 => ['name' => 'March', 'sales_cash' => 4_000, 'sales_bank' => 12_000, 'purchases' => 22_000],
+    4 => ['name' => 'April', 'sales_cash' => 7_500, 'sales_bank' => 6_500, 'purchases' => 13_000],
+    5 => ['name' => 'May', 'sales_cash' => 3_000, 'sales_bank' => 8_500, 'purchases' => 9_000],
 ];
 
 $m = new Model(new Persistence\Array_($t));
 $m->addFields(['name', 'sales_cash', 'sales_bank', 'sales', 'purchases', 'profit']);
-$m->onHook($m::HOOK_AFTER_LOAD, function ($m) {
+$m->onHook($m::HOOK_AFTER_LOAD, function (Model $m) {
     $m->set('sales', $m->get('sales_cash') + $m->get('sales_bank'));
     $m->set('profit', $m->get('sales') - $m->get('purchases'));
 });
@@ -186,9 +186,9 @@ $chart->setDatasets([
         'backgroundColor' => $color->getColorPairByIndex(0)[0],
         'borderColor' => $color->getColorPairByIndex(0)[1],
         'data' => [
-            0 => ['x' => 30, 'y' => 50, 'r' => 10],
-            1 => ['x' => 10, 'y' => 20, 'r' => 50],
-            2 => ['x' => 20, 'y' => 30, 'r' => 30],
+            ['x' => 30, 'y' => 50, 'r' => 10],
+            ['x' => 10, 'y' => 20, 'r' => 50],
+            ['x' => 20, 'y' => 30, 'r' => 30],
         ],
     ],
     [
@@ -196,9 +196,9 @@ $chart->setDatasets([
         'backgroundColor' => $color->getColorPairByIndex(1)[0],
         'borderColor' => $color->getColorPairByIndex(1)[1],
         'data' => [
-            0 => ['x' => 15, 'y' => 30, 'r' => 5],
-            1 => ['x' => 10, 'y' => 10, 'r' => 20],
-            2 => ['x' => 25, 'y' => 40, 'r' => 10],
+            ['x' => 15, 'y' => 30, 'r' => 5],
+            ['x' => 10, 'y' => 10, 'r' => 20],
+            ['x' => 25, 'y' => 40, 'r' => 10],
         ],
     ],
 ]);
