@@ -6,5 +6,5 @@ namespace Atk4\Chart;
 
 class BubbleChart extends ScatterChart
 {
-    public string $type = Chart::TYPE_BUBBLE;
+    public string $type = self::TYPE_BUBBLE;
 }
