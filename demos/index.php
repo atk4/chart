@@ -156,10 +156,10 @@ $chart->setCurrencyLabel('$');
 // setup example data model
 $t = [
     1 => ['name' => 'Sahara', 'trees' => 100, 'cars' => 200, 'pollution' => 4],
-    2 => ['name' => 'London', 'trees' => 500, 'cars' => 3100, 'pollution' => 50],
+    2 => ['name' => 'London', 'trees' => 500, 'cars' => 3_100, 'pollution' => 50],
     3 => ['name' => 'Riga', 'trees' => 300, 'cars' => 700, 'pollution' => 13],
-    4 => ['name' => 'Paris', 'trees' => 450, 'cars' => 2800, 'pollution' => 35],
-    5 => ['name' => 'Mars', 'trees' => 350, 'cars' => 2500, 'pollution' => 20],
+    4 => ['name' => 'Paris', 'trees' => 450, 'cars' => 2_800, 'pollution' => 35],
+    5 => ['name' => 'Mars', 'trees' => 350, 'cars' => 2_500, 'pollution' => 20],
 ];
 
 $m = new Model(new Persistence\Array_($t), ['caption' => 'Pollution']);

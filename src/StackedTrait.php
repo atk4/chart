@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Atk4\Chart;
 
-/**
- * Adds stacked chart functionality.
- */
 trait StackedTrait
 {
     /** @var array<mixed, array<string>> Stacks config - stack name => array of column names in stack */
