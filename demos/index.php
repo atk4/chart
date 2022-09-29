@@ -8,7 +8,7 @@ use Atk4\Chart\BarChart;
 use Atk4\Chart\BubbleChart;
 use Atk4\Chart\Chart;
 use Atk4\Chart\ChartBox;
-use Atk4\Chart\Color;
+use Atk4\Chart\ColorGenerator;
 use Atk4\Chart\DoughnutChart;
 use Atk4\Chart\LineChart;
 use Atk4\Chart\PieChart;
@@ -179,12 +179,12 @@ $chart->setAxisTitles();
 // custom bubble chart without model but with multiple manually set datasets
 $cb = ChartBox::addTo($columns->addColumn(8), ['label' => ['Bubble Chart - multiple datasets', 'icon' => 'book']]);
 $chart = BubbleChart::addTo($cb);
-$color = new Color();
+$colorGenerator = new ColorGenerator();
 $chart->setDatasets([
     [
         'label' => 'Population',
-        'backgroundColor' => $color->getColorPairByIndex(0)[0],
-        'borderColor' => $color->getColorPairByIndex(0)[1],
+        'backgroundColor' => $colorGenerator->getColorPairByIndex(0)[0],
+        'borderColor' => $colorGenerator->getColorPairByIndex(0)[1],
         'data' => [
             ['x' => 30, 'y' => 50, 'r' => 10],
             ['x' => 10, 'y' => 20, 'r' => 50],
@@ -193,8 +193,8 @@ $chart->setDatasets([
     ],
     [
         'label' => 'Pollution',
-        'backgroundColor' => $color->getColorPairByIndex(1)[0],
-        'borderColor' => $color->getColorPairByIndex(1)[1],
+        'backgroundColor' => $colorGenerator->getColorPairByIndex(1)[0],
+        'borderColor' => $colorGenerator->getColorPairByIndex(1)[1],
         'data' => [
             ['x' => 15, 'y' => 30, 'r' => 5],
             ['x' => 10, 'y' => 10, 'r' => 20],

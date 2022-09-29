@@ -67,14 +67,14 @@ class Chart extends View
     /** @var array<mixed, array<string, mixed>> Datasets. Fills with setModel(). */
     protected $datasets;
 
-    /** @var Color */
-    protected $color;
+    /** @var ColorGenerator */
+    protected $colorGenerator;
 
     protected function init(): void
     {
         parent::init();
 
-        $this->color = new Color();
+        $this->colorGenerator = new ColorGenerator();
 
         if ($this->jsInclude) {
             $this->getApp()->requireJs($this->cdnUrl);
@@ -210,7 +210,7 @@ class Chart extends View
                 continue; // skipping label column
             }
 
-            $colors = $this->color->getNextColorPair();
+            $colors = $this->colorGenerator->getNextColorPair();
 
             $datasets[$column] = [
                 'label' => $this->model->getField($column)->getCaption(),
@@ -260,7 +260,7 @@ class Chart extends View
                         'label' => new JsFunction(['context'], [
                             new JsExpression('
                                 let label = context.dataset.label || "";
-                                //let value = context.parsed.y; // or x (horizontal) or r (radar) etc
+                                // let value = context.parsed.y; // or x (horizontal) or r (radar) etc
                                 let value = context.formattedValue.replace(/,/, "");
                                 if (label) {
                                     label += ": ";

@@ -5,20 +5,18 @@ declare(strict_types=1);
 namespace Atk4\Chart;
 
 /**
- * Color generator.
- *
  * @todo Replace this with something which would generate infinite colors.
  * Like https://medium.com/code-nebula/automatically-generate-chart-colors-with-chart-js-d3s-color-scales-f62e282b2b41 or something else
  */
-class Color
+class ColorGenerator
 {
     /**
      * We will use these colors in charts.
      * First can be used as background color and 2nd as border color.
      *
-     * @const array<int, array<int, string>>
+     * @var array<int, array<int, string>>
      */
-    protected const COLORS = [
+    protected $colors = [
         ['rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 1)'],
         ['rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 1)'],
         ['rgba(255, 206, 86, 0.2)', 'rgba(255, 206, 86, 1)'],
@@ -38,7 +36,7 @@ class Color
      */
     public function getColorPairByIndex(int $i): array
     {
-        return self::COLORS[$i % count(self::COLORS)];
+        return $this->colors[$i % count($this->colors)];
     }
 
     /**
@@ -58,6 +56,20 @@ class Color
      */
     public function getAllColorPairs(): array
     {
-        return self::COLORS;
+        return $this->colors;
+    }
+
+    /**
+     * Set all possible colors.
+     *
+     * @param array<int, array<int, string>> $colors
+     *
+     * @return $this
+     */
+    public function setAllColorPairs(array $colors)
+    {
+        $this->colors = $colors;
+
+        return $this;
     }
 }

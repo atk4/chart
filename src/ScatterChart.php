@@ -30,7 +30,7 @@ class ScatterChart extends Chart
         $this->rField = array_shift($columns) ?? 'r';
 
         // initialize data-set
-        $colors = $this->color->getNextColorPair();
+        $colors = $this->colorGenerator->getNextColorPair();
         $dataset = [
             'label' => $this->model->getModelCaption(),
             'backgroundColor' => $colors[0],
@@ -74,7 +74,7 @@ class ScatterChart extends Chart
                     ],
                 ],
             ],
-            /* @todo maybe this can be used to tweak label to include city names ?
+            /* @todo maybe this can be used to tweak label to include city names? See example chart in demos.
             'plugins' => [
                 'tooltip' => [
                     'enabled' => true,

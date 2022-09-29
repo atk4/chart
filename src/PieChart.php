@@ -24,7 +24,7 @@ class PieChart extends Chart
                 continue; // skipping label column
             }
 
-            $colors[$column] = new Color();
+            $colors[$column] = new ColorGenerator();
 
             $datasets[$column] = [
                 'data' => [],
@@ -62,7 +62,7 @@ class PieChart extends Chart
                         'label' => new JsFunction(['context'], [
                             new JsExpression('
                                 let label = context.dataset.label || "";
-                                //let value = context.parsed; // y or x (horizontal) or r (radar) etc
+                                // let value = context.parsed; // y or x (horizontal) or r (radar) etc
                                 let value = context.formattedValue.replace(/,/, "");
                                 if (label) {
                                     label += ": ";
