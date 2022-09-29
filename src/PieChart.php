@@ -4,64 +4,74 @@ declare(strict_types=1);
 
 namespace Atk4\Chart;
 
-use Atk4\Core\Exception;
-use Atk4\Data\Model;
 use Atk4\Ui\JsExpression;
+use Atk4\Ui\JsFunction;
 
 class PieChart extends Chart
 {
-    /** @var string Type of chart */
-    public $type = 'pie';
+    public string $type = self::TYPE_PIE;
 
-    public function setModel(Model $model, array $columns = [], array $stacks = []): void
+    public function prepareDatasets(): void
     {
-        if ($columns === []) {
-            throw new Exception('Second argument must be specified to Chart::setModel()');
-        }
-
-        $this->datasets = [];
+        $datasets = [];
         $colors = [];
 
         // initialize data-sets
-        foreach ($columns as $key => $column) {
-            $colors[$column] = $this->niceColors;
-
+        foreach ($this->columns as $key => $column) {
             if ($key === 0) {
                 $titleColumn = $column;
 
-                continue; // skipping labels
+                continue; // skipping label column
             }
 
-            $this->datasets[$column] = [
+            $colors[$column] = new ColorGenerator();
+
+            $datasets[$column] = [
                 'data' => [],
+                'label' => $this->model->getField($column)->getCaption(),
                 'backgroundColor' => [],
+                'borderColor' => [],
+                'borderWidth' => 1,
+                'hoverOffset' => 8,
+                'borderAlign' => 'inner',
             ];
         }
 
         // prepopulate data-sets
-        foreach ($model as $entity) {
+        foreach ($this->model as $entity) {
             $this->labels[] = $entity->get($titleColumn); // @phpstan-ignore-line
-            foreach ($this->datasets as $key => &$dataset) {
-                $dataset['data'][] = $entity->get($key);
-                $color = array_shift($colors[$key]);
-                $dataset['backgroundColor'][] = $color[0];
-                $dataset['borderColor'][] = $color[1];
+            foreach ($datasets as $column => $dataset) {
+                $datasets[$column]['data'][] = $entity->get($column);
+                $color = $colors[$column]->getNextColorPair();
+                $datasets[$column]['backgroundColor'][] = $color[0];
+                $datasets[$column]['borderColor'][] = $color[1];
             }
         }
+
+        $this->setDatasets($datasets);
     }
 
-    public function withCurrency(string $char = '€', string $axis = 'y')
+    public function setCurrencyLabel(string $char = '€', string $axis = 'y', int $digits = 2)
     {
-        $options = [];
-        $options['tooltips'] = [
-            'callbacks' => [
-                'label' => new JsExpression('{}', [
-                    'function(item, data, bb) {
-                        var val = data.datasets[item.datasetIndex].data[item.index];
-
-                        return "' . $char . '" +  val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    }',
-                ]),
+        $options = [
+            'plugins' => [
+                'tooltip' => [
+                    'enabled' => true,
+                    'mode' => 'point',
+                    'callbacks' => [
+                        'label' => new JsFunction(['context'], [
+                            new JsExpression('
+                                let label = context.dataset.label || "";
+                                // let value = context.parsed; // y or x (horizontal) or r (radar) etc
+                                let value = context.formattedValue.replace(/,/, "");
+                                if (label) {
+                                    label += ": ";
+                                }
+                                return label + (value ? "' . $char . ' " + Number(value).toLocaleString(undefined, {minimumFractionDigits: ' . $digits . ', maximumFractionDigits: ' . $digits . '}) : "No Data");
+                            '),
+                        ]),
+                    ],
+                ],
             ],
         ];
 

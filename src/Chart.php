@@ -7,49 +7,77 @@ namespace Atk4\Chart;
 use Atk4\Core\Exception;
 use Atk4\Data\Model;
 use Atk4\Ui\JsExpression;
+use Atk4\Ui\JsFunction;
 use Atk4\Ui\View;
 
 /**
- * ChartJS 2.7.x documentation https://www.chartjs.org/docs/2.7.3/
- * ChartJS 3.9.1 documentation https://www.chartjs.org/docs/3.9.1/.
+ * ChartJS 3.9.1 documentation https://www.chartjs.org/docs/3.9.1/
+ * Chart examples https://www.chartjs.org/docs/latest/samples/information.html.
  */
 class Chart extends View
 {
+    /** @const string */
+    public const TYPE_BAR = 'bar';
+
+    /** @const string */
+    public const TYPE_LINE = 'line';
+
+    /** @const string */
+    public const TYPE_PIE = 'pie';
+
+    /** @const string */
+    public const TYPE_DOUGHNUT = 'doughnut';
+
+    /** @const string */
+    public const TYPE_SCATTER = 'scatter';
+
+    /** @const string */
+    public const TYPE_RADAR = 'radar';
+
+    /** @const string */
+    public const TYPE_BUBBLE = 'bubble';
+
+    /** @const string */
+    public const TYPE_POLAR_AREA = 'polarArea';
+
     /** @var string HTML element type */
     public $element = 'canvas';
 
-    /** @var string Type of chart - bar|pie etc. */
-    public $type;
+    /** @var string Type of chart - bar|pie etc. See TYPE_* constants */
+    public string $type;
 
     /** @var bool should we add JS include into application body? Set "false" if you do it manually. */
     public $jsInclude = true;
 
-    /** @var array<int, array{string, string}> We will use these colors in charts */
-    public $niceColors = [
-        ['rgba(255, 99, 132, 0.2)', 'rgba(255,99,132,1)'],
-        ['rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 1)'],
-        ['rgba(255, 206, 86, 0.2)', 'rgba(255, 206, 86, 1)'],
-        ['rgba(75, 192, 192, 0.2)', 'rgba(75, 192, 192, 1)'],
-        ['rgba(153, 102, 255, 0.2)', 'rgba(153, 102, 255, 1)'],
-        ['rgba(255, 159, 64, 0.2)', 'rgba(255, 159, 64, 1)'],
-        ['rgba(20, 20, 20, 0.2)', 'rgba(20, 20, 20, 1)'],
-    ];
-
     /** @var array<string, mixed> Options for chart.js widget */
     public $options = [];
+
+    /** @var array<string, array<mixed, mixed>> Options for each data column for chart.js widget */
+    public $columnOptions = [];
+
+    /** @var string */
+    protected $cdnUrl = 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js';
+
+    /** @var array<int, string> Columns (data model fields) used in chart */
+    protected $columns;
 
     /** @var array<int, string> Labels for axis. Fills with setModel(). */
     protected $labels;
 
-    /** @var array<string, array<string, mixed>> Datasets. Fills with setModel(). */
+    /** @var array<mixed, array<string, mixed>> Datasets. Fills with setModel(). */
     protected $datasets;
+
+    /** @var ColorGenerator */
+    protected $colorGenerator;
 
     protected function init(): void
     {
         parent::init();
 
+        $this->colorGenerator = new ColorGenerator();
+
         if ($this->jsInclude) {
-            $this->getApp()->requireJs('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js');
+            $this->getApp()->requireJs($this->cdnUrl);
         }
     }
 
@@ -63,7 +91,7 @@ class Chart extends View
     /**
      * @return array<string, mixed>
      */
-    public function getConfig(): array
+    protected function getConfig(): array
     {
         return [
             'type' => $this->type,
@@ -76,9 +104,9 @@ class Chart extends View
     }
 
     /**
-     * @return array<int, string>
+     * @return array<int, string>|null
      */
-    public function getLabels(): array
+    protected function getLabels(): ?array
     {
         return $this->labels;
     }
@@ -86,15 +114,31 @@ class Chart extends View
     /**
      * @return array<int, array<string, mixed>>
      */
-    public function getDatasets(): array
+    protected function getDatasets(): array
     {
+        foreach ($this->columnOptions as $column => $options) {
+            $this->datasets[$column] = array_merge_recursive($this->datasets[$column], $options);
+        }
+
         return array_values($this->datasets);
+    }
+
+    /**
+     * @param array<mixed, array<string, mixed>> $datasets
+     *
+     * @return $this
+     */
+    public function setDatasets(array $datasets)
+    {
+        $this->datasets = $datasets;
+
+        return $this;
     }
 
     /**
      * @return array<string, mixed>
      */
-    public function getOptions(): array
+    protected function getOptions(): array
     {
         return $this->options;
     }
@@ -113,67 +157,79 @@ class Chart extends View
     }
 
     /**
+     * @param array<string, array<mixed, mixed>> $options column_name => array of options
+     *
+     * @return $this
+     */
+    public function setColumnOptions(array $options)
+    {
+        // IMPORTANT: use replace not merge here to preserve numeric keys !!!
+        $this->columnOptions = array_replace_recursive($this->columnOptions, $options);
+
+        return $this;
+    }
+
+    /**
      * Specify data source for this chart. The column must contain
-     * the textual column first followed by sumber of data columns:
+     * the textual column first followed by number of data columns:
      * setModel($month_report, ['month', 'total_sales', 'total_purchases']);.
      *
      * This component will automatically figure out name of the chart,
      * series titles based on column captions etc.
      *
-     * Example for bar chart with two side-by side bars per category, and one of them stacked:
-     *
-     * $chart->setModel(
-     *      $model,
-     *      ['month', 'turnover_month_shoes', 'turnover_month_shirts', 'turnover_month_trousers', 'turnover_month_total_last_year'],
-     *      [1, 1, 1, 2] // 1 => shoes+shirts+trousers, 2 => total last year
-     *  );
-     *
      * @param array<int, string> $columns
-     * @param array<int, mixed>  $stacks
      */
-    public function setModel(Model $model, array $columns = [], array $stacks = []): void
+    public function setModel(Model $model, array $columns = []): void
     {
         if ($columns === []) {
             throw new Exception('Second argument must be specified to Chart::setModel()');
         }
+        $this->columns = $columns;
 
-        $this->datasets = [];
+        parent::setModel($model);
+
+        $this->prepareDatasets();
+    }
+
+    /**
+     * Fills dataset with data from data model.
+     */
+    protected function prepareDatasets(): void
+    {
+        if ($this->model === null || $this->columns === null) {
+            return;
+        }
+
+        $datasets = [];
 
         // initialize data-sets
-        foreach ($columns as $key => $column) {
+        foreach ($this->columns as $key => $column) {
             if ($key === 0) {
                 $titleColumn = $column;
 
                 continue; // skipping label column
             }
 
-            $colors = array_shift($this->niceColors);
-            $stack = array_shift($stacks);
+            $colors = $this->colorGenerator->getNextColorPair();
 
-            $this->datasets[$column] = [
-                'label' => $model->getField($column)->getCaption(),
+            $datasets[$column] = [
+                'label' => $this->model->getField($column)->getCaption(),
                 'backgroundColor' => $colors[0],
                 'borderColor' => $colors[1],
                 'borderWidth' => 1,
                 'data' => [],
             ];
-
-            if ($stack !== null) {
-                $this->datasets[$column]['stack'] = $stack;
-            }
-        }
-
-        if ($stacks !== []) {
-            $this->setOptions(['scales' => ['yAxes' => [0 => ['stacked' => true]], 'xAxes' => [0 => ['stacked' => true]]]]);
         }
 
         // prepopulate data-sets
-        foreach ($model as $entity) {
+        foreach ($this->model as $entity) {
             $this->labels[] = $entity->get($titleColumn); // @phpstan-ignore-line
-            foreach ($this->datasets as $key => &$dataset) {
-                $dataset['data'][] = $entity->get($key);
+            foreach ($datasets as $column => $dataset) {
+                $datasets[$column]['data'][] = $entity->get($column);
             }
         }
+
+        $this->setDatasets($datasets);
     }
 
     /**
@@ -184,19 +240,37 @@ class Chart extends View
      *
      * @return $this
      */
-    public function withCurrency(string $char = '€', string $axis = 'y')
+    public function setCurrencyLabel(string $char = '€', string $axis = 'y', int $digits = 2)
     {
-        // magic regex adds commas as thousand separators: http://009co.com/?p=598
-        $options = [];
-        $options['scales'][$axis . 'Axes'] =
-            [['ticks' => [
-                'userCallback' => new JsExpression('{}', ['function(value) { value=Math.round(value*1000000)/1000000; return "' . $char . ' " + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }']),
-            ]]];
-
-        $options['tooltips'] = [
-            'enabled' => true,
-            'mode' => 'single',
-            'callbacks' => ['label' => new JsExpression('{}', ['function(item, data) { return item.' . $axis . 'Label ? "' . $char . ' " +  item.' . $axis . 'Label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "No Data"; }'])],
+        $options = [
+            'scales' => [
+                $axis => [
+                    'ticks' => [
+                        'callback' => new JsFunction(['value', 'index', 'ticks'], [
+                            new JsExpression('return "' . $char . ' " + Number(value).toLocaleString(undefined, {minimumFractionDigits: ' . $digits . ', maximumFractionDigits: ' . $digits . '})'),
+                        ]),
+                    ],
+                ],
+            ],
+            'plugins' => [
+                'tooltip' => [
+                    'enabled' => true,
+                    'mode' => 'point',
+                    'callbacks' => [
+                        'label' => new JsFunction(['context'], [
+                            new JsExpression('
+                                let label = context.dataset.label || "";
+                                // let value = context.parsed.y; // or x (horizontal) or r (radar) etc
+                                let value = context.formattedValue.replace(/,/, "");
+                                if (label) {
+                                    label += ": ";
+                                }
+                                return label + (value ? "' . $char . ' " +  Number(value).toLocaleString(undefined, {minimumFractionDigits: ' . $digits . ', maximumFractionDigits: ' . $digits . '}) : "No Data");
+                            '),
+                        ]),
+                    ],
+                ],
+            ],
         ];
 
         $this->setOptions($options);
@@ -211,9 +285,9 @@ class Chart extends View
      *
      * @return $this
      */
-    public function withCurrencyX(string $char = '€')
+    public function setCurrencyLabelX(string $char = '€', int $digits = 2)
     {
-        return $this->withCurrency($char, 'x');
+        return $this->setCurrencyLabel($char, 'x', $digits);
     }
 
     /**
@@ -223,87 +297,8 @@ class Chart extends View
      *
      * @return $this
      */
-    public function withCurrencyY(string $char = '€')
+    public function setCurrencyLabelY(string $char = '€', int $digits = 2)
     {
-        return $this->withCurrency($char, 'y');
-    }
-
-    /**
-     * Will produce a graph showing summary of a certain model by grouping and aggregating data.
-     *
-     * Example:
-     *
-     *   // Pie or Bar chart
-     *   $chart->summarize($users, ['by' => 'status', 'fx' => 'count']);
-     *   $chart->summarize($users, ['by' => 'status', 'fx' => 'sum', 'field' => 'total_net']);
-     *
-     * or
-     *
-     *   // Bar chart
-     *   $orders = $clients->ref('Orders');
-     *   $chart->summarize($orders, [
-     *       'by'=>$orders->expr('year([date])'),
-     *       'fields'=>[
-     *            'purchase' => $orders->expr('sum(if([is_purchase], [amount], 0)'),
-     *           'sale' => $orders->expr('sum(if([is_purchase], 0, [amount])'),
-     *       ],
-     *   ])->withCurrency('$');
-     *
-     * @param array<string, mixed> $options
-     *
-     * @return $this
-     */
-    public function summarize(Model $model, array $options = [])
-    {
-        $fields = ['by'];
-
-        // first lets query data
-        if (isset($options['fields'])) {
-            $qq = $model->action('select', [[]]);
-
-            // now add fields
-            foreach ($options['fields'] as $alias => $field) {
-                if (is_numeric($alias)) {
-                    $alias = $field;
-                }
-                if (is_string($field)) {
-                    // sanitization needed!
-                    $field = $model->expr(($options['fx'] ?? '') . '([' . $field . '])');
-                }
-
-                $qq->field($field, $alias);
-
-                $fields[] = $alias;
-            }
-        } else {
-            $fx = $options['fx'] ?? 'count';
-            if ($fx === 'count') {
-                $qq = $model->action('count', ['alias' => $fx]);
-                $fields[] = $fx;
-            } elseif (isset($options['fx'])) {
-                $qq = $model->action('fx', [$fx, $options['field'] ?? $model->expr('*'), 'alias' => $fx]);
-                $fields[] = $fx;
-            } else {
-                $qq = $model->action('select', [[$model->titleField]]);
-                $fields[] = $model->titleField;
-            }
-        }
-
-        // next we need to group
-        if ($options['by'] ?? null) {
-            $field = $options['by'];
-            if (is_string($field)) {
-                $field = $model->getField($field);
-            }
-            $qq->field($field, 'by');
-            $qq->group('by');
-        } else {
-            $qq->field($model->getField($model->titleField), 'by');
-        }
-
-        // and then set it as chart source
-        $this->setSource($qq->getRows(), $fields);
-
-        return $this;
+        return $this->setCurrencyLabel($char, 'y', $digits);
     }
 }

@@ -6,5 +6,8 @@ namespace Atk4\Chart;
 
 class LineChart extends Chart
 {
-    public $type = 'line';
+    use DirectionTrait;
+    use StackedTrait;
+
+    public string $type = self::TYPE_LINE;
 }

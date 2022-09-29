@@ -6,16 +6,20 @@ namespace Atk4\Chart;
 
 class BarChart extends Chart
 {
-    public $type = 'bar';
+    use DirectionTrait;
+    use StackedTrait;
+
+    public string $type = self::TYPE_BAR;
 
     /**
-     * Set this chart to be horizontal.
+     * @param array<mixed,mixed>|string $label
      */
-    public function setHorizontal(): void
+    public function __construct($label = [])
     {
-        $this->type = 'horizontalBar';
+        // Bar chart understand axis opposite as Line chart
+        $this->horizontalAxis = 'y';
+        $this->verticalAxis = 'x';
 
-        // in chartjs 3.9.1 replace with
-        // $this->setOptions(['indexAxis' => 'y']);
+        parent::__construct($label);
     }
 }

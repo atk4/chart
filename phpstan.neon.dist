@@ -11,6 +11,3 @@ parameters:
     ignoreErrors:
         # relax strict rules
         - '~^Only booleans are allowed in .+, .+ given( on the (left|right) side)?\.~'
-
-        # for src/Chart.php
-        - '~^Call to an undefined method Atk4\\Data\\Model::expr\(\)\.$~'
