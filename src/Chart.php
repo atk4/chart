@@ -16,34 +16,19 @@ use Atk4\Ui\View;
  */
 class Chart extends View
 {
-    /** @const string */
     public const TYPE_BAR = 'bar';
-
-    /** @const string */
     public const TYPE_LINE = 'line';
-
-    /** @const string */
     public const TYPE_PIE = 'pie';
-
-    /** @const string */
     public const TYPE_DOUGHNUT = 'doughnut';
-
-    /** @const string */
     public const TYPE_SCATTER = 'scatter';
-
-    /** @const string */
     public const TYPE_RADAR = 'radar';
-
-    /** @const string */
     public const TYPE_BUBBLE = 'bubble';
-
-    /** @const string */
     public const TYPE_POLAR_AREA = 'polarArea';
 
     /** @var string HTML element type */
     public $element = 'canvas';
 
-    /** @var string Type of chart - bar|pie etc. See TYPE_* constants */
+    /** Type of chart - bar|pie etc. See TYPE_* constants */
     public string $type;
 
     /** @var array<string, mixed> Options for chart.js widget */
@@ -188,10 +173,6 @@ class Chart extends View
      */
     protected function prepareDatasets(): void
     {
-        if ($this->model === null || $this->columns === null) {
-            return;
-        }
-
         $datasets = [];
 
         // initialize data-sets

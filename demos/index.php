@@ -34,7 +34,7 @@ $t = [
 
 $m = new Model(new Persistence\Array_($t));
 $m->addFields(['name', 'sales_cash', 'sales_bank', 'sales', 'purchases', 'profit']);
-$m->onHook($m::HOOK_AFTER_LOAD, function (Model $m) {
+$m->onHook(Model::HOOK_AFTER_LOAD, function (Model $m) {
     $m->set('sales', $m->get('sales_cash') + $m->get('sales_bank'));
     $m->set('profit', $m->get('sales') - $m->get('purchases'));
 });
