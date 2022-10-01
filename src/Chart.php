@@ -46,17 +46,11 @@ class Chart extends View
     /** @var string Type of chart - bar|pie etc. See TYPE_* constants */
     public string $type;
 
-    /** @var bool should we add JS include into application body? Set "false" if you do it manually. */
-    public $jsInclude = true;
-
     /** @var array<string, mixed> Options for chart.js widget */
     public $options = [];
 
     /** @var array<string, array<mixed, mixed>> Options for each data column for chart.js widget */
     public $columnOptions = [];
-
-    /** @var string */
-    protected $cdnUrl = 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js';
 
     /** @var array<int, string> Columns (data model fields) used in chart */
     protected $columns;
@@ -76,9 +70,7 @@ class Chart extends View
 
         $this->colorGenerator = new ColorGenerator();
 
-        if ($this->jsInclude) {
-            $this->getApp()->requireJs($this->cdnUrl);
-        }
+        $this->getApp()->requireJs($this->getApp()->cdn['chart.js'] . '/chart.min.js');
     }
 
     public function renderView(): void
