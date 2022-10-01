@@ -41,7 +41,7 @@ class ScatterChart extends Chart
         // prepopulate data-sets
         foreach ($this->model as $entity) {
             $dataset['data'][] = [
-                // 'label' => $entity->get($titleColumn), // maybe some day this will be implemented in chartjs to add label to bubble
+                // 'label' => $entity->get($titleColumn), // maybe some day this will be implemented in Chart.js to add label to bubble
                 'x' => $entity->get($this->xField),
                 'y' => $entity->get($this->yField),
                 'r' => $entity->get($this->rField),
@@ -81,14 +81,14 @@ class ScatterChart extends Chart
                     'mode' => 'point',
                     'callbacks' => [
                         'label' => new JsFunction(['context'], [
-                            new JsExpression('
+                            new JsExpression(<<<'EOF'
                                 let label = context.dataset.label || "";
                                 let value = context.parsed.y;
                                 if (label) {
                                     label += ": ";
                                 }
                                 return label + (value ? Number(value).toLocaleString(undefined, {minimumFractionDigits: ' . $digits . ', maximumFractionDigits: ' . $digits . '}) : "No Data");
-                            '),
+                                EOF),
                         ]),
                     ],
                 ],

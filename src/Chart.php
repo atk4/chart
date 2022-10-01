@@ -11,52 +11,31 @@ use Atk4\Ui\JsFunction;
 use Atk4\Ui\View;
 
 /**
- * ChartJS 3.9.1 documentation https://www.chartjs.org/docs/3.9.1/
- * Chart examples https://www.chartjs.org/docs/latest/samples/information.html.
+ * Chart.js 3.9.1 documentation: https://www.chartjs.org/docs/3.9.1/
+ * Examples https://www.chartjs.org/docs/latest/samples/information.html .
  */
 class Chart extends View
 {
-    /** @const string */
     public const TYPE_BAR = 'bar';
-
-    /** @const string */
     public const TYPE_LINE = 'line';
-
-    /** @const string */
     public const TYPE_PIE = 'pie';
-
-    /** @const string */
     public const TYPE_DOUGHNUT = 'doughnut';
-
-    /** @const string */
     public const TYPE_SCATTER = 'scatter';
-
-    /** @const string */
     public const TYPE_RADAR = 'radar';
-
-    /** @const string */
     public const TYPE_BUBBLE = 'bubble';
-
-    /** @const string */
     public const TYPE_POLAR_AREA = 'polarArea';
 
     /** @var string HTML element type */
     public $element = 'canvas';
 
-    /** @var string Type of chart - bar|pie etc. See TYPE_* constants */
+    /** Type of chart - bar|pie etc. See TYPE_* constants */
     public string $type;
 
-    /** @var bool should we add JS include into application body? Set "false" if you do it manually. */
-    public $jsInclude = true;
-
-    /** @var array<string, mixed> Options for chart.js widget */
+    /** @var array<string, mixed> Options for Chart.js widget */
     public $options = [];
 
-    /** @var array<string, array<mixed, mixed>> Options for each data column for chart.js widget */
+    /** @var array<string, array<mixed, mixed>> Options for each data column for Chart.js widget */
     public $columnOptions = [];
-
-    /** @var string */
-    protected $cdnUrl = 'https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js';
 
     /** @var array<int, string> Columns (data model fields) used in chart */
     protected $columns;
@@ -76,9 +55,7 @@ class Chart extends View
 
         $this->colorGenerator = new ColorGenerator();
 
-        if ($this->jsInclude) {
-            $this->getApp()->requireJs($this->cdnUrl);
-        }
+        $this->getApp()->requireJs($this->getApp()->cdn['chart.js'] . '/chart.min.js');
     }
 
     public function renderView(): void
@@ -196,10 +173,6 @@ class Chart extends View
      */
     protected function prepareDatasets(): void
     {
-        if ($this->model === null || $this->columns === null) {
-            return;
-        }
-
         $datasets = [];
 
         // initialize data-sets
@@ -258,7 +231,7 @@ class Chart extends View
                     'mode' => 'point',
                     'callbacks' => [
                         'label' => new JsFunction(['context'], [
-                            new JsExpression('
+                            new JsExpression(<<<'EOF'
                                 let label = context.dataset.label || "";
                                 // let value = context.parsed.y; // or x (horizontal) or r (radar) etc
                                 let value = context.formattedValue.replace(/,/, "");
@@ -266,7 +239,7 @@ class Chart extends View
                                     label += ": ";
                                 }
                                 return label + (value ? "' . $char . ' " +  Number(value).toLocaleString(undefined, {minimumFractionDigits: ' . $digits . ', maximumFractionDigits: ' . $digits . '}) : "No Data");
-                            '),
+                                EOF),
                         ]),
                     ],
                 ],

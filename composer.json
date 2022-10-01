@@ -1,6 +1,6 @@
 {
     "name": "atk4/chart",
-    "description": "ChartJS for Agile UI",
+    "description": "Chart.js for Agile UI",
     "license": "MIT",
     "type": "library",
     "keywords": [
@@ -8,7 +8,7 @@
         "data",
         "framework",
         "chart",
-        "chartjs"
+        "chart.js"
     ],
     "version": "dev-develop",
     "authors": [
