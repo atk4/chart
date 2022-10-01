@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Atk4\Chart;
 
 /**
- * @todo Replace this with something which would generate infinite colors.
+ * @TODO Replace this with something which would generate infinite colors.
  * Like https://medium.com/code-nebula/automatically-generate-chart-colors-with-chart-js-d3s-color-scales-f62e282b2b41 or something else
  */
 class ColorGenerator
 {
     /**
      * We will use these colors in charts.
-     * First can be used as background color and 2nd as border color.
+     * The 1st color is for background and the 2nd is for border.
      *
      * @var array<int, array<int, string>>
      */
@@ -30,8 +30,6 @@ class ColorGenerator
     private $currentColorIndex = -1;
 
     /**
-     * Return color by index.
-     *
      * @return array<int, string>
      */
     public function getColorPairByIndex(int $i): array
@@ -40,8 +38,6 @@ class ColorGenerator
     }
 
     /**
-     * Return next color.
-     *
      * @return array<int, string>
      */
     public function getNextColorPair(): array
@@ -50,8 +46,6 @@ class ColorGenerator
     }
 
     /**
-     * Return all possible colors.
-     *
      * @return array<int, array<int, string>>
      */
     public function getAllColorPairs(): array
@@ -60,8 +54,6 @@ class ColorGenerator
     }
 
     /**
-     * Set all possible colors.
-     *
      * @param array<int, array<int, string>> $colors
      *
      * @return $this

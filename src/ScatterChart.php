@@ -81,14 +81,14 @@ class ScatterChart extends Chart
                     'mode' => 'point',
                     'callbacks' => [
                         'label' => new JsFunction(['context'], [
-                            new JsExpression('
+                            new JsExpression(<<<'EOF'
                                 let label = context.dataset.label || "";
                                 let value = context.parsed.y;
                                 if (label) {
                                     label += ": ";
                                 }
                                 return label + (value ? Number(value).toLocaleString(undefined, {minimumFractionDigits: ' . $digits . ', maximumFractionDigits: ' . $digits . '}) : "No Data");
-                            '),
+                                EOF),
                         ]),
                     ],
                 ],
