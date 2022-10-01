@@ -1,8 +1,8 @@
-# Agile Charts - Integration for ChartJS into Agile Toolkit
+# Agile Charts - Integration for Chart.js into Agile Toolkit
 
-ChartJS is an open-source JavaScript library. This add-on
+Chart.js is an open-source JavaScript library. This add-on
 offers a deep integration between Agile UI, Agile Data and
-chartJS library.
+Chart.js library.
 
 ![demo](docs/demo1.png)
 

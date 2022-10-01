@@ -11,8 +11,8 @@ use Atk4\Ui\JsFunction;
 use Atk4\Ui\View;
 
 /**
- * ChartJS 3.9.1 documentation https://www.chartjs.org/docs/3.9.1/
- * Chart examples https://www.chartjs.org/docs/latest/samples/information.html.
+ * Chart.js 3.9.1 documentation: https://www.chartjs.org/docs/3.9.1/
+ * Examples https://www.chartjs.org/docs/latest/samples/information.html .
  */
 class Chart extends View
 {
@@ -31,10 +31,10 @@ class Chart extends View
     /** Type of chart - bar|pie etc. See TYPE_* constants */
     public string $type;
 
-    /** @var array<string, mixed> Options for chart.js widget */
+    /** @var array<string, mixed> Options for Chart.js widget */
     public $options = [];
 
-    /** @var array<string, array<mixed, mixed>> Options for each data column for chart.js widget */
+    /** @var array<string, array<mixed, mixed>> Options for each data column for Chart.js widget */
     public $columnOptions = [];
 
     /** @var array<int, string> Columns (data model fields) used in chart */

@@ -41,7 +41,7 @@ class ScatterChart extends Chart
         // prepopulate data-sets
         foreach ($this->model as $entity) {
             $dataset['data'][] = [
-                // 'label' => $entity->get($titleColumn), // maybe some day this will be implemented in chartjs to add label to bubble
+                // 'label' => $entity->get($titleColumn), // maybe some day this will be implemented in Chart.js to add label to bubble
                 'x' => $entity->get($this->xField),
                 'y' => $entity->get($this->yField),
                 'r' => $entity->get($this->rField),
