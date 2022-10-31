@@ -25,7 +25,6 @@ class Chart extends View
     public const TYPE_BUBBLE = 'bubble';
     public const TYPE_POLAR_AREA = 'polarArea';
 
-    /** @var string HTML element type */
     public string $element = 'canvas';
 
     /** Type of chart - bar|pie etc. See TYPE_* constants */
