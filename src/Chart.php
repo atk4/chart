@@ -46,7 +46,7 @@ class Chart extends View
     protected $datasets;
 
     /** @var ColorGenerator */
-    protected $colorGenerator;
+    public $colorGenerator;
 
     protected function init(): void
     {
