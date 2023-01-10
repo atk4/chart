@@ -6,8 +6,8 @@ namespace Atk4\Chart;
 
 use Atk4\Core\Exception;
 use Atk4\Data\Model;
-use Atk4\Ui\JsExpression;
-use Atk4\Ui\JsFunction;
+use Atk4\Ui\Js\JsExpression;
+use Atk4\Ui\Js\JsFunction;
 use Atk4\Ui\View;
 
 /**
