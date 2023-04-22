@@ -25,7 +25,7 @@
     },
     "require-release": {
         "php": ">=7.4 <8.3",
-        "atk4/ui": "~4.0.0"
+        "atk4/ui": "~5.0.0"
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.13",
