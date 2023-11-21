@@ -239,7 +239,8 @@ class Chart extends View
                                         label += ": ";
                                     }
                                 return label + (value ? [] +  Number(value).toLocaleString(undefined, {minimumFractionDigits: [], maximumFractionDigits: []}) : "No Data")
-                                EOF, [$char, $digits, $digits]),
+                                EOF,
+                            [$char, $digits, $digits]),
                         ]),
                     ],
                 ],
