@@ -62,14 +62,15 @@ class PieChart extends Chart
                         'label' => new JsFunction(['context'], [
                             new JsExpression(
                                 <<<'EOF'
-                                    let label = context.dataset.label || "";
-                                    // let value = context.parsed; // y or x (horizontal) or r (radar) etc
-                                    let value = context.formattedValue.replace(/,/, "");
-                                    if (label) {
-                                        label += ": ";
-                                    }
-                                    return label + (value ? [] + Number(value).toLocaleString(undefined, {minimumFractionDigits: [], maximumFractionDigits: []}) : "No Data");
-                                EOF, [$char, $digits, $digits]
+                                        let label = context.dataset.label || "";
+                                        // let value = context.parsed; // y or x (horizontal) or r (radar) etc
+                                        let value = context.formattedValue.replace(/,/, "");
+                                        if (label) {
+                                            label += ": ";
+                                        }
+                                        return label + (value ? [] + Number(value).toLocaleString(undefined, {minimumFractionDigits: [], maximumFractionDigits: []}) : "No Data");
+                                    EOF,
+                                [$char, $digits, $digits]
                             ),
                         ]),
                     ],
