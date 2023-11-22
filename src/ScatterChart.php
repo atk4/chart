@@ -82,12 +82,12 @@ class ScatterChart extends Chart
                     'callbacks' => [
                         'label' => new JsFunction(['context'], [
                             new JsExpression(<<<'EOF'
-                                    let label = context.dataset.label || '';
-                                    let value = context.parsed.y;
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    return label + (value ? Number(value).toLocaleString(undefined, {minimumFractionDigits: [digits], maximumFractionDigits: [digits]}) : 'No Data');
+                                let label = context.dataset.label || '';
+                                let value = context.parsed.y;
+                                if (label) {
+                                    label += ': ';
+                                }
+                                return label + (value ? Number(value).toLocaleString(undefined, {minimumFractionDigits: [digits], maximumFractionDigits: [digits]}) : 'No Data');
                                 EOF, ['digits' => $digits]),
                         ]),
                     ],

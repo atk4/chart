@@ -61,13 +61,13 @@ class PieChart extends Chart
                     'callbacks' => [
                         'label' => new JsFunction(['context'], [
                             new JsExpression(<<<'EOF'
-                                    let label = context.dataset.label || '';
-                                    // let value = context.parsed; // y or x (horizontal) or r (radar) etc
-                                    let value = context.formattedValue.replace(/,/, '');
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    return label + (value ? [char] + Number(value).toLocaleString(undefined, {minimumFractionDigits: [digits], maximumFractionDigits: [digits]}) : 'No Data');
+                                let label = context.dataset.label || '';
+                                // let value = context.parsed; // y or x (horizontal) or r (radar) etc
+                                let value = context.formattedValue.replace(/,/, '');
+                                if (label) {
+                                    label += ': ';
+                                }
+                                return label + (value ? [char] + Number(value).toLocaleString(undefined, {minimumFractionDigits: [digits], maximumFractionDigits: [digits]}) : 'No Data');
                                 EOF, ['char' => $char, 'digits' => $digits]),
                         ]),
                     ],
