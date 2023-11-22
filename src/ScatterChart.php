@@ -88,9 +88,9 @@ class ScatterChart extends Chart
                                         if (label) {
                                             label += ": ";
                                         }
-                                        return label + (value ? Number(value).toLocaleString(undefined, {minimumFractionDigits: ' . $digits . ', maximumFractionDigits: ' . $digits . '}) : "No Data");
+                                        return label + (value ? Number(value).toLocaleString(undefined, {minimumFractionDigits: [], maximumFractionDigits: []}) : "No Data");
                                     EOF.
-                                [$char, $digits, $digits]
+                                [$digits, $digits]
                            ),
                         ]),
                     ],
