@@ -7,6 +7,9 @@
         "agile",
         "data",
         "framework",
+        "ui",
+        "component",
+        "widget",
         "chart",
         "chart.js"
     ],
@@ -20,12 +23,12 @@
     ],
     "homepage": "https://github.com/atk4/chart",
     "require": {
-        "php": ">=7.4 <8.3",
+        "php": ">=7.4 <8.4",
         "atk4/ui": "dev-develop"
     },
     "require-release": {
-        "php": ">=7.4 <8.3",
-        "atk4/ui": "~4.0.0"
+        "php": ">=7.4 <8.4",
+        "atk4/ui": "~5.0.0"
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.13",
