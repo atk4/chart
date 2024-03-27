@@ -13,7 +13,6 @@
         "chart",
         "chart.js"
     ],
-    "version": "dev-develop",
     "authors": [
         {
             "name": "Romans Malinovskis",
@@ -23,10 +22,6 @@
     ],
     "homepage": "https://github.com/atk4/chart",
     "require": {
-        "php": ">=7.4 <8.4",
-        "atk4/ui": "dev-develop"
-    },
-    "require-release": {
         "php": ">=7.4 <8.4",
         "atk4/ui": "~5.0.0"
     },
