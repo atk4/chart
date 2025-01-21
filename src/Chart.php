@@ -9,6 +9,7 @@ use Atk4\Data\Model;
 use Atk4\Ui\Js\JsExpression;
 use Atk4\Ui\Js\JsFunction;
 use Atk4\Ui\View;
+use Atk4\Ui\View\ModelTrait;
 
 /**
  * Chart.js 3.9.1 documentation: https://www.chartjs.org/docs/3.9.1/
@@ -16,6 +17,10 @@ use Atk4\Ui\View;
  */
 class Chart extends View
 {
+    use ModelTrait {
+        setModel as private _setModel;
+    }
+
     public const TYPE_BAR = 'bar';
     public const TYPE_LINE = 'line';
     public const TYPE_PIE = 'pie';
@@ -162,7 +167,7 @@ class Chart extends View
         }
         $this->columns = $columns;
 
-        parent::setModel($model);
+        $this->_setModel($model);
 
         $this->prepareDatasets();
     }
