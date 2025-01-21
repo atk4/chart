@@ -3,6 +3,7 @@ includes:
 
 parameters:
     level: 6
+    checkMissingOverrideMethodAttribute: true
     paths:
         - .
     excludePaths:
@@ -10,4 +11,4 @@ parameters:
 
     ignoreErrors:
         # relax strict rules
-        - '~^Only booleans are allowed in .+, .+ given( on the (left|right) side)?\.~'
+        - '~^Only booleans are allowed in .+, .+ given( on the (left|right) side)?\.$~'

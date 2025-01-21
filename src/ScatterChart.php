@@ -57,7 +57,7 @@ class ScatterChart extends Chart
      * @param string|null $xTitle X axis title
      * @param string|null $yTitle Y axis title
      */
-    public function setAxisTitles(string $xTitle = null, string $yTitle = null): void
+    public function setAxisTitles(?string $xTitle = null, ?string $yTitle = null): void
     {
         $options = [
             'scales' => [
