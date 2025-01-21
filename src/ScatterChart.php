@@ -20,6 +20,7 @@ class ScatterChart extends Chart
     /** @var string R (radius) field name */
     protected $rField;
 
+    #[\Override]
     public function prepareDatasets(): void
     {
         $columns = $this->columns;

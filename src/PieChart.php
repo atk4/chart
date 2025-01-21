@@ -11,6 +11,7 @@ class PieChart extends Chart
 {
     public string $type = self::TYPE_PIE;
 
+    #[\Override]
     public function prepareDatasets(): void
     {
         $datasets = [];
@@ -51,6 +52,7 @@ class PieChart extends Chart
         $this->setDatasets($datasets);
     }
 
+    #[\Override]
     public function setCurrencyLabel(string $char = '€', string $axis = 'y', int $digits = 2)
     {
         $options = [

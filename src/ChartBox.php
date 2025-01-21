@@ -17,6 +17,7 @@ class ChartBox extends View
     /** @var string */
     public $label = 'Chart Box';
 
+    #[\Override]
     protected function init(): void
     {
         $this->defaultTemplate = dirname(__DIR__) . '/template/chartbox.html';
