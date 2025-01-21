@@ -53,6 +53,7 @@ class Chart extends View
     /** @var ColorGenerator */
     public $colorGenerator;
 
+    #[\Override]
     protected function init(): void
     {
         parent::init();
@@ -62,6 +63,7 @@ class Chart extends View
         $this->getApp()->requireJs($this->getApp()->cdn['chart.js'] . '/chart.min.js');
     }
 
+    #[\Override]
     public function renderView(): void
     {
         $this->js(true, new JsExpression('new Chart([], []);', [$this->name, $this->getConfig()]));
