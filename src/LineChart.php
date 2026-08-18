@@ -9,6 +9,5 @@ class LineChart extends Chart
     use DirectionTrait;
     use StackedTrait;
 
-    #[\Override]
     public string $type = self::TYPE_LINE;
 }

@@ -3,7 +3,8 @@ includes:
 
 parameters:
     level: 8
-    checkMissingOverrideMethodAttribute: true
+    # PHP 8.5 requests Override attribute for properties, but older PHP do not support that
+    checkMissingOverrideMethodAttribute: false
     paths:
         - .
     excludePaths:

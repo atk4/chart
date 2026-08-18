@@ -9,7 +9,6 @@ class BarChart extends Chart
     use DirectionTrait;
     use StackedTrait;
 
-    #[\Override]
     public string $type = self::TYPE_BAR;
 
     /**
