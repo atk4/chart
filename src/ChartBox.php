@@ -12,6 +12,7 @@ use Atk4\Ui\View;
  */
 class ChartBox extends View
 {
+    #[\Override]
     public $ui = 'segment';
 
     /** @var string */

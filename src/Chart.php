@@ -30,6 +30,7 @@ class Chart extends View
     public const TYPE_BUBBLE = 'bubble';
     public const TYPE_POLAR_AREA = 'polarArea';
 
+    #[\Override]
     public string $element = 'canvas';
 
     /** Type of chart - bar|pie etc. See TYPE_* constants */
@@ -179,6 +180,10 @@ class Chart extends View
      */
     protected function prepareDatasets(): void
     {
+        if ($this->model === null) {
+            throw new Exception('Data model should be set');
+        }
+
         $datasets = [];
 
         // initialize data-sets

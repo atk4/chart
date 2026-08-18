@@ -9,10 +9,11 @@ class BarChart extends Chart
     use DirectionTrait;
     use StackedTrait;
 
+    #[\Override]
     public string $type = self::TYPE_BAR;
 
     /**
-     * @param array<mixed,mixed>|string $label
+     * @param array<string,mixed> $label
      */
     public function __construct($label = [])
     {

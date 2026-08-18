@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Atk4\Chart;
 
+use Atk4\Core\Exception;
 use Atk4\Ui\Js\JsExpression;
 use Atk4\Ui\Js\JsFunction;
 
 class ScatterChart extends Chart
 {
+    #[\Override]
     public string $type = self::TYPE_SCATTER;
 
     /** @var string X field name */
@@ -23,9 +25,13 @@ class ScatterChart extends Chart
     #[\Override]
     public function prepareDatasets(): void
     {
+        if ($this->model === null) {
+            throw new Exception('Data model should be set');
+        }
+
         $columns = $this->columns;
 
-        $titleColumn = array_shift($columns) ?? null;
+        $titleColumn = array_shift($columns);
         $this->xField = array_shift($columns) ?? 'x';
         $this->yField = array_shift($columns) ?? 'y';
         $this->rField = array_shift($columns) ?? 'r';

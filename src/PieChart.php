@@ -4,16 +4,22 @@ declare(strict_types=1);
 
 namespace Atk4\Chart;
 
+use Atk4\Core\Exception;
 use Atk4\Ui\Js\JsExpression;
 use Atk4\Ui\Js\JsFunction;
 
 class PieChart extends Chart
 {
+    #[\Override]
     public string $type = self::TYPE_PIE;
 
     #[\Override]
     public function prepareDatasets(): void
     {
+        if ($this->model === null) {
+            throw new Exception('Data model should be set');
+        }
+
         $datasets = [];
         $colors = [];
 
