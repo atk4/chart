@@ -10,7 +10,7 @@ jobs:
     name: Build Release
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/mvorisek/image-php:8.3
+      image: ghcr.io/mvorisek/image-php:latest
     steps:
       - uses: actions/checkout@v4
         with:
